@@ -1,0 +1,138 @@
+<div class="container mt-4">
+  <h1 class="mb-4">Proyectos</h1>
+
+  @if (error()) {
+    <div class="alert alert-danger alert-dismissible">
+      {{ error() }}
+      <button type="button" class="btn-close" (click)="error.set(null)"></button>
+    </div>
+  }
+
+  @if (success()) {
+    <div class="alert alert-success alert-dismissible">
+      {{ success() }}
+      <button type="button" class="btn-close" (click)="success.set(null)"></button>
+    </div>
+  }
+
+  <div class="card mb-4">
+    <div class="card-header">Nuevo Proyecto</div>
+    <div class="card-body">
+      <form [formGroup]="form" (ngSubmit)="submit()">
+
+        <div class="mb-3">
+          <label class="form-label">Nombre *</label>
+          <input
+            type="text"
+            class="form-control"
+            [class.is-invalid]="isInvalid('name')"
+            formControlName="name"
+          />
+          @if (isInvalid('name')) {
+            <div class="invalid-feedback">El nombre es obligatorio.</div>
+          }
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Fecha inicio *</label>
+            <input
+              type="date"
+              class="form-control"
+              [class.is-invalid]="isInvalid('startDate')"
+              formControlName="startDate"
+            />
+            @if (isInvalid('startDate')) {
+              <div class="invalid-feedback">La fecha de inicio es obligatoria.</div>
+            }
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Fecha fin *</label>
+            <input
+              type="date"
+              class="form-control"
+              [class.is-invalid]="isInvalid('endDate')"
+              formControlName="endDate"
+            />
+            @if (isInvalid('endDate')) {
+              <div class="invalid-feedback">La fecha de fin es obligatoria.</div>
+            }
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Estado *</label>
+          <select class="form-select" formControlName="status">
+            <option value="PLANNED">Planificado</option>
+            <option value="ACTIVE">Activo</option>
+            <option value="CLOSED">Cerrado</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Descripción</label>
+          <textarea
+            class="form-control"
+            formControlName="description"
+            rows="2"
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="form.invalid || loading()"
+        >
+          @if (loading()) { Guardando... } @else { Crear Proyecto }
+        </button>
+
+      </form>
+    </div>
+  </div>
+
+  @if (projects().length === 0) {
+    <p class="text-muted">No hay proyectos creados todavía.</p>
+  } @else {
+    <table class="table table-bordered table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>Nombre</th>
+          <th>Estado</th>
+          <th>Fecha inicio</th>
+          <th>Fecha fin</th>
+          <th>Descripción</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (project of projects(); track project.id) {
+          <tr>
+            <td>{{ project.name }}</td>
+            <td>
+              <span class="badge"
+                [class.bg-success]="project.status === 'ACTIVE'"
+                [class.bg-secondary]="project.status === 'PLANNED'"
+                [class.bg-danger]="project.status === 'CLOSED'"
+              >
+                {{ project.status }}
+              </span>
+            </td>
+            <td>{{ project.startDate }}</td>
+            <td>{{ project.endDate }}</td>
+            <td>{{ project.description }}</td>
+            <td>
+              <button
+                class="btn btn-sm btn-danger"
+                (click)="delete(project.id!)"
+              >
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+</div>
