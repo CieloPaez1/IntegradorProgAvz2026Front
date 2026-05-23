@@ -1,59 +1,67 @@
-# IntegradorProgAvz2026Front
+# Frontend — Gestión de Proyectos y Tareas
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.11.
+Frontend Angular para la aplicación de gestión de proyectos y tareas.
+Proyecto integrador de Programación Avanzada II — Ciclo Lectivo 2026.
 
-## Development server
+## Descripción
+Aplicación web desarrollada con Angular que consume la API REST del backend
+de gestión de proyectos y tareas desarrollado en la cursada anterior.
+Permite crear, eliminar y filtrar proyectos y tareas a través de una interfaz moderna.
 
-To start a local development server, run:
+## Tecnologías
+- Angular 19 (standalone components)
+- Bootstrap 5
+- Reactive Forms
+- Signals
+- HttpClient
 
-```bash
-ng serve
-```
+## Requisitos previos
+- Node.js 18+
+- Angular CLI
+- Backend corriendo en `http://localhost:8080`
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+## Instalación
 
 ```bash
-ng build
+npm install
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Correr en desarrollo
 
 ```bash
-ng test
+ng serve --port 4200
 ```
 
-## Running end-to-end tests
+Navegar a `http://localhost:4200`
 
-For end-to-end (e2e) testing, run:
+## Repositorio Backend
+[IntegradorProgAvz2026](https://github.com/CieloPaez1/IntegradorProgAvz2026)
 
-```bash
-ng e2e
-```
+## Estructura del proyecto
+src/app/
+├── components/     # componentes reutilizables
+├── models/         # interfaces y tipos del dominio
+├── pages/          # páginas por feature
+└── services/       # servicios HTTP
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Features implementadas
 
-## Additional Resources
+| Feature | Rama  |
+|---|---|
+| Crear Proyecto | feature/crear-proyecto |
+| Eliminar Proyecto | feature/eliminar-proyecto |
+| Crear Tarea | feature/crear-tarea |
+| Filtrar Tareas | feature/filtrar-tareas |
+| Eliminar Tarea | feature/eliminar-tarea |
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Flujo de trabajo
+Cada feature se desarrolla en su propia rama siguiendo Spec Driven Development:
+1. Se redacta el `SPEC.md` antes de escribir código
+2. Se implementa la feature guiada por la spec
+3. Se verifica manualmente contra los criterios de aceptación
+4. Se abre un Pull Request hacia `develop`
+
+## Documentación
+Cada feature incluye en `docs/<nombre-feature>/`:
+- `SPEC.md` — especificación de la feature
+- `prompt-01.md` — prompts utilizados con el agente IA
