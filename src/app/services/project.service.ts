@@ -28,7 +28,7 @@ export class ProjectService {
   let message = 'Error desconocido';
 
   if (error.status === 0) {
-    message = 'No se pudo conectar al servidor. ¿Está corriendo el backend?';
+    message = 'No se pudo conectar al servidor. ';
   } else if (error.status === 400) {
     message = error.error?.message ?? 'Datos inválidos.';
   } else if (error.status === 404) {

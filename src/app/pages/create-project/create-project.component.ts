@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProjectService } from '../../services/project.service';
 import { Project } from '../../models/project.model';
@@ -24,9 +24,23 @@ export class CreateProjectComponent {
     name: ['', [Validators.required]],
     startDate: ['', [Validators.required]],
     endDate: ['', [Validators.required]],
-    status: ['PLANNED', [Validators.required]],
+    status: ['', [Validators.required]],
     description: ['']
-  });
+  }, { validators: this.validarFechas });
+
+  validarFechas(group: AbstractControl) {
+    const start = group.get('startDate')?.value;
+    const end = group.get('endDate')?.value;
+    const hoy = new Date().toISOString().split('T')[0];
+
+    if (end && end < hoy) {
+      return { endDatePasada: true };
+    }
+    if (start && end && end < start) {
+      return { endDateMenorQueStart: true };
+    }
+    return null;
+  }
 
   cargarDelStorage(): Project[] {
     const data = localStorage.getItem('projects');
@@ -51,7 +65,7 @@ export class CreateProjectComponent {
         const nuevaLista = [...this.projects(), created];
         this.projects.set(nuevaLista);
         this.guardarEnStorage(nuevaLista);
-        this.form.reset({ status: 'PLANNED' });
+        this.form.reset({ status: '' });
         this.success.set('Proyecto creado correctamente.');
         this.loading.set(false);
       },
@@ -63,7 +77,7 @@ export class CreateProjectComponent {
   }
 
   cancelar(): void {
-    this.form.reset({ status: 'PLANNED' });
+    this.form.reset({ status: '' });
     this.error.set(null);
     this.success.set(null);
   }
