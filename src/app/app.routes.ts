@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { CreateProjectComponent } from './pages/create-project/create-project.component'; // agregá .component
+import { DeleteProjectComponent } from './pages/delete-project/delete-project.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'projects/create', pathMatch: 'full' },
-  { path: 'projects/create', component: CreateProjectComponent },
+  { path: '', redirectTo: 'projects/delete', pathMatch: 'full' },
+  { path: 'projects/delete', component: DeleteProjectComponent },
 ];
