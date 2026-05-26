@@ -1,0 +1,222 @@
+<div class="container py-5" style="max-width: 1100px;">
+
+  <!-- FORM CARD -->
+  <div class="card border-0 shadow-sm mb-4" style="border-radius: 24px; overflow: hidden; background: #ffffff;">
+
+    <!-- HEADER -->
+    <div class="card-header border-0" style="background: #ffffff; padding: 32px; border-bottom: 1px solid #eef2f7;">
+      <div class="d-flex align-items-center gap-3">
+        <div style="width: 60px; height: 60px; border-radius: 18px; background: #f0fdf4; display: flex; align-items: center; justify-content: center; font-size: 28px;">
+          ✅
+        </div>
+        <div>
+          <h2 class="mb-1" style="color: #111827; font-weight: 700; font-size: 2rem;">Crear Tarea</h2>
+          <p class="mb-0" style="color: #6b7280; font-size: 1rem;">Completá los datos para crear una nueva tarea</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- BODY -->
+    <div class="card-body" style="padding: 40px; background: #ffffff;">
+
+      @if (success()) {
+        <div class="mb-4" style="background: #ecfdf3; border: 1px solid #bbf7d0; color: #166534; padding: 14px 18px; border-radius: 12px; font-weight: 500;">
+          ✔ {{ success() }}
+        </div>
+      }
+
+      @if (error()) {
+        <div class="mb-4" style="background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: 14px 18px; border-radius: 12px; font-weight: 500;">
+          ✖ {{ error() }}
+        </div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+
+        <!-- PROYECTO -->
+        <div class="mb-4">
+          <label class="form-label mb-2" style="font-weight: 600; color: #111827;">
+            Proyecto <span class="text-danger">*</span>
+          </label>
+          <select
+            formControlName="projectId"
+            class="form-select"
+            [class.is-invalid]="isInvalid('projectId')"
+            style="height: 56px; border-radius: 14px; border: 1px solid #dbe1ea; background: #fff; padding: 0 18px;"
+          >
+            <option value="" disabled>-- Seleccioná un proyecto --</option>
+            @for (p of projects(); track p.id) {
+              <option [value]="p.id">{{ p.name }}</option>
+            }
+          </select>
+          @if (isInvalid('projectId')) {
+            <div style="color: #dc3545; font-size: 0.875rem; margin-top: 4px;">
+              El proyecto es obligatorio.
+            </div>
+          }
+        </div>
+
+        <!-- TITULO -->
+        <div class="mb-4">
+          <label class="form-label mb-2" style="font-weight: 600; color: #111827;">
+            Título <span class="text-danger">*</span>
+          </label>
+          <input
+            type="text"
+            formControlName="title"
+            class="form-control"
+            [class.is-invalid]="isInvalid('title')"
+            placeholder="Ej: Crear landing page"
+            style="height: 56px; border-radius: 14px; border: 1px solid #dbe1ea; background: #fff; padding: 0 18px; font-size: 1rem;"
+          />
+          @if (isInvalid('title')) {
+            <div style="color: #dc3545; font-size: 0.875rem; margin-top: 4px;">
+              El título es obligatorio.
+            </div>
+          }
+        </div>
+
+        <!-- HORAS Y ASIGNADO -->
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <label class="form-label mb-2" style="font-weight: 600; color: #111827;">
+              Horas estimadas <span class="text-danger">*</span>
+            </label>
+            <input
+              type="number"
+              formControlName="estimateHours"
+              class="form-control"
+              [class.is-invalid]="isInvalid('estimateHours')"
+              placeholder="Ej: 8"
+              min="1"
+              style="height: 56px; border-radius: 14px; border: 1px solid #dbe1ea; background: #fff; padding: 0 18px;"
+            />
+            @if (isInvalid('estimateHours')) {
+              <div style="color: #dc3545; font-size: 0.875rem; margin-top: 4px;">
+                Las horas deben ser mayor a 0.
+              </div>
+            }
+          </div>
+
+          <div class="col-md-6 mb-4">
+            <label class="form-label mb-2" style="font-weight: 600; color: #111827;">
+              Asignado a
+            </label>
+            <input
+              type="text"
+              formControlName="assignee"
+              class="form-control"
+              placeholder="Ej: alice"
+              style="height: 56px; border-radius: 14px; border: 1px solid #dbe1ea; background: #fff; padding: 0 18px;"
+            />
+          </div>
+        </div>
+
+        <!-- ESTADO -->
+        <div class="mb-4">
+          <label class="form-label mb-2" style="font-weight: 600; color: #111827;">
+            Estado <span class="text-danger">*</span>
+          </label>
+          <select
+            formControlName="status"
+            class="form-select"
+            [class.is-invalid]="isInvalid('status')"
+            style="height: 56px; border-radius: 14px; border: 1px solid #dbe1ea; background: #fff; padding: 0 18px;"
+          >
+            <option value="" disabled>-- Seleccioná un estado --</option>
+            <option value="TODO">Por hacer</option>
+            <option value="IN_PROGRESS">En progreso</option>
+            <option value="DONE">Hecho</option>
+          </select>
+          @if (isInvalid('status')) {
+            <div style="color: #dc3545; font-size: 0.875rem; margin-top: 4px;">
+              El estado es obligatorio.
+            </div>
+          }
+        </div>
+
+        <!-- BOTONES -->
+        <div class="d-flex gap-3 mt-4">
+          <button
+            type="submit"
+            class="btn"
+            [disabled]="loading()"
+            style="height: 52px; padding: 0 28px; border-radius: 14px; border: none; background: linear-gradient(135deg, #4f46e5, #6366f1); color: white; font-weight: 600; box-shadow: 0 8px 20px rgba(79,70,229,.25);"
+          >
+            @if (loading()) {
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              Guardando...
+            } @else {
+              Guardar Tarea
+            }
+          </button>
+
+          <button
+            type="button"
+            class="btn"
+            (click)="cancelar()"
+            [disabled]="loading()"
+            style="height: 52px; padding: 0 28px; border-radius: 14px; border: 1px solid #dbe1ea; background: white; color: #374151; font-weight: 600;"
+          >
+            Cancelar
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- TABLA DE TAREAS -->
+  <div class="card border-0 shadow-sm" style="border-radius: 24px; overflow: hidden; background: #ffffff;">
+    <div class="card-header border-0" style="background: #ffffff; padding: 28px 32px; border-bottom: 1px solid #eef2f7;">
+      <h4 class="mb-1" style="color: #111827; font-weight: 700;">Tareas creadas</h4>
+      <p class="mb-0" style="color: #6b7280;">Tareas registradas en esta sesión</p>
+    </div>
+    <div class="card-body p-0">
+      @if (tasks().length === 0) {
+        <div class="text-center py-5" style="color: #6b7280;">
+          No hay tareas creadas aún.
+        </div>
+      } @else {
+        <div class="table-responsive">
+          <table class="table align-middle mb-0">
+            <thead style="background: #f9fafb;">
+              <tr>
+                <th style="padding: 18px 24px; border: none; color: #374151;">#</th>
+                <th style="border: none; color: #374151;">Proyecto</th>
+                <th style="border: none; color: #374151;">Título</th>
+                <th style="border: none; color: #374151;">Horas</th>
+                <th style="border: none; color: #374151;">Asignado</th>
+                <th style="border: none; color: #374151;">Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (t of tasks(); track t.id) {
+                <tr style="border-bottom: 1px solid #f3f4f6;">
+                  <td style="padding: 20px 24px;">{{ t.id }}</td>
+                  <td style="color: #6b7280;">
+                    {{ projects().find(p => p.id === t.projectId)?.name ?? '-' }}
+                  </td>
+                  <td style="font-weight: 600; color: #111827;">{{ t.title }}</td>
+                  <td>{{ t.estimateHours }}h</td>
+                  <td style="color: #6b7280;">{{ t.assignee ?? '-' }}</td>
+                  <td>
+                    <span
+                      class="badge px-3 py-2"
+                      [style.background-color]="t.status === 'TODO' ? '#FEF3C7' : t.status === 'IN_PROGRESS' ? '#DBEAFE' : '#DCFCE7'"
+                      [style.color]="t.status === 'TODO' ? '#92400E' : t.status === 'IN_PROGRESS' ? '#1D4ED8' : '#166534'"
+                      style="border-radius: 999px; font-size: .8rem; font-weight: 600;"
+                    >
+                      {{ t.status === 'TODO' ? 'Por hacer' : t.status === 'IN_PROGRESS' ? 'En progreso' : 'Hecho' }}
+                    </span>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  </div>
+
+</div>
