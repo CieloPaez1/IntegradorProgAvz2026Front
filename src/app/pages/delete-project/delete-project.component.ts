@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectService } from '../../services/project.service';
 import { Project } from '../../models/project.model';
@@ -9,22 +9,24 @@ import { Project } from '../../models/project.model';
   imports: [CommonModule],
   templateUrl: './delete-project.component.html'
 })
-export class DeleteProjectComponent {
+export class DeleteProjectComponent implements OnInit {
 
   private projectService = inject(ProjectService);
 
-  projects = signal<Project[]>(this.cargarDelStorage());
+  projects = signal<Project[]>([]);
   loading = signal<boolean>(false);
   error = signal<string | null>(null);
   success = signal<string | null>(null);
 
-  cargarDelStorage(): Project[] {
-    const data = localStorage.getItem('projects');
-    return data ? JSON.parse(data) : [];
+  ngOnInit(): void {
+    this.cargarProyectos();
   }
 
-  guardarEnStorage(lista: Project[]): void {
-    localStorage.setItem('projects', JSON.stringify(lista));
+  cargarProyectos(): void {
+    this.projectService.getAll().subscribe({
+      next: (data) => this.projects.set(data),
+      error: () => this.projects.set([])
+    });
   }
 
   eliminar(id: number): void {
@@ -37,9 +39,7 @@ export class DeleteProjectComponent {
 
     this.projectService.delete(id).subscribe({
       next: () => {
-        const nuevaLista = this.projects().filter(p => p.id !== id);
-        this.projects.set(nuevaLista);
-        this.guardarEnStorage(nuevaLista);
+        this.projects.update(list => list.filter(p => p.id !== id));
         this.success.set('Proyecto eliminado correctamente.');
         this.loading.set(false);
       },
