@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProjectService } from '../../services/project.service';
@@ -10,12 +10,12 @@ import { Project } from '../../models/project.model';
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './create-project.component.html'
 })
-export class CreateProjectComponent {
+export class CreateProjectComponent implements OnInit {
 
   private projectService = inject(ProjectService);
   private fb = inject(FormBuilder);
 
-  projects = signal<Project[]>(this.cargarDelStorage());
+  projects = signal<Project[]>([]);
   loading = signal<boolean>(false);
   error = signal<string | null>(null);
   success = signal<string | null>(null);
@@ -42,13 +42,15 @@ export class CreateProjectComponent {
     return null;
   }
 
-  cargarDelStorage(): Project[] {
-    const data = localStorage.getItem('projects');
-    return data ? JSON.parse(data) : [];
+  ngOnInit(): void {
+    this.cargarProyectos();
   }
 
-  guardarEnStorage(lista: Project[]): void {
-    localStorage.setItem('projects', JSON.stringify(lista));
+  cargarProyectos(): void {
+    this.projectService.getAll().subscribe({
+      next: (data) => this.projects.set(data),
+      error: () => this.projects.set([])
+    });
   }
 
   submit(): void {
@@ -62,9 +64,7 @@ export class CreateProjectComponent {
 
     this.projectService.create(this.form.value as Project).subscribe({
       next: (created) => {
-        const nuevaLista = [...this.projects(), created];
-        this.projects.set(nuevaLista);
-        this.guardarEnStorage(nuevaLista);
+        this.projects.update(list => [...list, created]);
         this.form.reset({ status: '' });
         this.success.set('Proyecto creado correctamente.');
         this.loading.set(false);
