@@ -34,6 +34,12 @@ export class TaskService {
       catchError(this.handleError)
     );
   }
+  
+  delete(projectId: number, taskId: number): Observable<void> {
+  return this.http.delete<void>(`${this.apiUrl}/${projectId}/tasks/${taskId}`).pipe(
+    catchError(this.handleError)
+  );
+}
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     let message = 'Error desconocido';
@@ -45,4 +51,5 @@ export class TaskService {
     console.error('HTTP Error:', error);
     return throwError(() => new Error(message));
   }
+
 }
