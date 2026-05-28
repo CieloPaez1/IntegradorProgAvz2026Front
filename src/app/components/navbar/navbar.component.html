@@ -1,7 +1,7 @@
 <nav class="navbar-top">
   <div class="navbar-search-wrapper">
     <div class="navbar-search">
-      <span class="search-icon" aria-hidden="true">⌕</span>
+      <svg lucideSearch class="search-icon" aria-hidden="true"></svg>
 
       <input
         type="text"
@@ -19,7 +19,7 @@
         (click)="closeDropdown()"
         aria-label="Limpiar busqueda"
       >
-        x
+        <svg lucideX aria-hidden="true"></svg>
       </button>
     </div>
 
@@ -53,9 +53,7 @@
 
             <span class="item-body">
               <span class="item-name">{{ p.name }}</span>
-              <span class="item-meta">
-                {{ p.description || 'Sin descripcion' }}
-              </span>
+              <span class="item-meta">{{ p.description || 'Sin descripcion' }}</span>
             </span>
 
             <span class="status-badge" [ngClass]="statusClass(p.status)">

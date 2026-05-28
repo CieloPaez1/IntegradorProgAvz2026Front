@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
+import { LucideSearch, LucideX } from '@lucide/angular';
 import { SearchService } from '../../services/search.service';
 import { Task } from '../../models/task.model';
 import { Project } from '../../models/project.model';
@@ -11,7 +12,7 @@ import { Project } from '../../models/project.model';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, LucideSearch, LucideX],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })

@@ -35,14 +35,13 @@
 .navbar-search:focus-within {
   background: #ffffff;
   border-color: #6366f1;
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
 }
 
 .search-icon {
-  width: 22px;
+  width: 21px;
+  height: 21px;
   color: #64748b;
-  font-size: 1.15rem;
-  line-height: 1;
+  stroke-width: 2.2;
 }
 
 .navbar-search input {
@@ -68,11 +67,18 @@
   color: #475569;
   line-height: 1;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-btn svg {
+  width: 14px;
+  height: 14px;
 }
 
 .clear-btn:hover {
   background: #dbe1ea;
-  color: #111827;
 }
 
 .search-dropdown {
