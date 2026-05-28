@@ -1,0 +1,180 @@
+.reports-page {
+  padding: 28px 32px;
+}
+
+.reports-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.reports-header p {
+  margin: 0 0 4px;
+  color: #6366f1;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.reports-header h1 {
+  margin: 0;
+  color: #111827;
+  font-size: 1.8rem;
+  font-weight: 900;
+}
+
+.report-link {
+  padding: 11px 14px;
+  border-radius: 12px;
+  background: #111827;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.report-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.report-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+}
+
+.card-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.card-title.compact strong {
+  font-size: 1.7rem;
+}
+
+.wide {
+  min-height: 220px;
+}
+
+.card-title span {
+  color: #64748b;
+  font-weight: 800;
+}
+
+.card-title strong {
+  color: #111827;
+  font-size: 2.4rem;
+  font-weight: 900;
+}
+
+.bar {
+  height: 11px;
+  background: #eef2f7;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+
+.bar-fill {
+  height: 100%;
+}
+
+.project {
+  background: #6366f1;
+}
+
+.task {
+  background: #10b981;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.report-card h2 {
+  margin: 0 0 14px;
+  color: #111827;
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.card-note {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.status-list {
+  display: grid;
+  gap: 10px;
+}
+
+.status-list div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.status-list span {
+  color: #64748b;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.status-list strong {
+  color: #111827;
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+.stats div {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.stats strong,
+.stats span {
+  display: block;
+}
+
+.stats strong {
+  color: #111827;
+  font-size: 1.3rem;
+  font-weight: 900;
+}
+
+.stats span {
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .reports-page {
+    padding: 20px 16px;
+  }
+
+  .reports-header,
+  .report-grid {
+    display: block;
+  }
+
+  .report-card {
+    margin-top: 14px;
+  }
+}

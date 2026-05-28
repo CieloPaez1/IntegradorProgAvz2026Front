@@ -1,0 +1,105 @@
+<nav class="navbar-top">
+  <div class="navbar-search-wrapper">
+    <div class="navbar-search">
+      <span class="search-icon" aria-hidden="true">⌕</span>
+
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (input)="onSearchInput()"
+        placeholder="Buscar por nombre, estado o responsable"
+        autocomplete="off"
+        aria-label="Buscar proyectos y tareas"
+      />
+
+      <button
+        type="button"
+        class="clear-btn"
+        *ngIf="searchQuery"
+        (click)="closeDropdown()"
+        aria-label="Limpiar busqueda"
+      >
+        x
+      </button>
+    </div>
+
+    <div class="search-dropdown" *ngIf="showDropdown || isLoading">
+      <div class="dropdown-loading" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <span>Buscando...</span>
+      </div>
+
+      <ng-container *ngIf="!isLoading">
+        <div class="dropdown-header" *ngIf="hasResults">
+          <span>{{ totalResults }} resultados</span>
+          <small>para "{{ searchQuery }}"</small>
+        </div>
+
+        <div class="dropdown-empty" *ngIf="!hasResults && hasSearchTerm">
+          <strong>Sin resultados</strong>
+          <span>Proba con otro nombre, estado o responsable.</span>
+        </div>
+
+        <section class="dropdown-section" *ngIf="results.projects.length > 0">
+          <div class="dropdown-section-label">Proyectos</div>
+
+          <button
+            type="button"
+            class="dropdown-item"
+            *ngFor="let p of results.projects; trackBy: trackById"
+            (click)="goToProject(p.id)"
+          >
+            <span class="type-badge project-badge">PROY</span>
+
+            <span class="item-body">
+              <span class="item-name">{{ p.name }}</span>
+              <span class="item-meta">
+                {{ p.description || 'Sin descripcion' }}
+              </span>
+            </span>
+
+            <span class="status-badge" [ngClass]="statusClass(p.status)">
+              {{ statusLabel(p.status) }}
+            </span>
+          </button>
+        </section>
+
+        <section class="dropdown-section" *ngIf="results.tasks.length > 0">
+          <div class="dropdown-section-label">Tareas</div>
+
+          <button
+            type="button"
+            class="dropdown-item"
+            *ngFor="let t of results.tasks; trackBy: trackById"
+            (click)="goToTask(t.id)"
+          >
+            <span class="type-badge task-badge">TAR</span>
+
+            <span class="item-body">
+              <span class="item-name">{{ t.title }}</span>
+              <span class="item-meta">
+                {{ t.projectName || 'Proyecto sin nombre' }} -
+                {{ t.assignee || 'Sin asignar' }}
+              </span>
+            </span>
+
+            <span class="status-badge" [ngClass]="statusClass(t.status)">
+              {{ statusLabel(t.status) }}
+            </span>
+          </button>
+        </section>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="navbar-right">
+    <div class="navbar-user">
+      <div class="user-avatar">U</div>
+
+      <div class="user-info">
+        <div class="user-name">Usuario</div>
+        <div class="user-role">Administrador</div>
+      </div>
+    </div>
+  </div>
+</nav>

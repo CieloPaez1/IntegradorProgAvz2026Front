@@ -1,1 +1,9 @@
-<router-outlet />
+<div class="app-layout" [class.sidebar-collapsed]="layoutService.collapsed()">
+  <app-sidebar></app-sidebar>
+  <div class="app-content">
+    <app-navbar></app-navbar>
+    <div class="app-main">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

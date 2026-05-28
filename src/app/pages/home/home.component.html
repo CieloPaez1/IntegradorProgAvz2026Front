@@ -1,0 +1,142 @@
+<div class="home-page">
+  <header class="home-header">
+    <div>
+      <p class="eyebrow">Panel general</p>
+      <h1>Resumen de proyectos y tareas</h1>
+    </div>
+
+    <div class="quick-actions">
+      <a routerLink="/projects/create" class="quick-action project-action">
+        <span>+</span>
+        Agregar proyecto
+      </a>
+
+      <a routerLink="/tasks/create" class="quick-action task-action">
+        <span>+</span>
+        Agregar tarea
+      </a>
+    </div>
+  </header>
+
+  <section class="dashboard-grid">
+    <article class="summary-panel">
+      <div class="panel-header">
+        <div>
+          <span class="panel-kicker">Proyectos</span>
+          <h2>{{ totalProyectos }}</h2>
+        </div>
+
+        <a routerLink="/projects/create" class="add-button" aria-label="Agregar proyecto">+</a>
+      </div>
+
+      <div class="progress-block">
+        <div class="progress-copy">
+          <strong>{{ porcentajeProyectosTerminados }}%</strong>
+          <span>terminados</span>
+        </div>
+
+        <div class="progress-track">
+          <div class="progress-fill project-fill" [style.width.%]="porcentajeProyectosTerminados"></div>
+        </div>
+      </div>
+
+      <div class="metric-list">
+        <div class="metric planned">
+          <span>{{ proyectosPlanificados }}</span>
+          <p>Planificados</p>
+        </div>
+
+        <div class="metric active">
+          <span>{{ proyectosEnProceso }}</span>
+          <p>En proceso</p>
+        </div>
+
+        <div class="metric done">
+          <span>{{ proyectosTerminados }}</span>
+          <p>Terminados</p>
+        </div>
+      </div>
+
+      <div class="recent-list">
+        <div class="list-title">Ultimos proyectos</div>
+
+        @if (projects().length === 0) {
+          <p class="empty-state">Todavia no hay proyectos.</p>
+        } @else {
+          @for (p of projects().slice(0, 4); track p.id) {
+            <div class="recent-item">
+              <div>
+                <strong>{{ p.name }}</strong>
+                <span>{{ p.description || 'Sin descripcion' }}</span>
+              </div>
+
+              <span class="status-pill" [class.planned]="p.status === 'PLANNED'" [class.active]="p.status === 'ACTIVE'" [class.done]="p.status === 'CLOSED'">
+                {{ projectStatusLabel(p.status) }}
+              </span>
+            </div>
+          }
+        }
+      </div>
+    </article>
+
+    <article class="summary-panel">
+      <div class="panel-header">
+        <div>
+          <span class="panel-kicker">Tareas</span>
+          <h2>{{ totalTareas }}</h2>
+        </div>
+
+        <a routerLink="/tasks/create" class="add-button" aria-label="Agregar tarea">+</a>
+      </div>
+
+      <div class="progress-block">
+        <div class="progress-copy">
+          <strong>{{ porcentajeTareasCompletadas }}%</strong>
+          <span>hechas</span>
+        </div>
+
+        <div class="progress-track">
+          <div class="progress-fill task-fill" [style.width.%]="porcentajeTareasCompletadas"></div>
+        </div>
+      </div>
+
+      <div class="metric-list">
+        <div class="metric planned">
+          <span>{{ tareasPendientes }}</span>
+          <p>Por hacer</p>
+        </div>
+
+        <div class="metric active">
+          <span>{{ tareasEnProgreso }}</span>
+          <p>En proceso</p>
+        </div>
+
+        <div class="metric done">
+          <span>{{ tareasCompletadas }}</span>
+          <p>Hechas</p>
+        </div>
+      </div>
+
+      <div class="recent-list">
+        <div class="list-title">Ultimas tareas</div>
+
+        @if (tasks().length === 0) {
+          <p class="empty-state">Todavia no hay tareas.</p>
+        } @else {
+          @for (t of tasks().slice(0, 4); track t.id) {
+            <div class="recent-item">
+              <div>
+                <strong>{{ t.title }}</strong>
+                <span>{{ t.assignee || 'Sin asignar' }}</span>
+              </div>
+
+              <span class="status-pill" [class.planned]="t.status === 'TODO'" [class.active]="t.status === 'IN_PROGRESS'" [class.done]="t.status === 'DONE'">
+                {{ taskStatusLabel(t.status) }}
+              </span>
+            </div>
+          }
+        }
+      </div>
+    </article>
+  </section>
+</div>

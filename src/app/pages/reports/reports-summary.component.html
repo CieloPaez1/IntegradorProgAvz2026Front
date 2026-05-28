@@ -1,0 +1,78 @@
+<div class="reports-page">
+  <header class="reports-header">
+    <div>
+      <p>Reportes</p>
+      <h1>Estado general del trabajo</h1>
+    </div>
+
+    <a routerLink="/reports/project" class="report-link">Reporte por proyecto</a>
+  </header>
+
+  <section class="report-grid">
+    <article class="report-card wide">
+      <div class="card-title">
+        <span>Avance global de tareas</span>
+        <strong>{{ taskProgress }}%</strong>
+      </div>
+
+      <div class="bar">
+        <div class="bar-fill task" [style.width.%]="taskProgress"></div>
+      </div>
+
+      <div class="stats">
+        <div><strong>{{ pendingTasks }}</strong><span>Por hacer</span></div>
+        <div><strong>{{ inProgressTasks }}</strong><span>En proceso</span></div>
+        <div><strong>{{ doneTasks }}</strong><span>Hechas</span></div>
+      </div>
+    </article>
+
+    <article class="report-card">
+      <div class="card-title compact">
+        <span>Horas</span>
+        <strong>{{ doneHours }}/{{ estimatedHours }}</strong>
+      </div>
+
+      <p class="card-note">Horas completadas sobre horas estimadas totales.</p>
+    </article>
+  </section>
+
+  <section class="report-grid">
+    <article class="report-card">
+      <h2>Distribucion de proyectos</h2>
+
+      <div class="status-list">
+        <div>
+          <span>Planificados</span>
+          <strong>{{ plannedProjects }}</strong>
+        </div>
+        <div>
+          <span>En proceso</span>
+          <strong>{{ activeProjects }}</strong>
+        </div>
+        <div>
+          <span>Terminados</span>
+          <strong>{{ closedProjects }}</strong>
+        </div>
+      </div>
+    </article>
+
+    <article class="report-card">
+      <h2>Alertas</h2>
+
+      <div class="status-list">
+        <div>
+          <span>Proyectos sin tareas</span>
+          <strong>{{ projectsWithoutTasks }}</strong>
+        </div>
+        <div>
+          <span>Tareas sin asignar</span>
+          <strong>{{ unassignedTasks }}</strong>
+        </div>
+        <div>
+          <span>Tareas pendientes</span>
+          <strong>{{ pendingTasks }}</strong>
+        </div>
+      </div>
+    </article>
+  </section>
+</div>
