@@ -25,7 +25,7 @@
     </div>
   } @else if (tasks().length === 0) {
     <div class="card border-0 shadow-sm" style="border-radius: 24px; padding: 80px 20px; text-center;">
-      <lucide-angular [img]="ListTodoIcon" style="width: 64px; height: 64px; color: #9ca3af; margin-bottom: 24px;"></lucide-angular>
+      <svg lucideListTodo style="width: 64px; height: 64px; color: #9ca3af; margin-bottom: 24px;"></svg>
       <h3 style="color: #374151; font-weight: 700; margin-bottom: 12px;">No hay tareas aún</h3>
       <p style="color: #6b7280; font-size: 1.1rem; max-width: 400px; margin: 0 auto 24px;">
         Aún no tienes tareas registradas en el sistema.
@@ -71,10 +71,10 @@
                   <div style="display: inline-flex; gap: 8px;">
                     <!-- Botones visuales stubs, la lógica vendrá en las ramas editar/eliminar -->
                     <button type="button" class="btn-action edit" title="Modificar (Próximamente)">
-                      <lucide-angular [img]="EditIcon" style="width: 18px; height: 18px;"></lucide-angular>
+                      <svg lucideEdit style="width: 18px; height: 18px;"></svg>
                     </button>
                     <button type="button" class="btn-action delete" title="Eliminar (Próximamente)">
-                      <lucide-angular [img]="Trash2Icon" style="width: 18px; height: 18px;"></lucide-angular>
+                      <svg lucideTrash2 style="width: 18px; height: 18px;"></svg>
                     </button>
                   </div>
                 </td>

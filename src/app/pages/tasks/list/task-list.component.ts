@@ -5,13 +5,13 @@ import { TaskService } from '../../../services/task.service';
 import { ProjectService } from '../../../services/project.service';
 import { Task } from '../../../models/task.model';
 import { Project } from '../../../models/project.model';
-import { LucideAngularModule, ListTodo, Edit, Trash2 } from 'lucide-angular';
+import { LucideListTodo, LucideEdit, LucideTrash2 } from '@lucide/angular';
 import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, LucideAngularModule],
+  imports: [CommonModule, RouterModule, LucideListTodo, LucideEdit, LucideTrash2],
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css']
 })
@@ -23,10 +23,6 @@ export class TaskListComponent implements OnInit {
   projects = signal<Project[]>([]);
   loading = signal<boolean>(true);
   error = signal<string | null>(null);
-
-  readonly ListTodoIcon = ListTodo;
-  readonly EditIcon = Edit;
-  readonly Trash2Icon = Trash2;
 
   ngOnInit(): void {
     this.cargarDatos();
