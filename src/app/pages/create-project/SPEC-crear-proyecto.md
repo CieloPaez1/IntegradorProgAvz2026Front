@@ -52,7 +52,7 @@ redirige al listado de proyectos. Si hay error, muestra un mensaje descriptivo.
   entonces ve un mensaje "No se pudo conectar al servidor. ".
 
 ## Agente IA
-Claude — prompts documentados durante el desarrollo
+Antigravity — prompts documentados durante el desarrollo
 
 
 > *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*

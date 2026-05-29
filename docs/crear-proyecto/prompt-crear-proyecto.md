@@ -1,7 +1,7 @@
 # Prompts — Feature: Crear Proyecto
 
 ## Agente utilizado
-Claude (claude.ai)
+Antigravity
 
 ## Prompt principal
 
