@@ -4,11 +4,12 @@ import { TaskService } from '../../services/task.service';
 import { ProjectService } from '../../services/project.service';
 import { Task } from '../../models/task.model';
 import { Project } from '../../models/project.model';
+import { LucideTrash2 } from '@lucide/angular';
 
 @Component({
   selector: 'app-delete-task',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LucideTrash2],
   templateUrl: './delete-task.component.html'
 })
 export class DeleteTaskComponent implements OnInit {
