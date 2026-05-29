@@ -52,7 +52,7 @@ El usuario puede modificar la información de una tarea existente (por ejemplo, 
   entonces se oculta el formulario y se muestra un cartel de error de conexión.
 
 ## Agente IA
-Claude (claude.ai) — prompts documentados en prompt-editar-tarea.md
+Antigravity — prompts documentados en prompt-editar-tarea.md
 
 
 > *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*
