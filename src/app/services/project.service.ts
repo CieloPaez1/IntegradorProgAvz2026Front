@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Project } from '../models/project.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { Project } from '../models/project.model';
 export class ProjectService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/projects';
+  private apiUrl = `${environment.apiUrl}/projects`;
 
   getAll(): Observable<Project[]> {
     return this.http.get<Project[]>(this.apiUrl).pipe(
@@ -37,7 +38,6 @@ export class ProjectService {
     else if (error.status === 404) message = 'Proyecto no encontrado.';
     else if (error.status === 409) message = error.error?.message ?? 'Conflicto: nombre duplicado o regla de negocio.';
     else if (error.status === 500) message = error.error?.message ?? 'Error interno del servidor.';
-    console.error('HTTP Error:', error);
     return throwError(() => new Error(message));
   }
 }

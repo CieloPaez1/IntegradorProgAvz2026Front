@@ -136,29 +136,31 @@
         </div>
 
         <!-- BOTONES -->
-        <div class="d-flex gap-3 mt-4">
-          <button
-            type="submit"
-            class="btn"
-            [disabled]="loading()"
-            style="height: 52px; padding: 0 28px; border-radius: 14px; border: none; background: linear-gradient(135deg, #4f46e5, #6366f1); color: white; font-weight: 600; box-shadow: 0 8px 20px rgba(79,70,229,.25);"
-          >
-            @if (loading()) {
-              <span class="spinner-border spinner-border-sm me-2"></span>
-              Guardando...
-            } @else {
-              Guardar Tarea
-            }
-          </button>
-
-          <button
-            type="button"
-            class="btn"
+        <div class="d-flex justify-content-end gap-3 mt-4 pt-4" style="border-top: 1px solid #e5e7eb;">
+          <button 
+            type="button" 
+            class="btn btn-light px-4 py-2 d-flex align-items-center" 
+            style="border-radius: 12px; font-weight: 600; color: #4b5563; background: #f3f4f6; border: none;"
             (click)="cancelar()"
             [disabled]="loading()"
-            style="height: 52px; padding: 0 28px; border-radius: 14px; border: 1px solid #dbe1ea; background: white; color: #374151; font-weight: 600;"
           >
+            <svg lucideX style="width: 18px; height: 18px; margin-right: 8px;"></svg>
             Cancelar
+          </button>
+          
+          <button 
+            type="submit" 
+            class="btn btn-primary px-4 py-2 d-flex align-items-center" 
+            style="border-radius: 12px; font-weight: 600; background: #2563eb; border: none; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);"
+            [disabled]="form.invalid || loading()"
+          >
+            @if (loading()) {
+              <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+              Guardando...
+            } @else {
+              <svg lucideSave style="width: 18px; height: 18px; margin-right: 8px;"></svg>
+              Guardar Tarea
+            }
           </button>
         </div>
 
@@ -170,7 +172,7 @@
   <div class="card border-0 shadow-sm" style="border-radius: 24px; overflow: hidden; background: #ffffff;">
     <div class="card-header border-0" style="background: #ffffff; padding: 28px 32px; border-bottom: 1px solid #eef2f7;">
       <h4 class="mb-1" style="color: #111827; font-weight: 700;">Tareas creadas</h4>
-      <p class="mb-0" style="color: #6b7280;">Tareas registradas en esta sesión</p>
+      <p class="mb-0" style="color: #6b7280;">Todas las tareas registradas</p>
     </div>
     <div class="card-body p-0">
       @if (tasks().length === 0) {

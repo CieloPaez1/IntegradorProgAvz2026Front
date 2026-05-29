@@ -5,11 +5,12 @@ import { TaskService } from '../../services/task.service';
 import { ProjectService } from '../../services/project.service';
 import { Task } from '../../models/task.model';
 import { Project } from '../../models/project.model';
+import { LucideSave, LucideX } from '@lucide/angular';
 
 @Component({
   selector: 'app-create-task',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, LucideSave, LucideX],
   templateUrl: './create-task.component.html'
 })
 export class CreateTaskComponent implements OnInit {

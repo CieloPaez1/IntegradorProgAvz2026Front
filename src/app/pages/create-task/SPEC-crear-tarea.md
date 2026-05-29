@@ -28,7 +28,7 @@ Si hay error, muestra un mensaje descriptivo.
 - Reactive Forms con validaciones
 - HttpClient con servicio dedicado `TaskService` en `src/app/services/`
 - Signals para manejo de estado: `loading`, `error`, `success`, `tasks`
-- El projectId se selecciona desde un dropdown con los proyectos del localStorage
+- El dropdown de proyectos se carga dinámicamente desde la base de datos usando `ProjectService`
 
 ## Criterios de aceptación
 
@@ -51,6 +51,10 @@ Si hay error, muestra un mensaje descriptivo.
 - Dado que el proyecto no existe,
   cuando se intenta crear la tarea,
   entonces ve el mensaje "Proyecto no encontrado".
+
+- Dado que el backend no está disponible (sin conexión),
+  cuando se intenta crear una tarea o cargar proyectos,
+  entonces ve el mensaje de error indicando que no hay conexión.
 
 ## Agente IA
 Claude (claude.ai) — prompts documentados en prompt-crear-tarea.md
