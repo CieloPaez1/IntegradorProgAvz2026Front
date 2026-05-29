@@ -49,3 +49,7 @@ El usuario puede modificar la información de un proyecto existente mediante un 
 
 ## Agente IA
 Claude (claude.ai) — prompts documentados en prompt-editar-proyecto.md
+
+
+> *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*
+
