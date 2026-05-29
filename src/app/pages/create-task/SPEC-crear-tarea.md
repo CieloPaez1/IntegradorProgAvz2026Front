@@ -58,3 +58,6 @@ Si hay error, muestra un mensaje descriptivo.
 
 ## Agente IA
 Claude (claude.ai) — prompts documentados en prompt-crear-tarea.md
+
+> *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*
+

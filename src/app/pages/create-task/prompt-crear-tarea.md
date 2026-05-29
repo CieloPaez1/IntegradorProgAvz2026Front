@@ -42,3 +42,6 @@ Generar: componente, servicio, modelo y template.
 2. Se creó TaskService con método create()
 3. El dropdown de proyectos se carga desde localStorage
 4. Se agregaron validaciones de título y estimateHours en el frontend
+
+> *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*
+
