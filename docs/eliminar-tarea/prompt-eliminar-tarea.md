@@ -34,3 +34,6 @@ Generar: componente y template.
 1. Se reutilizó TaskService agregando método delete()
 2. Las tareas se cargan desde el backend al iniciar el componente
 3. Se muestra projectId en la tabla para facilitar la eliminación
+
+> *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*
+
