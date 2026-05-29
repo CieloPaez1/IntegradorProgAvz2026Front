@@ -1,0 +1,56 @@
+import { Component, inject, signal, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { ProjectService } from '../../../services/project.service';
+import { Project } from '../../../models/project.model';
+import { LucideFolderKanban, LucideEdit, LucideTrash2, LucidePlus } from '@lucide/angular';
+
+@Component({
+  selector: 'app-project-list',
+  standalone: true,
+  imports: [CommonModule, RouterModule, LucideFolderKanban, LucideEdit, LucideTrash2, LucidePlus],
+  templateUrl: './project-list.component.html',
+  styleUrl: './project-list.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class ProjectListComponent implements OnInit {
+
+  private projectService = inject(ProjectService);
+
+  projects = signal<Project[]>([]);
+  loading = signal<boolean>(true);
+  error = signal<string | null>(null);
+
+  ngOnInit(): void {
+    this.cargarProyectos();
+  }
+
+  cargarProyectos(): void {
+    this.loading.set(true);
+    this.projectService.getAll().subscribe({
+      next: (data) => {
+        this.projects.set(data);
+        this.loading.set(false);
+      },
+      error: (err: Error) => {
+        this.error.set(err.message);
+        this.loading.set(false);
+      }
+    });
+  }
+
+  eliminarProyecto(id: number): void {
+    if (confirm('¿Estás seguro de que deseas eliminar este proyecto? Esta acción no se puede deshacer.')) {
+      this.projectService.delete(id).subscribe({
+        next: () => {
+          // Remove from the signal list
+          this.projects.update(list => list.filter(p => p.id !== id));
+        },
+        error: (err: Error) => {
+          alert('Error al eliminar: ' + err.message);
+        }
+      });
+    }
+  }
+
+}

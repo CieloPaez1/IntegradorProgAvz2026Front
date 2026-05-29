@@ -1,0 +1,75 @@
+<div class="project-list-page">
+
+  <div class="report-header">
+    <div>
+      <p>Gestión de Proyectos</p>
+      <h1>Lista de Proyectos</h1>
+    </div>
+    <a routerLink="/projects/create" class="btn-primary">
+      <svg lucidePlus></svg> Nuevo Proyecto
+    </a>
+  </div>
+
+  <div class="project-card" style="padding: 0; overflow: hidden;">
+
+    @if (loading()) {
+      <div class="empty-state">Cargando proyectos...</div>
+    } @else if (error()) {
+      <div class="empty-state" style="color: #ef4444;">{{ error() }}</div>
+    } @else if (projects().length === 0) {
+      <div class="empty-state">
+        <svg lucideFolderKanban style="width: 48px; height: 48px; color: #94a3b8; margin-bottom: 16px;"></svg>
+        <p style="margin: 0;">No hay proyectos creados aún.</p>
+        <a routerLink="/projects/create" style="color: #6366f1; text-decoration: none; font-weight: 600; display: inline-block; margin-top: 8px;">
+          Crea tu primer proyecto
+        </a>
+      </div>
+    } @else {
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Fechas</th>
+              <th>Estado</th>
+              <th>Descripción</th>
+              <th style="text-align: right;">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of projects(); track p.id) {
+              <tr>
+                <td><span style="color: #94a3b8; font-family: monospace;">#{{ p.id }}</span></td>
+                <td style="color: #0f172a; font-weight: 700;">{{ p.name }}</td>
+                <td style="color: #64748b; font-size: 0.9rem;">
+                  <div><strong style="color: #475569;">I:</strong> {{ p.startDate }}</div>
+                  <div><strong style="color: #475569;">F:</strong> {{ p.endDate }}</div>
+                </td>
+                <td>
+                  <span class="badge" [class.planned]="p.status === 'PLANNED'" [class.active]="p.status === 'ACTIVE'" [class.closed]="p.status === 'CLOSED'">
+                    {{ p.status === 'PLANNED' ? 'Planificado' : p.status === 'ACTIVE' ? 'Activo' : 'Cerrado' }}
+                  </span>
+                </td>
+                <td style="color: #64748b; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  {{ p.description || '-' }}
+                </td>
+                <td style="text-align: right;">
+                  <div style="display: inline-flex; gap: 8px;">
+                    <a [routerLink]="['/projects/edit', p.id]" class="btn-action edit" title="Modificar">
+                      <svg lucideEdit></svg>
+                    </a>
+                    <button type="button" (click)="eliminarProyecto(p.id)" class="btn-action delete" title="Eliminar">
+                      <svg lucideTrash2></svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+
+</div>
