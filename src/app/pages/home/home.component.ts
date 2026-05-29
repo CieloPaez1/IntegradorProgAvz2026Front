@@ -10,12 +10,12 @@ import { Project } from '../../models/project.model';
 import { Task } from '../../models/task.model';
 import { TaskStatusPipe } from '../../pipes/task-status.pipe';
 import { ProjectStatusPipe } from '../../pipes/project-status.pipe';
-import { LucideAlertTriangle, LucideFilter } from '@lucide/angular';
+import { LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus } from '@lucide/angular';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, TaskStatusPipe, ProjectStatusPipe, LucideAlertTriangle, LucideFilter],
+  imports: [CommonModule, RouterModule, TaskStatusPipe, ProjectStatusPipe, LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -24,33 +24,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private projectService = inject(ProjectService);
   private taskService = inject(TaskService);
 
-  rawProjects = signal<Project[]>([]);
-  rawTasks = signal<Task[]>([]);
-  
-  myViewMode = signal<boolean>(false);
-
-  projects = computed(() => {
-    if (this.myViewMode()) {
-      const myProjectIds = new Set(this.rawTasks().filter(t => t.assignee === 'Usuario').map(t => t.projectId));
-      return this.rawProjects().filter(p => p.id && myProjectIds.has(p.id));
-    }
-    return this.rawProjects();
-  });
-
-  tasks = computed(() => {
-    if (this.myViewMode()) {
-      return this.rawTasks().filter(t => t.assignee === 'Usuario');
-    }
-    return this.rawTasks();
-  });
+  projects = signal<Project[]>([]);
+  tasks = signal<Task[]>([]);
 
   attentionRequiredTasks = computed(() => {
     return this.tasks().filter(t => t.status === 'TODO' && (t.estimateHours || 0) >= 10);
   });
-
-  toggleViewMode() {
-    this.myViewMode.update(v => !v);
-  }
 
   @ViewChild('projectChart') projectChartRef!: ElementRef<HTMLCanvasElement>;
   @ViewChild('taskChart') taskChartRef!: ElementRef<HTMLCanvasElement>;
@@ -76,12 +55,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.projectService.getAll().subscribe({
-      next: (data) => this.rawProjects.set(data),
-      error: () => this.rawProjects.set([])
+      next: (data) => this.projects.set(data),
+      error: () => this.projects.set([])
     });
     this.taskService.getAll().subscribe({
-      next: (data) => this.rawTasks.set(data),
-      error: () => this.rawTasks.set([])
+      next: (data) => this.tasks.set(data),
+      error: () => this.tasks.set([])
     });
   }
 
@@ -102,55 +81,57 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private initCharts() {
-    if (this.projectChartRef) {
-      this.projectChartInst = new Chart(this.projectChartRef.nativeElement, {
-        type: 'doughnut',
-        data: {
-          labels: ['Planificados', 'En proceso', 'Terminados'],
-          datasets: [{
-            data: [this.proyectosPlanificados(), this.proyectosEnProceso(), this.proyectosTerminados()],
-            backgroundColor: ['#fef3c7', '#dbeafe', '#dcfce7'],
-            hoverBackgroundColor: ['#fde68a', '#bfdbfe', '#bbf7d0'],
-            borderWidth: 0
-          }]
-        },
-        options: {
-          cutout: '75%',
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false }, tooltip: {
-            callbacks: {
-              label: (context) => ` ${context.label}: ${context.raw}`
-            }
-          } }
-        }
-      });
-    }
+    setTimeout(() => {
+      if (this.projectChartRef?.nativeElement) {
+        this.projectChartInst = new Chart(this.projectChartRef.nativeElement, {
+          type: 'doughnut',
+          data: {
+            labels: ['Planificados', 'En proceso', 'Terminados'],
+            datasets: [{
+              data: [this.proyectosPlanificados(), this.proyectosEnProceso(), this.proyectosTerminados()],
+              backgroundColor: ['#fef3c7', '#dbeafe', '#dcfce7'],
+              hoverBackgroundColor: ['#fde68a', '#bfdbfe', '#bbf7d0'],
+              borderWidth: 0
+            }]
+          },
+          options: {
+            cutout: '75%',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: {
+              callbacks: {
+                label: (context) => ` ${context.label}: ${context.raw}`
+              }
+            } }
+          }
+        });
+      }
 
-    if (this.taskChartRef) {
-      this.taskChartInst = new Chart(this.taskChartRef.nativeElement, {
-        type: 'doughnut',
-        data: {
-          labels: ['Por hacer', 'En proceso', 'Hechas'],
-          datasets: [{
-            data: [this.tareasPendientes(), this.tareasEnProgreso(), this.tareasCompletadas()],
-            backgroundColor: ['#fef3c7', '#dbeafe', '#dcfce7'],
-            hoverBackgroundColor: ['#fde68a', '#bfdbfe', '#bbf7d0'],
-            borderWidth: 0
-          }]
-        },
-        options: {
-          cutout: '75%',
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false }, tooltip: {
-            callbacks: {
-              label: (context) => ` ${context.label}: ${context.raw}`
-            }
-          } }
-        }
-      });
-    }
+      if (this.taskChartRef?.nativeElement) {
+        this.taskChartInst = new Chart(this.taskChartRef.nativeElement, {
+          type: 'doughnut',
+          data: {
+            labels: ['Por hacer', 'En proceso', 'Hechas'],
+            datasets: [{
+              data: [this.tareasPendientes(), this.tareasEnProgreso(), this.tareasCompletadas()],
+              backgroundColor: ['#fef3c7', '#dbeafe', '#dcfce7'],
+              hoverBackgroundColor: ['#fde68a', '#bfdbfe', '#bbf7d0'],
+              borderWidth: 0
+            }]
+          },
+          options: {
+            cutout: '75%',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: {
+              callbacks: {
+                label: (context) => ` ${context.label}: ${context.raw}`
+              }
+            } }
+          }
+        });
+      }
+    }, 100);
   }
 
   private percentage(value: number, total: number): number {

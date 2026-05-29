@@ -17,11 +17,13 @@
 
 .navbar-search-wrapper {
   position: relative;
-  width: min(520px, 52vw);
+  flex: 1;
+  max-width: 800px;
+  margin: 0 32px;
 }
 
 .navbar-search {
-  height: 44px;
+  height: 52px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -326,23 +328,6 @@
 .notification-btn svg {
   width: 22px;
   height: 22px;
-}
-
-.notification-badge {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  background: #ef4444;
-  color: white;
-  font-size: 0.65rem;
-  font-weight: 800;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid white;
 }
 
 .navbar-user-container {

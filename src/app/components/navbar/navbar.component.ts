@@ -1,10 +1,10 @@
 import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Subject, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
-import { LucideSearch, LucideX, LucideBell, LucideUser, LucideSettings, LucideLogOut } from '@lucide/angular';
+import { LucideSearch, LucideX, LucideUser, LucideSettings, LucideLogOut } from '@lucide/angular';
 import { SearchService } from '../../services/search.service';
 import { Task } from '../../models/task.model';
 import { Project } from '../../models/project.model';
@@ -14,7 +14,7 @@ import { ProjectStatusPipe } from '../../pipes/project-status.pipe';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, FormsModule, LucideSearch, LucideX, LucideBell, LucideUser, LucideSettings, LucideLogOut, TaskStatusPipe, ProjectStatusPipe],
+  imports: [CommonModule, FormsModule, RouterModule, LucideSearch, LucideX, LucideUser, LucideSettings, LucideLogOut, TaskStatusPipe, ProjectStatusPipe],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
@@ -25,7 +25,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   isLoading = false;
   
   showUserMenu = false;
-  unreadNotifications = 3;
 
   private searchSubject = new Subject<string>();
   private destroyed$ = new Subject<void>();

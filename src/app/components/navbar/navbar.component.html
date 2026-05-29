@@ -91,12 +91,7 @@
   </div>
 
   <div class="navbar-right">
-    <button class="notification-btn" aria-label="Notificaciones">
-      <svg lucideBell></svg>
-      <span class="notification-badge" *ngIf="unreadNotifications > 0">{{ unreadNotifications }}</span>
-    </button>
-
-    <div class="navbar-user-container">
+      <div class="user-menu-container">
       <button class="navbar-user" (click)="toggleUserMenu($event)">
         <div class="user-avatar">U</div>
         <div class="user-info">
