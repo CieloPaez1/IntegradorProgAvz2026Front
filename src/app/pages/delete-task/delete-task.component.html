@@ -71,9 +71,9 @@
                       class="btn btn-sm"
                       (click)="eliminar(t.projectId!, t.id!)"
                       [disabled]="loading()"
-                      style="background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; border-radius: 8px; font-weight: 600;"
+                      style="background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; border-radius: 8px; font-weight: 600; display: flex; align-items: center; gap: 6px;"
                     >
-                      🗑️ Eliminar
+                      <svg lucideTrash2 style="width: 16px; height: 16px;"></svg> Eliminar
                     </button>
                   </td>
                 </tr>

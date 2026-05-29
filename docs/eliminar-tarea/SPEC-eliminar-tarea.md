@@ -20,6 +20,7 @@ Si la eliminación es exitosa, la tarea desaparece de la tabla.
 - HttpClient con servicio dedicado `TaskService`
 - Signals para manejo de estado: `loading`, `error`, `success`, `tasks`
 - Las tareas se cargan desde el backend con GET /tasks
+- Los proyectos se cargan concurrentemente con GET /projects para resolver el nombre en la tabla visualmente
 - Confirmación con confirm() antes de eliminar
 
 ## Criterios de aceptación
@@ -39,6 +40,10 @@ Si la eliminación es exitosa, la tarea desaparece de la tabla.
 - Dado que el backend no está corriendo,
   cuando se intenta eliminar,
   entonces ve el mensaje "No se pudo conectar al servidor".
+
+- Dado que no hay tareas en el sistema,
+  cuando el usuario carga la pantalla,
+  entonces se muestra el mensaje "No hay tareas disponibles" en lugar de la tabla.
 
 ## Agente IA
 Claude (claude.ai) — prompts documentados en prompt-eliminar-tarea.md
