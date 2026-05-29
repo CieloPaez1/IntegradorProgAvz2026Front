@@ -47,7 +47,7 @@ Si tiene tareas, muestra un mensaje de error. Si no tiene, elimina y actualiza l
   entonces ve el mensaje "No se pudo conectar al servidor".
 
 ## Agente IA
-Claude (claude.ai) — prompts documentados en prompt-eliminar-proyecto.md
+Antigravity — prompts documentados en prompt-eliminar-proyecto.md
 
 
 > *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*
