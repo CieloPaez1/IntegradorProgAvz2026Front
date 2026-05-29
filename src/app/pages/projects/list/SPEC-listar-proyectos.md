@@ -22,3 +22,7 @@ Feature: Listado de Proyectos
     When el componente intenta cargar la lista
     Then se debe atrapar el error mediante el servicio
     And se debe mostrar un texto en color rojo con el mensaje del error devuelto (ej. "No se pudo conectar al servidor")
+
+
+> *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*
+

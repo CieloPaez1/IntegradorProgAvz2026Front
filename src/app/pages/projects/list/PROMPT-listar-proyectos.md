@@ -16,3 +16,7 @@
    - El botón Eliminar debe usar color rojo (`#ef4444`) con un fondo permanente rojo claro.
    - Deben tener transición de escala y sombra en el hover.
 4. **Manejo de Errores y Estados Vacíos:** Si no hay datos, mostrar un *empty state* centrado con un ícono gigante (`LucideFolderKanban`) y un enlace persuasivo para invitar al usuario a crear el primer registro.
+
+
+> *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*
+
