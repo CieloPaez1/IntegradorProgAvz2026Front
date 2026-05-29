@@ -40,3 +40,7 @@ El usuario puede visualizar todas las tareas registradas en el sistema a través
 
 ## Agente IA
 Claude (claude.ai) — prompts documentados en prompt-listar-tareas.md
+
+
+> *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*
+

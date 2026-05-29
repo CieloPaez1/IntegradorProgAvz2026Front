@@ -26,3 +26,7 @@
 - La cabecera de la tabla debe tener un fondo sutil (`#f9fafb`) y color de texto gris oscuro (`#374151`) en negrita.
 
 Por favor, entrégame el código de TypeScript, HTML y CSS del componente, además de las actualizaciones necesarias al servicio y las rutas.
+
+
+> *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*
+
