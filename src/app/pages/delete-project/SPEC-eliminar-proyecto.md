@@ -21,7 +21,7 @@ Si tiene tareas, muestra un mensaje de error. Si no tiene, elimina y actualiza l
 - Bootstrap 5 para estilos
 - HttpClient con servicio dedicado `ProjectService`
 - Signals para manejo de estado
-- Persistencia local con localStorage (sincronizado al eliminar)
+- Carga de proyectos y sincronización directa con backend (BD)
 - Botón eliminar en cada fila de la tabla con confirmación antes de borrar
 
 ## Criterios de aceptación
@@ -41,6 +41,10 @@ Si tiene tareas, muestra un mensaje de error. Si no tiene, elimina y actualiza l
 - Dado que el usuario hace click en Eliminar,
   cuando aparece la confirmación,
   entonces puede cancelar y el proyecto no se elimina.
+
+- Dado que el backend no está disponible (sin conexión),
+  cuando se intenta cargar o eliminar un proyecto,
+  entonces ve el mensaje "No se pudo conectar al servidor".
 
 ## Agente IA
 Claude (claude.ai) — prompts documentados en prompt-eliminar-proyecto.md

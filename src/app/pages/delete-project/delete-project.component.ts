@@ -2,11 +2,12 @@ import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectService } from '../../services/project.service';
 import { Project } from '../../models/project.model';
+import { LucideTrash2 } from '@lucide/angular';
 
 @Component({
   selector: 'app-delete-project',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LucideTrash2],
   templateUrl: './delete-project.component.html'
 })
 export class DeleteProjectComponent implements OnInit {

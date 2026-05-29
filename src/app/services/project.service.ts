@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Project } from '../models/project.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { Project } from '../models/project.model';
 export class ProjectService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/projects';
+  private apiUrl = `${environment.apiUrl}/projects`;
 
   create(project: Project): Observable<Project> {
     return this.http.post<Project>(this.apiUrl, project).pipe(
@@ -39,7 +40,6 @@ export class ProjectService {
     message = error.error?.message ?? 'Error interno del servidor.';
   }
 
-  console.error('HTTP Error:', error); // para ver el detalle completo en consola
   return throwError(() => new Error(message));
 }
 getAll(): Observable<Project[]> {
