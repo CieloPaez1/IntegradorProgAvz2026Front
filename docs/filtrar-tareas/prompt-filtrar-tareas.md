@@ -1,7 +1,7 @@
 # Prompts — Feature: Filtrar Tareas
 
 ## Agente utilizado
-Claude (claude.ai)
+Antigravity
 
 ## Prompt principal
 
