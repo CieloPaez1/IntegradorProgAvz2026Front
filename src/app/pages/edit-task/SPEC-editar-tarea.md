@@ -53,3 +53,7 @@ El usuario puede modificar la información de una tarea existente (por ejemplo, 
 
 ## Agente IA
 Claude (claude.ai) — prompts documentados en prompt-editar-tarea.md
+
+
+> *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*
+
