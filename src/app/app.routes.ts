@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { CreateProjectComponent } from './pages/create-project/create-project.component'; // agregá .component
+import { EditTaskComponent } from './pages/edit-task/edit-task.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'projects/create', pathMatch: 'full' },
-  { path: 'projects/create', component: CreateProjectComponent },
+  { path: '', redirectTo: 'projects/1/tasks/edit/1', pathMatch: 'full' },
+  { path: 'projects/:projectId/tasks/edit/:taskId', component: EditTaskComponent }
 ];
