@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProjectService } from '../../services/project.service';
@@ -8,7 +8,8 @@ import { Project } from '../../models/project.model';
   selector: 'app-create-project',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './create-project.component.html'
+  templateUrl: './create-project.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateProjectComponent implements OnInit {
 

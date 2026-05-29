@@ -43,5 +43,13 @@ redirige al listado de proyectos. Si hay error, muestra un mensaje descriptivo.
   cuando hace click en Guardar,
   entonces ve un mensaje de error de fechas.
 
+- Dado que el backend devuelve 400,
+  cuando los datos enviados son inválidos,
+  entonces ve un mensaje "Datos inválidos.".
+
+- Dado que no hay conexión al servidor (status 0),
+  cuando se intenta realizar una petición,
+  entonces ve un mensaje "No se pudo conectar al servidor. ".
+
 ## Agente IA
 Claude — prompts documentados durante el desarrollo
