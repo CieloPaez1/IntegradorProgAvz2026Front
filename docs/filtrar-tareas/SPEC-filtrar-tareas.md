@@ -55,3 +55,6 @@ Si no hay resultados, muestra un mensaje indicándolo.
 
 ## Agente IA
 Claude (claude.ai) — prompts documentados en prompt-filtrar-tareas.md
+
+> *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*
+

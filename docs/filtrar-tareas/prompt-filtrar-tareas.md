@@ -35,3 +35,6 @@ Generar: componente y template.
 
 1. Se reutilizó TaskService agregando método filter()
 2. Se manejan parámetros opcionales con HttpParams
+
+> *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*
+
