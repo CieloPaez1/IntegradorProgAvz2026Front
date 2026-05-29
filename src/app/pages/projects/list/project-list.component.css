@@ -131,27 +131,41 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 8px;
-  border: none;
-  background: transparent;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
   cursor: pointer;
   transition: all 0.2s;
-  color: #94a3b8;
+  color: #64748b;
 }
 
 .btn-action svg {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.btn-action.edit {
+  color: #4f46e5;
+  background: #eef2ff;
+  border-color: #c7d2fe;
 }
 
 .btn-action.edit:hover {
-  background: #eef2ff;
-  color: #4f46e5;
+  background: #e0e7ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.1), 0 2px 4px -1px rgba(79, 70, 229, 0.06);
+}
+
+.btn-action.delete {
+  color: #ef4444;
+  background: #fef2f2;
+  border-color: #fecaca;
 }
 
 .btn-action.delete:hover {
-  background: #fef2f2;
-  color: #ef4444;
+  background: #fee2e2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.1), 0 2px 4px -1px rgba(239, 68, 68, 0.06);
 }
