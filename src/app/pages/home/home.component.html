@@ -5,54 +5,71 @@
       <h1>Resumen de proyectos y tareas</h1>
     </div>
 
-    <div class="quick-actions">
-      <a routerLink="/projects/create" class="quick-action project-action">
-        <span>+</span>
-        Agregar proyecto
-      </a>
+    <div class="header-controls">
+      <button class="view-toggle-btn" (click)="toggleViewMode()" [class.active]="myViewMode()">
+        <svg lucideFilter></svg>
+        {{ myViewMode() ? 'Mis Tareas' : 'Vista Global' }}
+      </button>
 
-      <a routerLink="/tasks/create" class="quick-action task-action">
-        <span>+</span>
-        Agregar tarea
-      </a>
+      <div class="quick-actions">
+        <a routerLink="/projects/create" class="quick-action project-action">
+          <span>+</span>
+          Agregar proyecto
+        </a>
+
+        <a routerLink="/tasks/create" class="quick-action task-action">
+          <span>+</span>
+          Agregar tarea
+        </a>
+      </div>
     </div>
   </header>
+
+  @if (attentionRequiredTasks().length > 0) {
+    <section class="alert-panel">
+      <div class="alert-icon">
+        <svg lucideAlertTriangle></svg>
+      </div>
+      <div class="alert-content">
+        <h3>Atención Requerida</h3>
+        <p>Tienes {{ attentionRequiredTasks().length }} tarea(s) pesada(s) pendiente(s) que requieren tu atención inmediata.</p>
+      </div>
+      <button class="alert-action" routerLink="/tasks/list">Ver tareas</button>
+    </section>
+  }
 
   <section class="dashboard-grid">
     <article class="summary-panel">
       <div class="panel-header">
         <div>
           <span class="panel-kicker">Proyectos</span>
-          <h2>{{ totalProyectos }}</h2>
+          <h2>{{ totalProyectos() }}</h2>
         </div>
 
         <a routerLink="/projects/create" class="add-button" aria-label="Agregar proyecto">+</a>
       </div>
 
-      <div class="progress-block">
-        <div class="progress-copy">
-          <strong>{{ porcentajeProyectosTerminados }}%</strong>
+      <div class="chart-container">
+        <canvas #projectChart></canvas>
+        <div class="chart-center-text">
+          <strong>{{ porcentajeProyectosTerminados() }}%</strong>
           <span>terminados</span>
-        </div>
-
-        <div class="progress-track">
-          <div class="progress-fill project-fill" [style.width.%]="porcentajeProyectosTerminados"></div>
         </div>
       </div>
 
       <div class="metric-list">
         <div class="metric planned">
-          <span>{{ proyectosPlanificados }}</span>
+          <span>{{ proyectosPlanificados() }}</span>
           <p>Planificados</p>
         </div>
 
         <div class="metric active">
-          <span>{{ proyectosEnProceso }}</span>
+          <span>{{ proyectosEnProceso() }}</span>
           <p>En proceso</p>
         </div>
 
         <div class="metric done">
-          <span>{{ proyectosTerminados }}</span>
+          <span>{{ proyectosTerminados() }}</span>
           <p>Terminados</p>
         </div>
       </div>
@@ -71,7 +88,7 @@
               </div>
 
               <span class="status-pill" [class.planned]="p.status === 'PLANNED'" [class.active]="p.status === 'ACTIVE'" [class.done]="p.status === 'CLOSED'">
-                {{ projectStatusLabel(p.status) }}
+                {{ p.status | projectStatus }}
               </span>
             </div>
           }
@@ -83,36 +100,33 @@
       <div class="panel-header">
         <div>
           <span class="panel-kicker">Tareas</span>
-          <h2>{{ totalTareas }}</h2>
+          <h2>{{ totalTareas() }}</h2>
         </div>
 
         <a routerLink="/tasks/create" class="add-button" aria-label="Agregar tarea">+</a>
       </div>
 
-      <div class="progress-block">
-        <div class="progress-copy">
-          <strong>{{ porcentajeTareasCompletadas }}%</strong>
+      <div class="chart-container">
+        <canvas #taskChart></canvas>
+        <div class="chart-center-text">
+          <strong>{{ porcentajeTareasCompletadas() }}%</strong>
           <span>hechas</span>
-        </div>
-
-        <div class="progress-track">
-          <div class="progress-fill task-fill" [style.width.%]="porcentajeTareasCompletadas"></div>
         </div>
       </div>
 
       <div class="metric-list">
         <div class="metric planned">
-          <span>{{ tareasPendientes }}</span>
+          <span>{{ tareasPendientes() }}</span>
           <p>Por hacer</p>
         </div>
 
         <div class="metric active">
-          <span>{{ tareasEnProgreso }}</span>
+          <span>{{ tareasEnProgreso() }}</span>
           <p>En proceso</p>
         </div>
 
         <div class="metric done">
-          <span>{{ tareasCompletadas }}</span>
+          <span>{{ tareasCompletadas() }}</span>
           <p>Hechas</p>
         </div>
       </div>
@@ -131,7 +145,7 @@
               </div>
 
               <span class="status-pill" [class.planned]="t.status === 'TODO'" [class.active]="t.status === 'IN_PROGRESS'" [class.done]="t.status === 'DONE'">
-                {{ taskStatusLabel(t.status) }}
+                {{ t.status | taskStatus }}
               </span>
             </div>
           }

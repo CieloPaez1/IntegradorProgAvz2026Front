@@ -57,7 +57,7 @@
             </span>
 
             <span class="status-badge" [ngClass]="statusClass(p.status)">
-              {{ statusLabel(p.status) }}
+              {{ p.status | projectStatus }}
             </span>
           </button>
         </section>
@@ -82,7 +82,7 @@
             </span>
 
             <span class="status-badge" [ngClass]="statusClass(t.status)">
-              {{ statusLabel(t.status) }}
+              {{ t.status | taskStatus }}
             </span>
           </button>
         </section>
@@ -91,12 +91,34 @@
   </div>
 
   <div class="navbar-right">
-    <div class="navbar-user">
-      <div class="user-avatar">U</div>
+    <button class="notification-btn" aria-label="Notificaciones">
+      <svg lucideBell></svg>
+      <span class="notification-badge" *ngIf="unreadNotifications > 0">{{ unreadNotifications }}</span>
+    </button>
 
-      <div class="user-info">
-        <div class="user-name">Usuario</div>
-        <div class="user-role">Administrador</div>
+    <div class="navbar-user-container">
+      <button class="navbar-user" (click)="toggleUserMenu($event)">
+        <div class="user-avatar">U</div>
+        <div class="user-info">
+          <div class="user-name">Usuario</div>
+          <div class="user-role">Administrador</div>
+        </div>
+      </button>
+
+      <div class="user-dropdown" *ngIf="showUserMenu">
+        <a class="user-dropdown-item" href="#">
+          <svg lucideUser></svg>
+          Mi Perfil
+        </a>
+        <a class="user-dropdown-item" href="#">
+          <svg lucideSettings></svg>
+          Configuración
+        </a>
+        <hr class="dropdown-divider">
+        <button class="user-dropdown-item danger">
+          <svg lucideLogOut></svg>
+          Cerrar Sesión
+        </button>
       </div>
     </div>
   </div>

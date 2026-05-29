@@ -124,4 +124,23 @@
       }
     </div>
   </nav>
+
+  <div class="sidebar-bottom">
+    <a routerLink="#" class="nav-item">
+      <div class="nav-left">
+        <svg lucideSettings class="nav-icon"></svg>
+        @if (!collapsed()) {
+          <span>Configuración</span>
+        }
+      </div>
+    </a>
+    <a routerLink="#" class="nav-item">
+      <div class="nav-left">
+        <svg lucideHelpCircle class="nav-icon"></svg>
+        @if (!collapsed()) {
+          <span>Ayuda</span>
+        }
+      </div>
+    </a>
+  </div>
 </div>

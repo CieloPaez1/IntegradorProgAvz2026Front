@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { combineLatest, Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, shareReplay } from 'rxjs/operators';
 import { Task } from '../models/task.model';
 import { Project } from '../models/project.model';
 import { environment } from '../../environments/environment';
@@ -12,15 +12,24 @@ export class SearchService {
 
   constructor(private http: HttpClient) {}
 
+  private cachedData$: Observable<[Project[], Task[]]> | null = null;
+
+  private getData(): Observable<[Project[], Task[]]> {
+    if (!this.cachedData$) {
+      this.cachedData$ = combineLatest([
+        this.http.get<Project[]>(`${this.apiUrl}/projects`).pipe(catchError(() => of([]))),
+        this.http.get<Task[]>(`${this.apiUrl}/tasks`).pipe(catchError(() => of([])))
+      ]).pipe(shareReplay(1));
+    }
+    return this.cachedData$;
+  }
+
   search(query: string): Observable<{ projects: Project[]; tasks: Task[] }> {
     if (!query.trim()) return of({ projects: [], tasks: [] });
 
     const q = this.normalize(query);
 
-    return combineLatest([
-      this.http.get<Project[]>(`${this.apiUrl}/projects`).pipe(catchError(() => of([]))),
-      this.http.get<Task[]>(`${this.apiUrl}/tasks`).pipe(catchError(() => of([])))
-    ]).pipe(
+    return this.getData().pipe(
       map(([projects, tasks]) => ({
         projects: projects
           .filter(p => this.projectMatches(p, q))

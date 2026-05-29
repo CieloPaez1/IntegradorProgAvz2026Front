@@ -4,15 +4,17 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
-import { LucideSearch, LucideX } from '@lucide/angular';
+import { LucideSearch, LucideX, LucideBell, LucideUser, LucideSettings, LucideLogOut } from '@lucide/angular';
 import { SearchService } from '../../services/search.service';
 import { Task } from '../../models/task.model';
 import { Project } from '../../models/project.model';
+import { TaskStatusPipe } from '../../pipes/task-status.pipe';
+import { ProjectStatusPipe } from '../../pipes/project-status.pipe';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, FormsModule, LucideSearch, LucideX],
+  imports: [CommonModule, FormsModule, LucideSearch, LucideX, LucideBell, LucideUser, LucideSettings, LucideLogOut, TaskStatusPipe, ProjectStatusPipe],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
@@ -21,6 +23,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   results: { projects: Project[]; tasks: Task[] } = { projects: [], tasks: [] };
   showDropdown = false;
   isLoading = false;
+  
+  showUserMenu = false;
+  unreadNotifications = 3;
 
   private searchSubject = new Subject<string>();
   private destroyed$ = new Subject<void>();
@@ -45,7 +50,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.searchSubject.pipe(
-      debounceTime(120),
+      debounceTime(150),
       distinctUntilChanged(),
       switchMap(query => {
         const q = query.trim();
@@ -79,21 +84,30 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.searchSubject.next(this.searchQuery);
   }
 
-  goToProject(id: number) {
-    this.router.navigate(['/projects', id]);
+  goToProject(id?: number) {
+    if (id === undefined) return;
     this.closeDropdown();
+    this.router.navigate(['/projects', id]);
   }
 
   goToTask(id?: number) {
-    if (id == null) return;
-    this.router.navigate(['/tasks', id]);
+    if (id === undefined) return;
     this.closeDropdown();
+    this.router.navigate(['/tasks', id]);
   }
 
   closeDropdown() {
     this.showDropdown = false;
     this.searchQuery = '';
     this.results = { projects: [], tasks: [] };
+  }
+
+  toggleUserMenu(event: Event) {
+    event.stopPropagation();
+    this.showUserMenu = !this.showUserMenu;
+    if (this.showUserMenu) {
+      this.closeDropdown();
+    }
   }
 
   statusClass(status: string): string {
@@ -108,20 +122,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     return map[status] ?? 'status-todo';
   }
-
-  statusLabel(status: string): string {
-    const map: Record<string, string> = {
-      TODO: 'Por hacer',
-      IN_PROGRESS: 'En progreso',
-      DONE: 'Hecha',
-      PLANNED: 'Planificado',
-      ACTIVE: 'Activo',
-      CLOSED: 'Cerrado'
-    };
-
-    return map[status] ?? status;
-  }
-
   trackById(index: number, item: Project | Task): number {
     return item.id ?? index;
   }
@@ -130,6 +130,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   onOutsideClick(event: MouseEvent) {
     if (!this.elRef.nativeElement.contains(event.target)) {
       this.showDropdown = false;
+      this.showUserMenu = false;
     }
   }
 

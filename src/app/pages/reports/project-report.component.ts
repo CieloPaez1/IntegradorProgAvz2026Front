@@ -1,15 +1,16 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProjectService } from '../../services/project.service';
 import { TaskService } from '../../services/task.service';
 import { Project } from '../../models/project.model';
 import { Task } from '../../models/task.model';
+import { TaskStatusPipe } from '../../pipes/task-status.pipe';
 
 @Component({
   selector: 'app-project-report',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TaskStatusPipe],
   templateUrl: './project-report.component.html',
   styleUrl: './project-report.component.css'
 })
@@ -19,13 +20,13 @@ export class ProjectReportComponent implements OnInit {
 
   projects = signal<Project[]>([]);
   tasks = signal<Task[]>([]);
-  selectedProjectId = '';
+  selectedProjectId = signal('');
 
   ngOnInit(): void {
     this.projectService.getAll().subscribe({
       next: data => {
         this.projects.set(data);
-        this.selectedProjectId = data[0]?.id?.toString() ?? '';
+        this.selectedProjectId.set(data[0]?.id?.toString() ?? '');
       },
       error: () => this.projects.set([])
     });
@@ -36,53 +37,28 @@ export class ProjectReportComponent implements OnInit {
     });
   }
 
-  get selectedProject(): Project | undefined {
-    const id = Number(this.selectedProjectId);
+  selectedProject = computed(() => {
+    const id = Number(this.selectedProjectId());
     return this.projects().find(project => project.id === id);
-  }
+  });
 
-  get projectTasks(): Task[] {
-    const id = Number(this.selectedProjectId);
+  projectTasks = computed(() => {
+    const id = Number(this.selectedProjectId());
     return this.tasks().filter(task => task.projectId === id);
-  }
+  });
 
-  get totalTasks(): number {
-    return this.projectTasks.length;
-  }
+  totalTasks = computed(() => this.projectTasks().length);
+  pendingTasks = computed(() => this.projectTasks().filter(task => task.status === 'TODO').length);
+  inProgressTasks = computed(() => this.projectTasks().filter(task => task.status === 'IN_PROGRESS').length);
+  doneTasks = computed(() => this.projectTasks().filter(task => task.status === 'DONE').length);
 
-  get pendingTasks(): number {
-    return this.projectTasks.filter(task => task.status === 'TODO').length;
-  }
+  totalHours = computed(() => this.projectTasks().reduce((sum, task) => sum + (task.estimateHours || 0), 0));
+  
+  doneHours = computed(() => this.projectTasks()
+    .filter(task => task.status === 'DONE')
+    .reduce((sum, task) => sum + (task.estimateHours || 0), 0)
+  );
 
-  get inProgressTasks(): number {
-    return this.projectTasks.filter(task => task.status === 'IN_PROGRESS').length;
-  }
+  progress = computed(() => this.totalTasks() === 0 ? 0 : Math.round((this.doneTasks() / this.totalTasks()) * 100));
 
-  get doneTasks(): number {
-    return this.projectTasks.filter(task => task.status === 'DONE').length;
-  }
-
-  get totalHours(): number {
-    return this.projectTasks.reduce((sum, task) => sum + (task.estimateHours || 0), 0);
-  }
-
-  get doneHours(): number {
-    return this.projectTasks
-      .filter(task => task.status === 'DONE')
-      .reduce((sum, task) => sum + (task.estimateHours || 0), 0);
-  }
-
-  get progress(): number {
-    return this.totalTasks === 0 ? 0 : Math.round((this.doneTasks / this.totalTasks) * 100);
-  }
-
-  taskStatusLabel(status: Task['status']): string {
-    const labels: Record<Task['status'], string> = {
-      TODO: 'Por hacer',
-      IN_PROGRESS: 'En proceso',
-      DONE: 'Hecha'
-    };
-
-    return labels[status];
-  }
 }

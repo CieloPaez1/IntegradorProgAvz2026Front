@@ -43,7 +43,7 @@ export class TaskService {
     else if (error.status === 404) message = 'Tarea no encontrada.';
     else if (error.status === 409) message = error.error?.message ?? 'Conflicto.';
     else if (error.status === 500) message = error.error?.message ?? 'Error interno del servidor.';
-    console.error('HTTP Error:', error);
+    
     return throwError(() => new Error(message));
   }
 }

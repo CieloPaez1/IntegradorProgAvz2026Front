@@ -7,7 +7,7 @@
 
     <label>
       <span>Proyecto</span>
-      <select [(ngModel)]="selectedProjectId">
+      <select [ngModel]="selectedProjectId()" (ngModelChange)="selectedProjectId.set($event)">
         @for (project of projects(); track project.id) {
           <option [value]="project.id">{{ project.name }}</option>
         }
@@ -15,64 +15,64 @@
     </label>
   </header>
 
-  @if (!selectedProject) {
+  @if (!selectedProject()) {
     <div class="empty-card">Todavia no hay proyectos para reportar.</div>
   } @else {
     <section class="project-card">
       <div>
         <span class="label">Proyecto seleccionado</span>
-        <h2>{{ selectedProject.name }}</h2>
-        <p>{{ selectedProject.description || 'Sin descripcion' }}</p>
+        <h2>{{ selectedProject()?.name }}</h2>
+        <p>{{ selectedProject()?.description || 'Sin descripcion' }}</p>
       </div>
 
-      <strong>{{ progress }}%</strong>
+      <strong>{{ progress() }}%</strong>
     </section>
 
     <section class="report-grid">
       <article class="metric-card">
         <span>Total tareas</span>
-        <strong>{{ totalTasks }}</strong>
+        <strong>{{ totalTasks() }}</strong>
       </article>
 
       <article class="metric-card">
         <span>Hechas</span>
-        <strong>{{ doneTasks }}</strong>
+        <strong>{{ doneTasks() }}</strong>
       </article>
 
       <article class="metric-card">
         <span>En proceso</span>
-        <strong>{{ inProgressTasks }}</strong>
+        <strong>{{ inProgressTasks() }}</strong>
       </article>
 
       <article class="metric-card">
         <span>Por hacer</span>
-        <strong>{{ pendingTasks }}</strong>
+        <strong>{{ pendingTasks() }}</strong>
       </article>
     </section>
 
     <section class="hours-card">
       <div>
         <span>Horas estimadas</span>
-        <strong>{{ totalHours }}</strong>
+        <strong>{{ totalHours() }}</strong>
       </div>
 
       <div>
         <span>Horas completadas</span>
-        <strong>{{ doneHours }}</strong>
+        <strong>{{ doneHours() }}</strong>
       </div>
 
       <div class="progress-track">
-        <div [style.width.%]="progress"></div>
+        <div [style.width.%]="progress()"></div>
       </div>
     </section>
 
     <section class="tasks-card">
       <h3>Tareas del proyecto</h3>
 
-      @if (projectTasks.length === 0) {
+      @if (projectTasks().length === 0) {
         <p class="empty-list">Este proyecto todavia no tiene tareas.</p>
       } @else {
-        @for (task of projectTasks; track task.id) {
+        @for (task of projectTasks(); track task.id) {
           <div class="task-row">
             <div>
               <strong>{{ task.title }}</strong>
@@ -80,7 +80,7 @@
             </div>
 
             <span class="status-pill" [class.todo]="task.status === 'TODO'" [class.progress]="task.status === 'IN_PROGRESS'" [class.done]="task.status === 'DONE'">
-              {{ taskStatusLabel(task.status) }}
+              {{ task.status | taskStatus }}
             </span>
           </div>
         }

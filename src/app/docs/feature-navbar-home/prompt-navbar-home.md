@@ -16,6 +16,15 @@ Corregir y mejorar el codigo del frontend Angular, especialmente navbar, buscado
    - reporte por proyecto
 9. Reemplazar letras del sidebar por iconos.
 10. Hacer que el navbar y el Home se expandan cuando se colapsa el sidebar.
+11. Implementar Signals (`computed()`) para optimizar getters y reactividad en componentes principales.
+12. Agregar caché de memoria en `SearchService` para evitar múltiples peticiones en cada pulsación.
+13. Centralizar traducciones de estado en Pipes Standalone.
+14. Crear vistas básicas de detalle (`/projects/:id` y `/tasks/:id`) para completar la experiencia del buscador.
+15. Implementar dropdown de perfil y badge de notificaciones en el Navbar.
+16. Implementar contadores (badges) para Tareas (removido posteriormente por UI/UX) y enlaces de ayuda en la parte inferior del Sidebar.
+17. Crear filtro dinámico (Global vs Mis Tareas) en el Home usando Signals.
+18. Integrar panel de "Atención Requerida" para destacar tareas largas pendientes en el Home.
+19. Integrar `chart.js` para reemplazar barras de progreso por gráficos interactivos (Doughnut) reactivos al filtro global.
 
 ## Decisiones tomadas
 - Se uso `environment.apiUrl` como base para servicios HTTP.

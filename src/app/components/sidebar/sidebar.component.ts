@@ -9,7 +9,9 @@ import {
   LucideFolderKanban,
   LucideHome,
   LucideList,
-  LucidePlus
+  LucidePlus,
+  LucideSettings,
+  LucideHelpCircle
 } from '@lucide/angular';
 import { LayoutService } from '../../services/layout.service';
 
@@ -26,7 +28,9 @@ import { LayoutService } from '../../services/layout.service';
     LucideChevronDown,
     LucideChevronRight,
     LucideList,
-    LucidePlus
+    LucidePlus,
+    LucideSettings,
+    LucideHelpCircle
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
