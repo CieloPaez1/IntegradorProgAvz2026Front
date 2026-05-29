@@ -46,7 +46,7 @@ Si la eliminación es exitosa, la tarea desaparece de la tabla.
   entonces se muestra el mensaje "No hay tareas disponibles" en lugar de la tabla.
 
 ## Agente IA
-Claude (claude.ai) — prompts documentados en prompt-eliminar-tarea.md
+Antigravity — prompts documentados en prompt-eliminar-tarea.md
 
 > *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*
 

@@ -1,7 +1,7 @@
 # Prompts — Feature: Eliminar Tarea
 
 ## Agente utilizado
-Claude (claude.ai)
+Antigravity
 
 ## Prompt principal
 
