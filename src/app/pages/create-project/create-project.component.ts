@@ -9,6 +9,7 @@ import { Project } from '../../models/project.model';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './create-project.component.html',
+  styleUrl: './create-project.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateProjectComponent implements OnInit {
