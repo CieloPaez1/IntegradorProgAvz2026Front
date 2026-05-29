@@ -53,3 +53,7 @@ redirige al listado de proyectos. Si hay error, muestra un mensaje descriptivo.
 
 ## Agente IA
 Claude — prompts documentados durante el desarrollo
+
+
+> *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*
+

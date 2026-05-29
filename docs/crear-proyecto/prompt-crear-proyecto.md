@@ -42,3 +42,6 @@ Generar: componente, servicio, modelo y template.
 4. El backend no tiene GET /projects → se implementó persistencia con localStorage
 5. Se agregaron validaciones de fechas con validador de grupo personalizado (AbstractControl)
 6. Se ajustó el diseño visual con estilo profesional usando Bootstrap y estilos inline
+
+> *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*
+
