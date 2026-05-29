@@ -24,3 +24,7 @@
 - Botones modernos. El botón de Guardar debe tener un spinner al lado del texto cuando `saving()` sea true.
 
 Por favor, genera el código del componente (TS, HTML, CSS) y los ajustes al servicio y rutas.
+
+
+> *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*
+
