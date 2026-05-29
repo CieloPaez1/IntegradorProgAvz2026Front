@@ -13,3 +13,7 @@
 2. **Estados UI:** Manejar y mostrar visualmente los estados de `loading` (indicador de carga), `error` (banner rojo), `success` (banner verde), y lista vacía.
 3. **Botones de Acción:** Incluir un botón de "Eliminar" de color rojo vibrante en la columna de acciones.
 4. **Badges:** Renderizar el estado ("PLANNED", "ACTIVE", "CLOSED") en forma de badges coloreadas.
+
+
+> *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*
+

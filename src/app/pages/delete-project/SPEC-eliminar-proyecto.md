@@ -48,3 +48,7 @@ Si tiene tareas, muestra un mensaje de error. Si no tiene, elimina y actualiza l
 
 ## Agente IA
 Claude (claude.ai) — prompts documentados en prompt-eliminar-proyecto.md
+
+
+> *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*
+
