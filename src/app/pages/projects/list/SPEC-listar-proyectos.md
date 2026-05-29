@@ -22,15 +22,3 @@ Feature: Listado de Proyectos
     When el componente intenta cargar la lista
     Then se debe atrapar el error mediante el servicio
     And se debe mostrar un texto en color rojo con el mensaje del error devuelto (ej. "No se pudo conectar al servidor")
-
-  Scenario: Confirmar antes de eliminar un proyecto
-    Given que el usuario está visualizando la lista de proyectos
-    When el usuario hace clic en el botón de eliminar (ícono de basurero) de una fila
-    Then el sistema debe abrir una alerta de confirmación nativa
-    And si el usuario acepta, el sistema invoca al servicio `delete(id)` y remueve el elemento de la lista visual
-    And si el usuario cancela, no ocurre ninguna acción
-
-  Scenario: Navegar a la edición
-    Given que el usuario está visualizando la lista de proyectos
-    When el usuario hace clic en el botón de modificar (ícono de lápiz)
-    Then la aplicación debe redirigirlo a la ruta de edición con el ID correspondiente (`/projects/edit/:id`)

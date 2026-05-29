@@ -6,7 +6,7 @@
 1. **Angular 17+ y Control Flow:** Utilizar Signals (`projects`, `loading`, `error`) y el nuevo sistema de renderizado (`@if`, `@for`).
 2. **Componente Standalone:** Configurar los imports (`CommonModule`, `RouterModule` y componentes SVG de `@lucide/angular`).
 3. **Integración con Servicios:** Invocar `getAll()` en el `ngOnInit`.
-4. **Lógica de Eliminación:** El método `eliminarProyecto(id)` debe solicitar confirmación mediante `confirm()`. Si es exitoso, actualizar la `signal` removiendo el proyecto localmente sin tener que recargar desde el servidor entero.
+4. **Lógica Aislada:** Este componente se encarga puramente de listar. Los botones de acción (Editar/Eliminar) deben ser meramente visuales o maquetas, ya que su lógica se integrará en otras ramas.
 
 **Requerimientos Visuales y UI/UX:**
 1. **Layout Premium:** Usar CSS puro y moderno (sin Tailwind ni Bootstrap). Configurar una tabla limpia `table-responsive` dentro de una tarjeta con bordes suaves (`border-radius: 16px`) y sombras sutiles.

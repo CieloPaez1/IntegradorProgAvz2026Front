@@ -39,18 +39,4 @@ export class ProjectListComponent implements OnInit {
     });
   }
 
-  eliminarProyecto(id: number): void {
-    if (confirm('¿Estás seguro de que deseas eliminar este proyecto? Esta acción no se puede deshacer.')) {
-      this.projectService.delete(id).subscribe({
-        next: () => {
-          // Remove from the signal list
-          this.projects.update(list => list.filter(p => p.id !== id));
-        },
-        error: (err: Error) => {
-          alert('Error al eliminar: ' + err.message);
-        }
-      });
-    }
-  }
-
 }

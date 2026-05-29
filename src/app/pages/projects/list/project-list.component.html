@@ -56,10 +56,11 @@
                 </td>
                 <td style="text-align: right;">
                   <div style="display: inline-flex; gap: 8px;">
-                    <a [routerLink]="['/projects/edit', p.id]" class="btn-action edit" title="Modificar">
+                    <!-- Los enlaces y lógica real se implementarán en sus respectivas ramas (editar/eliminar) -->
+                    <button type="button" class="btn-action edit" title="Modificar (Próximamente)">
                       <svg lucideEdit></svg>
-                    </a>
-                    <button type="button" (click)="eliminarProyecto(p.id)" class="btn-action delete" title="Eliminar">
+                    </button>
+                    <button type="button" class="btn-action delete" title="Eliminar (Próximamente)">
                       <svg lucideTrash2></svg>
                     </button>
                   </div>
