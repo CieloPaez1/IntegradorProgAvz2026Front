@@ -45,5 +45,13 @@ Si no hay resultados, muestra un mensaje indicándolo.
   cuando hace click en Buscar,
   entonces ve todas las tareas.
 
+- Dado que el usuario ingresa minEstimate <= 0,
+  cuando intenta buscar,
+  entonces el formulario no se envía y muestra el error "Las horas deben ser mayores a 0".
+
+- Dado que no hay conexión con el servidor,
+  cuando se intenta buscar,
+  entonces ve el mensaje de error "No se pudo conectar al servidor."
+
 ## Agente IA
 Claude (claude.ai) — prompts documentados en prompt-filtrar-tareas.md

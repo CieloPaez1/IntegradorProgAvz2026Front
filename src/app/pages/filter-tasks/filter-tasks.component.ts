@@ -1,13 +1,14 @@
 import { Component, inject, signal } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task.model';
+import { LucideSearch, LucideX } from '@lucide/angular';
 
 @Component({
   selector: 'app-filter-tasks',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, LucideSearch, LucideX],
   templateUrl: './filter-tasks.component.html'
 })
 export class FilterTasksComponent {
@@ -21,11 +22,16 @@ export class FilterTasksComponent {
   searched = signal<boolean>(false);
 
   form: FormGroup = this.fb.group({
-    minEstimate: [null],
+    minEstimate: [null, [Validators.min(1)]],
     assignee: ['']
   });
 
   buscar(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
     this.loading.set(true);
     this.error.set(null);
     this.searched.set(false);
