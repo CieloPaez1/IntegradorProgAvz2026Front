@@ -57,7 +57,7 @@ Si hay error, muestra un mensaje descriptivo.
   entonces ve el mensaje de error indicando que no hay conexión.
 
 ## Agente IA
-Claude (claude.ai) — prompts documentados en prompt-crear-tarea.md
+Antigravity — prompts documentados en prompt-crear-tarea.md
 
 > *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*
 

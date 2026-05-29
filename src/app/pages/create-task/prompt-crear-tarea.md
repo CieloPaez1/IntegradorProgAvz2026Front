@@ -1,7 +1,7 @@
 # Prompts — Feature: Crear Tarea
 
 ## Agente utilizado
-Claude (claude.ai)
+Antigravity
 
 ## Prompt principal
 
