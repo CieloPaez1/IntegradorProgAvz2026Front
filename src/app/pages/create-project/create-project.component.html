@@ -66,12 +66,13 @@
           @if (loading()) {
             Guardando...
           } @else {
-            <svg lucideSave></svg>
+            <svg lucideSave style="width: 18px; height: 18px; margin-right: 8px;"></svg>
             Guardar Proyecto
           }
         </button>
 
         <button type="button" class="btn-primary outline" (click)="cancelar()" [disabled]="loading()">
+          <svg lucideX style="width: 18px; height: 18px; margin-right: 8px;"></svg>
           Cancelar
         </button>
       </div>
