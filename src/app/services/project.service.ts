@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Project } from '../models/project.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { Project } from '../models/project.model';
 export class ProjectService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/projects';
+  private apiUrl = `${environment.apiUrl}/projects`;
 
   create(project: Project): Observable<Project> {
     return this.http.post<Project>(this.apiUrl, project).pipe(
@@ -20,6 +21,18 @@ export class ProjectService {
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getById(id: number): Observable<Project> {
+    return this.http.get<Project>(`${this.apiUrl}/${id}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  update(id: number, project: Project): Observable<Project> {
+    return this.http.put<Project>(`${this.apiUrl}/${id}`, project).pipe(
       catchError(this.handleError)
     );
   }
@@ -39,7 +52,6 @@ export class ProjectService {
     message = error.error?.message ?? 'Error interno del servidor.';
   }
 
-  console.error('HTTP Error:', error); // para ver el detalle completo en consola
   return throwError(() => new Error(message));
 }
 getAll(): Observable<Project[]> {
