@@ -51,6 +51,14 @@ El usuario puede modificar la información de una tarea existente (por ejemplo, 
   cuando se carga la página,
   entonces se oculta el formulario y se muestra un cartel de error de conexión.
 
+- Dado que la tarea ya no existe (404),
+  cuando el usuario intenta guardar los cambios,
+  entonces se muestra un mensaje indicando que la tarea no fue encontrada.
+
+- Dado que el usuario supera los 100 caracteres en el título,
+  cuando intenta guardar,
+  entonces el botón se deshabilita y el formulario muestra el error de validación visualmente.
+
 ## Agente IA
 Antigravity — prompts documentados en prompt-editar-tarea.md
 
