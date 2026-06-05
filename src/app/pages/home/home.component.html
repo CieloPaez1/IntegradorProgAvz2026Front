@@ -1,0 +1,158 @@
+<div class="home-page">
+  <header class="home-header">
+    <div>
+      <p class="eyebrow">Panel general</p>
+      <h1>Resumen de proyectos y tareas</h1>
+    </div>
+
+    <div class="header-controls">
+      <div class="quick-actions">
+        <a routerLink="/projects/create" class="btn-primary">
+          <span>+</span> Proyecto
+        </a>
+        <a routerLink="/tasks/create" class="btn-primary outline">
+          <span>+</span> Tarea
+        </a>
+      </div>
+    </div>
+  </header>
+
+  @if (attentionRequiredTasks().length > 0) {
+    <section class="alerts-section">
+      <article class="alerts-card">
+        <div class="card-header">
+          <div class="icon-wrapper alert-icon"><svg lucideAlertTriangle></svg></div>
+          <h2>Atención Requerida</h2>
+        </div>
+        <div class="alerts-list">
+          <div class="alert-item">
+            <div class="alert-info">
+              <strong>Tareas pesadas bloqueantes</strong>
+              <span>Tienes tareas asignadas mayores a 10hs que están pendientes.</span>
+            </div>
+            <div class="alert-right">
+              <span class="alert-value danger">{{ attentionRequiredTasks().length }}</span>
+              <a routerLink="/tasks/list" class="alert-link">Ver tareas</a>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+  }
+
+  <section class="dashboard-grid charts-grid">
+    <article class="chart-card">
+      <div class="card-header">
+        <div class="icon-wrapper project-icon"><svg lucideBriefcase></svg></div>
+        <h2 style="flex: 1;">Proyectos ({{ totalProyectos() }})</h2>
+        <a routerLink="/projects/create" class="btn-icon" aria-label="Agregar proyecto">
+          <svg lucidePlus></svg>
+        </a>
+      </div>
+      <div class="chart-content">
+        <div class="chart-container">
+          <canvas #projectChart></canvas>
+          <div class="chart-center">
+            <strong>{{ porcentajeProyectosTerminados() }}%</strong>
+            <span>Terminados</span>
+          </div>
+        </div>
+        <div class="legend-list">
+          <div class="legend-item">
+            <span class="dot bg-yellow"></span>
+            <span>Planificados</span>
+            <strong>{{ proyectosPlanificados() }}</strong>
+          </div>
+          <div class="legend-item">
+            <span class="dot bg-blue"></span>
+            <span>En Proceso</span>
+            <strong>{{ proyectosEnProceso() }}</strong>
+          </div>
+          <div class="legend-item">
+            <span class="dot bg-green"></span>
+            <span>Terminados</span>
+            <strong>{{ proyectosTerminados() }}</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="recent-list mt-4">
+        <div class="list-title">Últimos Proyectos</div>
+        @if (projects().length === 0) {
+          <p class="empty-state">Todavía no hay proyectos.</p>
+        } @else {
+          <div class="tasks-list">
+            @for (p of projects().slice(0, 4); track p.id) {
+              <div class="task-row">
+                <div class="task-info">
+                  <strong>{{ p.name }}</strong>
+                  <span>{{ p.description || 'Sin descripción' }}</span>
+                </div>
+                <span class="status-badge" [class.status-todo]="p.status === 'PLANNED'" [class.status-progress]="p.status === 'ACTIVE'" [class.status-done]="p.status === 'CLOSED'">
+                  {{ p.status | projectStatus }}
+                </span>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </article>
+
+    <article class="chart-card">
+      <div class="card-header">
+        <div class="icon-wrapper task-icon"><svg lucidePieChart></svg></div>
+        <h2 style="flex: 1;">Tareas ({{ totalTareas() }})</h2>
+        <a routerLink="/tasks/create" class="btn-icon" aria-label="Agregar tarea">
+          <svg lucidePlus></svg>
+        </a>
+      </div>
+      <div class="chart-content">
+        <div class="chart-container">
+          <canvas #taskChart></canvas>
+          <div class="chart-center">
+            <strong>{{ porcentajeTareasCompletadas() }}%</strong>
+            <span>Hechas</span>
+          </div>
+        </div>
+        <div class="legend-list">
+          <div class="legend-item">
+            <span class="dot bg-yellow border-yellow"></span>
+            <span>Por hacer</span>
+            <strong>{{ tareasPendientes() }}</strong>
+          </div>
+          <div class="legend-item">
+            <span class="dot bg-blue border-blue"></span>
+            <span>En proceso</span>
+            <strong>{{ tareasEnProgreso() }}</strong>
+          </div>
+          <div class="legend-item">
+            <span class="dot bg-green border-green"></span>
+            <span>Hechas</span>
+            <strong>{{ tareasCompletadas() }}</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="recent-list mt-4">
+        <div class="list-title">Últimas Tareas</div>
+        @if (tasks().length === 0) {
+          <p class="empty-state">Todavía no hay tareas.</p>
+        } @else {
+          <div class="tasks-list">
+            @for (t of tasks().slice(0, 4); track t.id) {
+              <div class="task-row">
+                <div class="task-info">
+                  <strong>{{ t.title }}</strong>
+                  <span>{{ t.assignee || 'Sin asignar' }}</span>
+                </div>
+                <span class="status-badge" [class.status-todo]="t.status === 'TODO'" [class.status-progress]="t.status === 'IN_PROGRESS'" [class.status-done]="t.status === 'DONE'">
+                  {{ t.status | taskStatus }}
+                </span>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </article>
+  </section>
+</div>

@@ -1,0 +1,146 @@
+<div class="sidebar" [class.collapsed]="collapsed()">
+  <div class="sidebar-logo">
+    <div class="logo-icon">
+      <svg lucideFolderKanban class="logo-svg"></svg>
+    </div>
+
+    @if (!collapsed()) {
+      <span class="logo-text">GestorProyectos</span>
+    }
+
+    <button class="collapse-btn" type="button" (click)="toggle()">
+      {{ collapsed() ? '<' : '>' }}
+    </button>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <a routerLink="/home" routerLinkActive="active" class="nav-item">
+        <div class="nav-left">
+          <svg lucideHome class="nav-icon"></svg>
+          @if (!collapsed()) {
+            <span>Inicio</span>
+          }
+        </div>
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-dropdown" (click)="toggleProjects()">
+        <div class="nav-left">
+          <svg lucideFolderKanban class="nav-icon"></svg>
+          @if (!collapsed()) {
+            <span>Proyectos</span>
+          }
+        </div>
+
+        @if (!collapsed()) {
+          @if (projectsOpen()) {
+            <svg lucideChevronDown class="dropdown-arrow"></svg>
+          } @else {
+            <svg lucideChevronRight class="dropdown-arrow"></svg>
+          }
+        }
+      </div>
+
+      @if (projectsOpen() && !collapsed()) {
+        <div class="nav-submenu">
+          <a routerLink="/projects/list" routerLinkActive="active" class="nav-subitem">
+            <svg lucideList class="sub-icon"></svg>
+            <span>Ver proyectos</span>
+          </a>
+
+          <a routerLink="/projects/create" routerLinkActive="active" class="nav-subitem">
+            <svg lucidePlus class="sub-icon"></svg>
+            <span>Nuevo proyecto</span>
+          </a>
+        </div>
+      }
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-dropdown" (click)="toggleTasks()">
+        <div class="nav-left">
+          <svg lucideCheckSquare class="nav-icon"></svg>
+          @if (!collapsed()) {
+            <span>Tareas</span>
+          }
+        </div>
+
+        @if (!collapsed()) {
+          @if (tasksOpen()) {
+            <svg lucideChevronDown class="dropdown-arrow"></svg>
+          } @else {
+            <svg lucideChevronRight class="dropdown-arrow"></svg>
+          }
+        }
+      </div>
+
+      @if (tasksOpen() && !collapsed()) {
+        <div class="nav-submenu">
+          <a routerLink="/tasks/list" routerLinkActive="active" class="nav-subitem">
+            <svg lucideList class="sub-icon"></svg>
+            <span>Ver tareas</span>
+          </a>
+
+          <a routerLink="/tasks/create" routerLinkActive="active" class="nav-subitem">
+            <svg lucidePlus class="sub-icon"></svg>
+            <span>Nueva tarea</span>
+          </a>
+        </div>
+      }
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-dropdown" (click)="toggleReports()">
+        <div class="nav-left">
+          <svg lucideBarChart3 class="nav-icon"></svg>
+          @if (!collapsed()) {
+            <span>Reportes</span>
+          }
+        </div>
+
+        @if (!collapsed()) {
+          @if (reportsOpen()) {
+            <svg lucideChevronDown class="dropdown-arrow"></svg>
+          } @else {
+            <svg lucideChevronRight class="dropdown-arrow"></svg>
+          }
+        }
+      </div>
+
+      @if (reportsOpen() && !collapsed()) {
+        <div class="nav-submenu">
+          <a routerLink="/reports" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-subitem">
+            <svg lucideBarChart3 class="sub-icon"></svg>
+            <span>Resumen general</span>
+          </a>
+
+          <a routerLink="/reports/project" routerLinkActive="active" class="nav-subitem">
+            <svg lucideFolderKanban class="sub-icon"></svg>
+            <span>Reporte por proyecto</span>
+          </a>
+        </div>
+      }
+    </div>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <a routerLink="#" class="nav-item">
+      <div class="nav-left">
+        <svg lucideSettings class="nav-icon"></svg>
+        @if (!collapsed()) {
+          <span>Configuración</span>
+        }
+      </div>
+    </a>
+    <a routerLink="#" class="nav-item">
+      <div class="nav-left">
+        <svg lucideHelpCircle class="nav-icon"></svg>
+        @if (!collapsed()) {
+          <span>Ayuda</span>
+        }
+      </div>
+    </a>
+  </div>
+</div>
