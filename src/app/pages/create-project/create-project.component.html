@@ -1,0 +1,125 @@
+<div class="create-project-page">
+
+  <div class="report-header">
+    <div>
+      <p>Gestión de Proyectos</p>
+      <h1>Crear Proyecto</h1>
+    </div>
+  </div>
+
+  <div class="project-card">
+    @if (success()) {
+      <div class="alert-success">
+        <svg lucideCheckCircle></svg>
+        {{ success() }}
+      </div>
+    }
+
+    @if (error()) {
+      <div class="alert-error">
+        <svg lucideXCircle></svg>
+        {{ error() }}
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div style="margin-bottom: 24px;">
+        <label class="form-label">Nombre <span style="color: #ef4444;">*</span></label>
+        <input type="text" formControlName="name" class="form-control" [class.is-invalid]="isInvalid('name')" placeholder="Ej: Rediseño de plataforma" />
+        @if (isInvalid('name')) { <span class="error-text">El nombre es obligatorio.</span> }
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
+        <div>
+          <label class="form-label">Fecha de inicio <span style="color: #ef4444;">*</span></label>
+          <input type="date" formControlName="startDate" class="form-control" [class.is-invalid]="isInvalid('startDate')" />
+          @if (isInvalid('startDate')) { <span class="error-text">La fecha de inicio es obligatoria.</span> }
+        </div>
+
+        <div>
+          <label class="form-label">Fecha de fin <span style="color: #ef4444;">*</span></label>
+          <input type="date" formControlName="endDate" class="form-control" [class.is-invalid]="isInvalid('endDate') || ((form.hasError('endDatePasada') || form.hasError('endDateMenorQueStart')) && form.get('endDate')?.touched)" />
+          @if (isInvalid('endDate')) { <span class="error-text">La fecha de fin es obligatoria.</span> }
+          @if (form.hasError('endDatePasada') && form.get('endDate')?.touched) { <span class="error-text">La fecha de fin no puede ser en el pasado.</span> }
+          @if (form.hasError('endDateMenorQueStart') && form.get('endDate')?.touched) { <span class="error-text">La fecha de fin debe ser mayor o igual a la de inicio.</span> }
+        </div>
+      </div>
+
+      <div style="margin-bottom: 24px;">
+        <label class="form-label">Estado <span style="color: #ef4444;">*</span></label>
+        <select formControlName="status" class="form-select" [class.is-invalid]="isInvalid('status')">
+          <option value="" disabled>-- Seleccioná un estado --</option>
+          <option value="PLANNED">Planificado</option>
+          <option value="ACTIVE">Activo</option>
+          <option value="CLOSED">Cerrado</option>
+        </select>
+        @if (isInvalid('status')) { <span class="error-text">El estado es obligatorio.</span> }
+      </div>
+
+      <div style="margin-bottom: 32px;">
+        <label class="form-label">Descripción</label>
+        <textarea formControlName="description" class="form-control" rows="4" placeholder="Descripción opcional del proyecto"></textarea>
+      </div>
+
+      <div style="display: flex; gap: 16px;">
+        <button type="submit" class="btn-primary" [disabled]="loading()">
+          @if (loading()) {
+            Guardando...
+          } @else {
+            <svg lucideSave style="width: 18px; height: 18px; margin-right: 8px;"></svg>
+            Guardar Proyecto
+          }
+        </button>
+
+        <button type="button" class="btn-primary outline" (click)="cancelar()" [disabled]="loading()">
+          <svg lucideX style="width: 18px; height: 18px; margin-right: 8px;"></svg>
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="project-card" style="padding: 0; overflow: hidden;">
+    <div style="padding: 24px 32px; border-bottom: 1px solid #eef2f7;">
+      <h2 style="font-size: 1.2rem; font-weight: 800; color: #0f172a; margin: 0;">Proyectos existentes</h2>
+    </div>
+
+    @if (projects().length === 0) {
+      <div class="empty-state">
+        No hay proyectos creados aún.
+      </div>
+    } @else {
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nombre</th>
+              <th>Inicio</th>
+              <th>Fin</th>
+              <th>Estado</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of projects(); track p.id) {
+              <tr>
+                <td>{{ p.id }}</td>
+                <td style="color: #0f172a;">{{ p.name }}</td>
+                <td style="color: #64748b;">{{ p.startDate }}</td>
+                <td style="color: #64748b;">{{ p.endDate }}</td>
+                <td>
+                  <span class="badge" [class.planned]="p.status === 'PLANNED'" [class.active]="p.status === 'ACTIVE'" [class.closed]="p.status === 'CLOSED'">
+                    {{ p.status === 'PLANNED' ? 'Planificado' : p.status === 'ACTIVE' ? 'Activo' : 'Cerrado' }}
+                  </span>
+                </td>
+                <td style="color: #64748b;">{{ p.description || '-' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+
+</div>
