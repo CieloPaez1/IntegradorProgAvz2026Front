@@ -4,12 +4,12 @@ import { CommonModule } from '@angular/common';
 import { ProjectService } from '../../services/project.service';
 import { Project } from '../../models/project.model';
 
-import { LucideFolderKanban, LucideCheckCircle, LucideXCircle, LucideSave, LucideX } from '@lucide/angular';
+import { LucideCheckCircle, LucideXCircle, LucideSave, LucideX } from '@lucide/angular';
 
 @Component({
   selector: 'app-create-project',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, LucideFolderKanban, LucideCheckCircle, LucideXCircle, LucideSave, LucideX],
+  imports: [CommonModule, ReactiveFormsModule, LucideCheckCircle, LucideXCircle, LucideSave, LucideX],
   templateUrl: './create-project.component.html',
   styleUrl: './create-project.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush

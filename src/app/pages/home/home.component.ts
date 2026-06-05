@@ -100,7 +100,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             maintainAspectRatio: false,
             plugins: { legend: { display: false }, tooltip: {
               callbacks: {
-                label: (context) => ` ${context.label}: ${context.raw}`
+                label: (context: any) => ` ${context.label}: ${context.raw}`
               }
             } }
           }
@@ -125,7 +125,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             maintainAspectRatio: false,
             plugins: { legend: { display: false }, tooltip: {
               callbacks: {
-                label: (context) => ` ${context.label}: ${context.raw}`
+                label: (context: any) => ` ${context.label}: ${context.raw}`
               }
             } }
           }

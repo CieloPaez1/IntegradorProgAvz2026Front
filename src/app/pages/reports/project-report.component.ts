@@ -119,7 +119,7 @@ export class ProjectReportComponent implements OnInit, AfterViewInit {
     const data = document.getElementById('pdfContainer');
     const projectName = this.selectedProject()?.name || 'Proyecto';
     if (data) {
-      html2canvas(data, { scale: 2 }).then(canvas => {
+      html2canvas(data, { scale: 2 }).then((canvas: any) => {
         const imgWidth = 208;
         const imgHeight = canvas.height * imgWidth / canvas.width;
         

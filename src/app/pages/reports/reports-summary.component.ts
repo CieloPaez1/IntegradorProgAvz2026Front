@@ -135,7 +135,7 @@ export class ReportsSummaryComponent implements OnInit, AfterViewInit {
   exportToPDF() {
     const data = document.getElementById('pdfContainer');
     if (data) {
-      html2canvas(data, { scale: 2 }).then(canvas => {
+      html2canvas(data, { scale: 2 }).then((canvas: any) => {
         const imgWidth = 208;
         const imgHeight = canvas.height * imgWidth / canvas.width;
         

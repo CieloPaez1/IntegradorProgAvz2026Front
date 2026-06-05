@@ -1,6 +1,7 @@
 export interface Task {
   id?: number;
   projectId?: number;
+  projectName?: string;
   title: string;
   estimateHours: number;
   assignee?: string;
