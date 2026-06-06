@@ -25,6 +25,12 @@ export class ProjectService {
     );
   }
 
+  update(id: number, project: Project): Observable<Project> {
+    return this.http.put<Project>(`${this.apiUrl}/${id}`, project).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
       catchError(this.handleError)

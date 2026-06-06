@@ -88,9 +88,16 @@
                   <strong>{{ p.name }}</strong>
                   <span>{{ p.description || 'Sin descripción' }}</span>
                 </div>
-                <span class="status-badge" [class.status-todo]="p.status === 'PLANNED'" [class.status-progress]="p.status === 'ACTIVE'" [class.status-done]="p.status === 'CLOSED'">
+                <button 
+                  class="status-badge interactive" 
+                  [class.status-todo]="p.status === 'PLANNED'" 
+                  [class.status-progress]="p.status === 'ACTIVE'" 
+                  [class.status-done]="p.status === 'CLOSED'"
+                  (click)="cycleProjectStatus(p)"
+                  title="Haz clic para cambiar el estado"
+                >
                   {{ p.status | projectStatus }}
-                </span>
+                </button>
               </div>
             }
           </div>
@@ -145,9 +152,16 @@
                   <strong>{{ t.title }}</strong>
                   <span>{{ t.assignee || 'Sin asignar' }}</span>
                 </div>
-                <span class="status-badge" [class.status-todo]="t.status === 'TODO'" [class.status-progress]="t.status === 'IN_PROGRESS'" [class.status-done]="t.status === 'DONE'">
+                <button 
+                  class="status-badge interactive" 
+                  [class.status-todo]="t.status === 'TODO'" 
+                  [class.status-progress]="t.status === 'IN_PROGRESS'" 
+                  [class.status-done]="t.status === 'DONE'"
+                  (click)="cycleTaskStatus(t)"
+                  title="Haz clic para cambiar el estado"
+                >
                   {{ t.status | taskStatus }}
-                </span>
+                </button>
               </div>
             }
           </div>

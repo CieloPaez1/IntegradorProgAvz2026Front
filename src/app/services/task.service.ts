@@ -36,6 +36,12 @@ export class TaskService {
     );
   }
   
+  update(projectId: number, taskId: number, task: Task): Observable<Task> {
+    return this.http.put<Task>(`${this.apiUrl}/${projectId}/tasks/${taskId}`, task).pipe(
+      catchError(this.handleError)
+    );
+  }
+  
   delete(projectId: number, taskId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${projectId}/tasks/${taskId}`).pipe(
       catchError(this.handleError)

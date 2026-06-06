@@ -379,6 +379,22 @@
 .status-progress { background: var(--badge-active-bg); color: var(--badge-active-text); }
 .status-done { background: var(--badge-closed-bg); color: var(--badge-closed-text); }
 
+button.status-badge.interactive {
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button.status-badge.interactive:hover {
+  transform: scale(1.05) translateY(-1px);
+  filter: brightness(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+button.status-badge.interactive:active {
+  transform: scale(0.95);
+}
+
 .empty-state {
   color: var(--text-secondary);
   font-size: 1.1rem;

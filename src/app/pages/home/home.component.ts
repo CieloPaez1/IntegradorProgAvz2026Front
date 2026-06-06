@@ -137,4 +137,56 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private percentage(value: number, total: number): number {
     return total === 0 ? 0 : Math.round((value / total) * 100);
   }
+
+  cycleProjectStatus(project: Project) {
+    if (!project.id) return;
+    
+    // Guardamos estado anterior para rollback
+    const oldStatus = project.status;
+    const oldProjects = [...this.projects()];
+
+    // PLANNED -> ACTIVE -> CLOSED -> PLANNED
+    let nextStatus: 'PLANNED' | 'ACTIVE' | 'CLOSED' = 'PLANNED';
+    if (project.status === 'PLANNED') nextStatus = 'ACTIVE';
+    else if (project.status === 'ACTIVE') nextStatus = 'CLOSED';
+
+    const updatedProject = { ...project, status: nextStatus };
+    
+    // Optimistic Update
+    this.projects.update(ps => ps.map(p => p.id === project.id ? updatedProject : p));
+
+    this.projectService.update(project.id, updatedProject).subscribe({
+      error: (err) => {
+        console.error('Error updating project status', err);
+        // Rollback on error
+        this.projects.set(oldProjects);
+      }
+    });
+  }
+
+  cycleTaskStatus(task: Task) {
+    if (!task.id || !task.projectId) return;
+
+    // Guardamos estado anterior para rollback
+    const oldStatus = task.status;
+    const oldTasks = [...this.tasks()];
+
+    // TODO -> IN_PROGRESS -> DONE -> TODO
+    let nextStatus: 'TODO' | 'IN_PROGRESS' | 'DONE' = 'TODO';
+    if (task.status === 'TODO') nextStatus = 'IN_PROGRESS';
+    else if (task.status === 'IN_PROGRESS') nextStatus = 'DONE';
+
+    const updatedTask = { ...task, status: nextStatus };
+
+    // Optimistic Update
+    this.tasks.update(ts => ts.map(t => t.id === task.id ? updatedTask : t));
+
+    this.taskService.update(task.projectId, task.id, updatedTask).subscribe({
+      error: (err) => {
+        console.error('Error updating task status', err);
+        // Rollback on error
+        this.tasks.set(oldTasks);
+      }
+    });
+  }
 }
