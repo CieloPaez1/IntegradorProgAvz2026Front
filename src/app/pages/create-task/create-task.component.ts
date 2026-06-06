@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit, computed } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TaskService } from '../../services/task.service';
@@ -21,6 +21,7 @@ export class CreateTaskComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   projects = signal<Project[]>([]);
+  activeProjects = computed(() => this.projects().filter(p => p.status !== 'CLOSED'));
   tasks = signal<Task[]>([]);
   loading = signal<boolean>(false);
   error = signal<string | null>(null);

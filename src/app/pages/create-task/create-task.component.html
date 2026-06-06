@@ -27,7 +27,7 @@
         <label class="form-label">Proyecto <span style="color: #ef4444;">*</span></label>
         <select formControlName="projectId" class="form-control" [class.is-invalid]="isInvalid('projectId')">
           <option value="" disabled>-- Seleccioná un proyecto --</option>
-          @for (p of projects(); track p.id) {
+          @for (p of activeProjects(); track p.id) {
             <option [value]="p.id">{{ p.name }}</option>
           }
         </select>
