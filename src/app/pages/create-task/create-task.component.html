@@ -1,132 +1,126 @@
-<div class="glass-container">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
+<div class="create-task-page">
 
-  <div class="content-wrapper">
-    <div class="page-header">
-      <div>
-        <p>Gestión de Tareas</p>
-        <h1 class="gradient-text">Crear Tarea</h1>
-      </div>
-    </div>
-
-    <div class="glass-card slide-up-1">
-      @if (success()) {
-        <div class="alert-success">
-          <svg lucideCheckCircle style="width: 20px; height: 20px;"></svg>
-          {{ success() }}
-        </div>
-      }
-
-      @if (error()) {
-        <div class="alert-error">
-          <svg lucideXCircle style="width: 20px; height: 20px;"></svg>
-          {{ error() }}
-        </div>
-      }
-
-      <form [formGroup]="form" (ngSubmit)="submit()">
-        <div class="input-group">
-          <label class="form-label">Proyecto <span class="text-neon">*</span></label>
-          <select formControlName="projectId" class="form-control" [class.is-invalid]="isInvalid('projectId')">
-            <option value="" disabled>-- Seleccioná un proyecto --</option>
-            @for (p of projects(); track p.id) {
-              <option [value]="p.id">{{ p.name }}</option>
-            }
-          </select>
-          @if (isInvalid('projectId')) { <span class="error-text">El proyecto es obligatorio.</span> }
-        </div>
-
-        <div class="input-group">
-          <label class="form-label">Título <span class="text-neon">*</span></label>
-          <input type="text" formControlName="title" class="form-control" [class.is-invalid]="isInvalid('title')" placeholder="Ej: Rediseñar landing page" />
-          @if (isInvalid('title')) { <span class="error-text">El título es obligatorio.</span> }
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;" class="input-group">
-          <div>
-            <label class="form-label">Horas estimadas <span class="text-neon">*</span></label>
-            <input type="number" formControlName="estimateHours" class="form-control" [class.is-invalid]="isInvalid('estimateHours')" placeholder="Ej: 8" min="1" />
-            @if (isInvalid('estimateHours')) { <span class="error-text">Las horas deben ser mayor a 0.</span> }
-          </div>
-
-          <div>
-            <label class="form-label">Asignado a</label>
-            <input type="text" formControlName="assignee" class="form-control" placeholder="Ej: alice" />
-          </div>
-        </div>
-
-        <div class="input-group">
-          <label class="form-label">Estado <span class="text-neon">*</span></label>
-          <select formControlName="status" class="form-control" [class.is-invalid]="isInvalid('status')">
-            <option value="" disabled>-- Seleccioná un estado --</option>
-            <option value="TODO">Por hacer</option>
-            <option value="IN_PROGRESS">En progreso</option>
-            <option value="DONE">Hecho</option>
-          </select>
-          @if (isInvalid('status')) { <span class="error-text">El estado es obligatorio.</span> }
-        </div>
-
-        <div style="display: flex; gap: 16px; margin-top: 40px;">
-          <button type="submit" class="btn-glow" [disabled]="form.invalid || loading()">
-            @if (loading()) {
-              Guardando...
-            } @else {
-              <svg lucideSave style="width: 20px; height: 20px; margin-right: 8px;"></svg>
-              Guardar Tarea
-            }
-          </button>
-
-          <button type="button" class="btn-glass" (click)="cancelar()" [disabled]="loading()">
-            <svg lucideX style="width: 20px; height: 20px; margin-right: 8px;"></svg>
-            Cancelar
-          </button>
-        </div>
-      </form>
-    </div>
-
-    <div class="glass-card slide-up-2" style="padding: 0;">
-      <div style="padding: 32px 40px; border-bottom: 1px solid rgba(255,255,255,0.1);">
-        <h2 style="font-size: 1.3rem; font-weight: 800; color: #fff; margin: 0;">Tareas existentes</h2>
-      </div>
-
-      @if (tasks().length === 0) {
-        <div class="empty-state">
-          No hay tareas creadas aún.
-        </div>
-      } @else {
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Proyecto</th>
-                <th>Título</th>
-                <th>Horas</th>
-                <th>Asignado</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (t of tasks(); track t.id) {
-                <tr>
-                  <td style="color: #94a3b8;">#{{ t.id }}</td>
-                  <td style="color: #cbd5e1;">{{ projects().find(p => p.id === t.projectId)?.name ?? '-' }}</td>
-                  <td style="color: #fff; font-weight: 700;">{{ t.title }}</td>
-                  <td style="color: #cbd5e1;">{{ t.estimateHours }}h</td>
-                  <td style="color: #cbd5e1;">{{ t.assignee ?? '-' }}</td>
-                  <td>
-                    <span class="glass-badge" [class.todo]="t.status === 'TODO'" [class.progress]="t.status === 'IN_PROGRESS'" [class.done]="t.status === 'DONE'">
-                      {{ t.status === 'TODO' ? 'Por hacer' : t.status === 'IN_PROGRESS' ? 'En progreso' : 'Hecho' }}
-                    </span>
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      }
+  <div class="page-header">
+    <div>
+      <p>GESTIÓN DE TAREAS</p>
+      <h1>Crear Tarea</h1>
     </div>
   </div>
+
+  <div class="dashboard-card">
+    @if (success()) {
+      <div class="alert-success">
+        <svg lucideCheckCircle style="width: 20px; height: 20px;"></svg>
+        {{ success() }}
+      </div>
+    }
+
+    @if (error()) {
+      <div class="alert-error">
+        <svg lucideXCircle style="width: 20px; height: 20px;"></svg>
+        {{ error() }}
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div style="margin-bottom: 24px;">
+        <label class="form-label">Proyecto <span style="color: #ef4444;">*</span></label>
+        <select formControlName="projectId" class="form-control" [class.is-invalid]="isInvalid('projectId')">
+          <option value="" disabled>-- Seleccioná un proyecto --</option>
+          @for (p of projects(); track p.id) {
+            <option [value]="p.id">{{ p.name }}</option>
+          }
+        </select>
+        @if (isInvalid('projectId')) { <span class="error-text">El proyecto es obligatorio.</span> }
+      </div>
+
+      <div style="margin-bottom: 24px;">
+        <label class="form-label">Título <span style="color: #ef4444;">*</span></label>
+        <input type="text" formControlName="title" class="form-control" [class.is-invalid]="isInvalid('title')" placeholder="Ej: Rediseñar landing page" />
+        @if (isInvalid('title')) { <span class="error-text">El título es obligatorio.</span> }
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
+        <div>
+          <label class="form-label">Horas estimadas <span style="color: #ef4444;">*</span></label>
+          <input type="number" formControlName="estimateHours" class="form-control" [class.is-invalid]="isInvalid('estimateHours')" placeholder="Ej: 8" min="1" />
+          @if (isInvalid('estimateHours')) { <span class="error-text">Las horas deben ser mayor a 0.</span> }
+        </div>
+
+        <div>
+          <label class="form-label">Asignado a</label>
+          <input type="text" formControlName="assignee" class="form-control" placeholder="Ej: alice" />
+        </div>
+      </div>
+
+      <div style="margin-bottom: 32px;">
+        <label class="form-label">Estado <span style="color: #ef4444;">*</span></label>
+        <select formControlName="status" class="form-control" [class.is-invalid]="isInvalid('status')">
+          <option value="" disabled>-- Seleccioná un estado --</option>
+          <option value="TODO">Por hacer</option>
+          <option value="IN_PROGRESS">En progreso</option>
+          <option value="DONE">Hecho</option>
+        </select>
+        @if (isInvalid('status')) { <span class="error-text">El estado es obligatorio.</span> }
+      </div>
+
+      <div style="display: flex; gap: 16px;">
+        <button type="submit" class="btn-primary" [disabled]="form.invalid || loading()">
+          @if (loading()) {
+            Guardando...
+          } @else {
+            <svg lucideSave style="width: 18px; height: 18px;"></svg>
+            Guardar Tarea
+          }
+        </button>
+
+        <button type="button" class="btn-outline" (click)="cancelar()" [disabled]="loading()">
+          <svg lucideX style="width: 18px; height: 18px;"></svg>
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="dashboard-card" style="padding: 0;">
+    <div style="padding: 24px 32px; border-bottom: 1px solid #f1f5f9;">
+      <h2 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0;">Tareas existentes</h2>
+    </div>
+
+    @if (tasks().length === 0) {
+      <div class="empty-state">
+        No hay tareas creadas aún.
+      </div>
+    } @else {
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Proyecto</th>
+              <th>Horas</th>
+              <th>Asignado</th>
+              <th style="text-align: right;">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (t of tasks(); track t.id) {
+              <tr>
+                <td style="color: #0f172a; font-weight: 700;">{{ t.title }}</td>
+                <td style="color: #64748b;">{{ projects().find(p => p.id === t.projectId)?.name ?? '-' }}</td>
+                <td style="color: #64748b;">{{ t.estimateHours }}h</td>
+                <td style="color: #64748b;">{{ t.assignee ?? '-' }}</td>
+                <td style="text-align: right;">
+                  <span class="badge" [class.todo]="t.status === 'TODO'" [class.progress]="t.status === 'IN_PROGRESS'" [class.done]="t.status === 'DONE'">
+                    {{ t.status === 'TODO' ? 'POR HACER' : t.status === 'IN_PROGRESS' ? 'EN PROCESO' : 'HECHA' }}
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+
 </div>
