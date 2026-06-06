@@ -348,6 +348,11 @@
   transform: translateX(8px);
 }
 
+.task-row.z-elevated {
+  position: relative;
+  z-index: 50;
+}
+
 .task-info {
   display: flex;
   flex-direction: column;

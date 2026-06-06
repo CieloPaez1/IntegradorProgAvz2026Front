@@ -83,7 +83,7 @@
         } @else {
           <div class="tasks-list">
             @for (p of projects().slice(0, 4); track p.id) {
-              <div class="task-row">
+              <div class="task-row" [class.z-elevated]="activeDropdownId() === 'proj_' + p.id">
                 <div class="task-info">
                   <strong>{{ p.name }}</strong>
                   <span>{{ p.description || 'Sin descripción' }}</span>
@@ -161,7 +161,7 @@
         } @else {
           <div class="tasks-list">
             @for (t of tasks().slice(0, 4); track t.id) {
-              <div class="task-row">
+              <div class="task-row" [class.z-elevated]="activeDropdownId() === 'task_' + t.id">
                 <div class="task-info">
                   <strong>{{ t.title }}</strong>
                   <span>{{ t.assignee || 'Sin asignar' }}</span>
