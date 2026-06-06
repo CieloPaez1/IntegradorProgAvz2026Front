@@ -8,14 +8,12 @@ import { ProjectService } from '../../services/project.service';
 import { TaskService } from '../../services/task.service';
 import { Project } from '../../models/project.model';
 import { Task } from '../../models/task.model';
-import { TaskStatusPipe } from '../../pipes/task-status.pipe';
-import { ProjectStatusPipe } from '../../pipes/project-status.pipe';
 import { LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus } from '@lucide/angular';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, TaskStatusPipe, ProjectStatusPipe, LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus],
+  imports: [CommonModule, RouterModule, LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
