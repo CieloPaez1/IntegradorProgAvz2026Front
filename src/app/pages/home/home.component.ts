@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed, OnInit, effect, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, inject, signal, computed, OnInit, effect, ViewChild, ElementRef, AfterViewInit, HostListener } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
@@ -8,12 +8,14 @@ import { ProjectService } from '../../services/project.service';
 import { TaskService } from '../../services/task.service';
 import { Project } from '../../models/project.model';
 import { Task } from '../../models/task.model';
+import { TaskStatusPipe } from '../../pipes/task-status.pipe';
+import { ProjectStatusPipe } from '../../pipes/project-status.pipe';
 import { LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideChevronDown } from '@lucide/angular';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideChevronDown],
+  imports: [CommonModule, RouterModule, TaskStatusPipe, ProjectStatusPipe, LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideChevronDown],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
