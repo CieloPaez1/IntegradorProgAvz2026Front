@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Subject, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
-import { LucideSearch, LucideX, LucideUser, LucideSettings, LucideLogOut, LucideSun, LucideMoon } from '@lucide/angular';
-import { ThemeService } from '../../services/theme.service';
+import { LucideSearch, LucideX, LucideUser, LucideSettings, LucideLogOut, LucidePalette, LucideCheck } from '@lucide/angular';
+import { ThemeService, AppTheme } from '../../services/theme.service';
 import { SearchService } from '../../services/search.service';
 import { Task } from '../../models/task.model';
 import { Project } from '../../models/project.model';
@@ -15,12 +15,12 @@ import { ProjectStatusPipe } from '../../pipes/project-status.pipe';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, LucideSearch, LucideX, LucideUser, LucideSettings, LucideLogOut, LucideSun, LucideMoon, TaskStatusPipe, ProjectStatusPipe],
+  imports: [CommonModule, FormsModule, RouterModule, LucideSearch, LucideX, LucideUser, LucideSettings, LucideLogOut, LucidePalette, LucideCheck, TaskStatusPipe, ProjectStatusPipe],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent implements OnInit, OnDestroy {
-  protected readonly themeService = inject(ThemeService);
+  public readonly themeService = inject(ThemeService);
   
   searchQuery = '';
   results: { projects: Project[]; tasks: Task[] } = { projects: [], tasks: [] };
@@ -28,6 +28,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   isLoading = false;
   
   showUserMenu = false;
+  showThemeMenu = false;
 
   private searchSubject = new Subject<string>();
   private destroyed$ = new Subject<void>();
@@ -109,7 +110,22 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.showUserMenu = !this.showUserMenu;
     if (this.showUserMenu) {
       this.closeDropdown();
+      this.showThemeMenu = false;
     }
+  }
+
+  toggleThemeMenu(event: Event) {
+    event.stopPropagation();
+    this.showThemeMenu = !this.showThemeMenu;
+    if (this.showThemeMenu) {
+      this.closeDropdown();
+      this.showUserMenu = false;
+    }
+  }
+
+  selectTheme(themeId: string) {
+    this.themeService.setTheme(themeId as AppTheme);
+    this.showThemeMenu = false;
   }
 
   statusClass(status: string): string {
@@ -133,12 +149,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
     if (!this.elRef.nativeElement.contains(event.target)) {
       this.showDropdown = false;
       this.showUserMenu = false;
+      this.showThemeMenu = false;
     }
   }
 
   @HostListener('document:keydown.escape')
   onEscape() {
     this.closeDropdown();
+    this.showThemeMenu = false;
+    this.showUserMenu = false;
   }
 
   ngOnDestroy() {
