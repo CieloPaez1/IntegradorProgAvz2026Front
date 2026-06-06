@@ -53,6 +53,7 @@ src/app/
 | Crear Tarea | feature/crear-tarea |
 | Filtrar Tareas | feature/filtrar-tareas |
 | Eliminar Tarea | feature/eliminar-tarea |
+| Rediseño Premium y Temas | develop |
 
 ## Flujo de trabajo
 Cada feature se desarrolla en su propia rama siguiendo Spec Driven Development:
