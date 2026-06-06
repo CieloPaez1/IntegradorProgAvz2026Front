@@ -79,9 +79,9 @@
     </form>
   </div>
 
-  <div class="dashboard-card" style="padding: 0;">
-    <div style="padding: 24px 32px; border-bottom: 1px solid #f1f5f9;">
-      <h2 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0;">Últimos Proyectos</h2>
+  <div class="list-section">
+    <div class="list-title">
+      <h2>Últimos Proyectos</h2>
     </div>
 
     @if (projects().length === 0) {
@@ -89,34 +89,30 @@
         No hay proyectos creados aún.
       </div>
     } @else {
-      <div class="table-responsive">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Inicio</th>
-              <th>Fin</th>
-              <th style="text-align: right;">Estado</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (p of projects(); track p.id) {
-              <tr>
-                <td>
-                  <div style="color: #0f172a; font-weight: 700; margin-bottom: 4px;">{{ p.name }}</div>
-                  <div style="color: #94a3b8; font-size: 0.85rem;">{{ p.description || 'Sin descripción' }}</div>
-                </td>
-                <td style="color: #64748b; vertical-align: middle;">{{ p.startDate }}</td>
-                <td style="color: #64748b; vertical-align: middle;">{{ p.endDate }}</td>
-                <td style="text-align: right; vertical-align: middle;">
-                  <span class="badge" [class.planned]="p.status === 'PLANNED'" [class.active]="p.status === 'ACTIVE'" [class.closed]="p.status === 'CLOSED'">
-                    {{ p.status === 'PLANNED' ? 'PLANIFICADO' : p.status === 'ACTIVE' ? 'EN PROCESO' : 'TERMINADO' }}
-                  </span>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
+      <div class="floating-list">
+        @for (p of projects(); track p.id) {
+          <div class="floating-row">
+            <div class="row-main">
+              <strong class="row-title">{{ p.name }}</strong>
+              <span class="row-desc">{{ p.description || 'Sin descripción' }}</span>
+            </div>
+            <div class="row-meta">
+              <div class="meta-item">
+                <span class="meta-label">Inicio</span>
+                <span class="meta-val">{{ p.startDate }}</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Fin</span>
+                <span class="meta-val">{{ p.endDate }}</span>
+              </div>
+              <div class="meta-badge">
+                <span class="badge" [class.planned]="p.status === 'PLANNED'" [class.active]="p.status === 'ACTIVE'" [class.closed]="p.status === 'CLOSED'">
+                  {{ p.status === 'PLANNED' ? 'PLANIFICADO' : p.status === 'ACTIVE' ? 'EN PROCESO' : 'TERMINADO' }}
+                </span>
+              </div>
+            </div>
+          </div>
+        }
       </div>
     }
   </div>
