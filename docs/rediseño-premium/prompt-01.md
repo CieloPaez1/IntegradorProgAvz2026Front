@@ -11,3 +11,12 @@
 
 **Prompt 4:**
 > "acordate de actualizar las spect y promps y la descripcion de la rama"
+
+**Prompt 5:**
+> "el mimimalista y el claro es exactamente lo mismo ,necesito que cambies eso"
+
+**Prompt 6:**
+> "lo que vi en todos los temas es que solo cambiaste el color y esta bien pero necesito que tambien puedas cambiar toda la vista de cada uno osea la letra ,los tipos de graficos etc"
+
+**Prompt 7:**
+> "siempre actualiza el spec y el promp y pasame la descripcion de la feature"

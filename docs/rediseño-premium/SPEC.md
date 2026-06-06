@@ -16,5 +16,9 @@ Se solicita un rediseño completo de la interfaz gráfica ("Estilo Stripe/Framer
    - Refactorizar `ThemeService` para que persista y manipule múltiples temas mediante `strings` (en lugar de solo Dark/Light).
    - Crear un menú desplegable moderno (`.theme-dropdown`) en el componente `Navbar`.
    - Incorporar 7 paletas de colores distintas aplicadas mediante atributos CSS `[data-theme="..."]`.
-5. **Persistencia**:
+5. **Sistema de Temas Estructurales (Arquitectura Visual)**:
+   - El sistema de temas no solo debe alterar la paleta de colores, sino la vista y la estructura visual de la app completa.
+   - Definir variables CSS globales para controlar: `--font-main` (tipografía), `--radius-card`, `--radius-btn`, `--radius-badge` (bordes redondeados vs cuadrados), y `--hover-translate` (comportamiento de animaciones).
+   - Refactorizar todos los componentes (`home`, `create-project`, `create-task`, `navbar`) para eliminar valores "quemados" y consumir estas variables.
+6. **Persistencia**:
    - El tema elegido por el usuario debe persistir en recargas utilizando el `localStorage`.
