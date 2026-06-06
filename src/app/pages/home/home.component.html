@@ -198,42 +198,108 @@
     </article>
   </section>
 
-  <!-- CALENDARIO VISUAL MENSUAL -->
+  <!-- CALENDARIO DE VENCIMIENTOS -->
   <section class="alerts-section" style="margin-top: 40px;">
     <article class="alerts-card">
-      <div class="card-header" style="justify-content: space-between;">
-        <div style="display: flex; align-items: center; gap: 16px;">
-          <div class="icon-wrapper" style="background: rgba(59, 130, 246, 0.15); color: var(--primary-color);">
-            <svg lucideCalendar></svg>
-          </div>
-          <h2>Calendario de Tareas</h2>
+      <div class="card-header">
+        <div class="icon-wrapper" style="background: rgba(59, 130, 246, 0.15); color: var(--primary-color);">
+          <svg lucideCalendar></svg>
         </div>
-        <div class="calendar-controls">
-          <button class="btn-icon outline-small" (click)="prevMonth()"><svg lucideChevronLeft></svg></button>
-          <h3 class="calendar-month-title">{{ mesActualNombre() }}</h3>
-          <button class="btn-icon outline-small" (click)="nextMonth()"><svg lucideChevronRight></svg></button>
-        </div>
+        <h2>Calendario de Vencimientos</h2>
       </div>
 
-      <div class="calendar-grid-wrapper">
-        <div class="calendar-weekdays">
-          <div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
-        </div>
-        <div class="calendar-grid">
-          @for (day of calendarDays(); track day.date.toISOString()) {
-            <div class="calendar-day" [class.not-current]="!day.isCurrentMonth" [class.is-today]="day.isToday">
-              <span class="day-number">{{ day.dayNumber }}</span>
-              <div class="day-tasks">
-                @for (t of day.tasks; track t.id) {
-                  <div class="task-chip" [ngClass]="t.colorClass" [title]="t.title + ' (' + t.projectName + ')'">
-                    <span class="chip-dot"></span>
-                    <span class="chip-text">{{ t.title }}</span>
+      <div class="calendar-grid-layout">
+        
+        <!-- Columna Vencidas / Hoy -->
+        <div class="calendar-col">
+          @if (tareasVencidas().length > 0) {
+            <h3 class="calendar-title danger">🔴 Vencidas</h3>
+            <div class="tasks-list mb-4">
+              @for (t of tareasVencidas(); track t.id) {
+                <div class="calendar-task-card danger-border">
+                  <div class="cal-task-header">
+                    <strong>{{ t.title }}</strong>
+                    <span class="cal-date">{{ t.dueDate }}</span>
                   </div>
-                }
-              </div>
+                  <span class="cal-proj">{{ t.projectName }}</span>
+                </div>
+              }
+            </div>
+          }
+
+          <h3 class="calendar-title warning">🟡 Vence hoy</h3>
+          @if (tareasVenceHoy().length === 0) {
+             <p class="empty-state-small">No hay tareas para hoy.</p>
+          } @else {
+            <div class="tasks-list">
+              @for (t of tareasVenceHoy(); track t.id) {
+                <div class="calendar-task-card warning-border">
+                  <div class="cal-task-header">
+                    <strong>{{ t.title }}</strong>
+                  </div>
+                  <span class="cal-proj">{{ t.projectName }}</span>
+                </div>
+              }
             </div>
           }
         </div>
+
+        <!-- Columna Mañana / Próxima semana -->
+        <div class="calendar-col">
+          <h3 class="calendar-title info">🔵 Mañana</h3>
+          @if (tareasVenceManana().length === 0) {
+             <p class="empty-state-small">Libre por ahora.</p>
+          } @else {
+            <div class="tasks-list mb-4">
+              @for (t of tareasVenceManana(); track t.id) {
+                <div class="calendar-task-card info-border">
+                  <div class="cal-task-header">
+                    <strong>{{ t.title }}</strong>
+                  </div>
+                  <span class="cal-proj">{{ t.projectName }}</span>
+                </div>
+              }
+            </div>
+          }
+
+          <h3 class="calendar-title primary">🔵 Próxima semana</h3>
+          @if (tareasProximaSemana().length === 0) {
+             <p class="empty-state-small">Sin tareas próximas.</p>
+          } @else {
+            <div class="tasks-list">
+              @for (t of tareasProximaSemana(); track t.id) {
+                <div class="calendar-task-card border-slate">
+                  <div class="cal-task-header">
+                    <strong>{{ t.title }}</strong>
+                    <span class="cal-date">{{ t.dueDate }}</span>
+                  </div>
+                  <span class="cal-proj">{{ t.projectName }}</span>
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Columna Completadas -->
+        <div class="calendar-col">
+          <h3 class="calendar-title success">🟢 Completadas</h3>
+          @if (tareasCompletadasRecientes().length === 0) {
+             <p class="empty-state-small">Aún no hay tareas completadas.</p>
+          } @else {
+            <div class="tasks-list">
+              @for (t of tareasCompletadasRecientes(); track t.id) {
+                <div class="calendar-task-card success-border done-bg">
+                  <div class="cal-task-header">
+                    <strong style="text-decoration: line-through; color: var(--text-secondary);">{{ t.title }}</strong>
+                    <span class="cal-date">Hecha</span>
+                  </div>
+                  <span class="cal-proj">{{ t.projectName }}</span>
+                </div>
+              }
+            </div>
+          }
+        </div>
+
       </div>
     </article>
   </section>
