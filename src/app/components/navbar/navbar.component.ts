@@ -1,10 +1,11 @@
-import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Subject, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
-import { LucideSearch, LucideX, LucideUser, LucideSettings, LucideLogOut } from '@lucide/angular';
+import { LucideSearch, LucideX, LucideUser, LucideSettings, LucideLogOut, LucideSun, LucideMoon } from '@lucide/angular';
+import { ThemeService } from '../../services/theme.service';
 import { SearchService } from '../../services/search.service';
 import { Task } from '../../models/task.model';
 import { Project } from '../../models/project.model';
