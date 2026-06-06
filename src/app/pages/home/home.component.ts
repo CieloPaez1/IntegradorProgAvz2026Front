@@ -10,12 +10,12 @@ import { Project } from '../../models/project.model';
 import { Task } from '../../models/task.model';
 import { TaskStatusPipe } from '../../pipes/task-status.pipe';
 import { ProjectStatusPipe } from '../../pipes/project-status.pipe';
-import { LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideChevronDown, LucideCalendar } from '@lucide/angular';
+import { LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideChevronDown, LucideCalendar, LucideChevronLeft, LucideChevronRight } from '@lucide/angular';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, TaskStatusPipe, ProjectStatusPipe, LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideChevronDown, LucideCalendar],
+  imports: [CommonModule, RouterModule, TaskStatusPipe, ProjectStatusPipe, LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideChevronDown, LucideCalendar, LucideChevronLeft, LucideChevronRight],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -77,24 +77,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   tareasCompletadas = computed(() => this.tasks().filter(t => t.status === 'DONE').length);
   tareasPendientes = computed(() => this.tasks().filter(t => t.status === 'TODO').length);
 
-  // --- CALENDARIO DE VENCIMIENTOS ---
+  // --- CALENDARIO MENSUAL ---
   private getTodayStr(): string {
     return new Date().toISOString().split('T')[0];
-  }
-  private getTomorrowStr(): string {
-    const d = new Date();
-    d.setDate(d.getDate() + 1);
-    return d.toISOString().split('T')[0];
-  }
-  private getNextWeekStr(): string {
-    const d = new Date();
-    d.setDate(d.getDate() + 7);
-    return d.toISOString().split('T')[0];
   }
 
   tareasConVencimiento = computed(() => {
     return this.tasks().map(t => {
-      // Usamos la fecha de fin del proyecto como vencimiento de la tarea
       const p = this.projects().find(proj => proj.id === t.projectId);
       return {
         ...t,
@@ -104,30 +93,73 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }).sort((a, b) => a.dueDate.localeCompare(b.dueDate));
   });
 
-  tareasVencidas = computed(() => {
-    const today = this.getTodayStr();
-    return this.tareasConVencimiento().filter(t => t.dueDate < today && t.status !== 'DONE');
+  currentMonth = signal<Date>(new Date(new Date().getFullYear(), new Date().getMonth(), 1));
+
+  mesActualNombre = computed(() => {
+    const formatter = new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric' });
+    const text = formatter.format(this.currentMonth());
+    return text.charAt(0).toUpperCase() + text.slice(1);
   });
 
-  tareasVenceHoy = computed(() => {
-    const today = this.getTodayStr();
-    return this.tareasConVencimiento().filter(t => t.dueDate === today && t.status !== 'DONE');
+  calendarDays = computed(() => {
+    const year = this.currentMonth().getFullYear();
+    const month = this.currentMonth().getMonth();
+    
+    const firstDayOfMonth = new Date(year, month, 1);
+    const lastDayOfMonth = new Date(year, month + 1, 0);
+    
+    const startDate = new Date(firstDayOfMonth);
+    startDate.setDate(startDate.getDate() - (startDate.getDay() === 0 ? 6 : startDate.getDay() - 1)); // Lunes como primer día
+    
+    const endDate = new Date(lastDayOfMonth);
+    endDate.setDate(endDate.getDate() + (7 - endDate.getDay() === 7 ? 0 : 7 - endDate.getDay()));
+    
+    const days: any[] = [];
+    const todayStr = this.getTodayStr();
+    let currentDate = new Date(startDate);
+    
+    while (currentDate <= endDate) {
+      const dateStr = currentDate.toISOString().split('T')[0];
+      
+      const dayTasks = this.tareasConVencimiento().filter(t => t.dueDate === dateStr).map(t => {
+        let colorClass = 'blue';
+        if (t.status === 'DONE') colorClass = 'green';
+        else if (t.dueDate < todayStr) colorClass = 'red';
+        else if (t.dueDate === todayStr) colorClass = 'yellow';
+        
+        return {
+          id: t.id,
+          title: t.title,
+          projectName: t.projectName,
+          status: t.status,
+          dueDate: t.dueDate,
+          colorClass
+        };
+      });
+
+      days.push({
+        date: new Date(currentDate),
+        dayNumber: currentDate.getDate(),
+        isCurrentMonth: currentDate.getMonth() === month,
+        isToday: dateStr === todayStr,
+        tasks: dayTasks
+      });
+      
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    
+    return days;
   });
 
-  tareasVenceManana = computed(() => {
-    const tomorrow = this.getTomorrowStr();
-    return this.tareasConVencimiento().filter(t => t.dueDate === tomorrow && t.status !== 'DONE');
-  });
+  prevMonth() {
+    const current = this.currentMonth();
+    this.currentMonth.set(new Date(current.getFullYear(), current.getMonth() - 1, 1));
+  }
 
-  tareasProximaSemana = computed(() => {
-    const tomorrow = this.getTomorrowStr();
-    const nextWeek = this.getNextWeekStr();
-    return this.tareasConVencimiento().filter(t => t.dueDate > tomorrow && t.dueDate <= nextWeek && t.status !== 'DONE');
-  });
-
-  tareasCompletadasRecientes = computed(() => {
-    return this.tareasConVencimiento().filter(t => t.status === 'DONE').slice(0, 5);
-  });
+  nextMonth() {
+    const current = this.currentMonth();
+    this.currentMonth.set(new Date(current.getFullYear(), current.getMonth() + 1, 1));
+  }
   // ----------------------------------
 
   porcentajeTareasCompletadas = computed(() => this.percentage(this.tareasCompletadas(), this.totalTareas()));
