@@ -88,16 +88,20 @@
                   <strong>{{ p.name }}</strong>
                   <span>{{ p.description || 'Sin descripción' }}</span>
                 </div>
-                <button 
-                  class="status-badge interactive" 
-                  [class.status-todo]="p.status === 'PLANNED'" 
-                  [class.status-progress]="p.status === 'ACTIVE'" 
-                  [class.status-done]="p.status === 'CLOSED'"
-                  (click)="cycleProjectStatus(p)"
-                  title="Haz clic para cambiar el estado"
-                >
-                  {{ p.status | projectStatus }}
-                </button>
+                @if (p.status === 'CLOSED') {
+                  <span class="status-badge status-done">Terminado</span>
+                } @else {
+                  <select 
+                    class="status-select" 
+                    [class.status-todo]="p.status === 'PLANNED'" 
+                    [class.status-progress]="p.status === 'ACTIVE'" 
+                    (change)="updateProjectStatus(p, $event)"
+                  >
+                    <option value="PLANNED" [selected]="p.status === 'PLANNED'">Planificado</option>
+                    <option value="ACTIVE" [selected]="p.status === 'ACTIVE'">En proceso</option>
+                    <option value="CLOSED">Terminado</option>
+                  </select>
+                }
               </div>
             }
           </div>
@@ -152,16 +156,20 @@
                   <strong>{{ t.title }}</strong>
                   <span>{{ t.assignee || 'Sin asignar' }}</span>
                 </div>
-                <button 
-                  class="status-badge interactive" 
-                  [class.status-todo]="t.status === 'TODO'" 
-                  [class.status-progress]="t.status === 'IN_PROGRESS'" 
-                  [class.status-done]="t.status === 'DONE'"
-                  (click)="cycleTaskStatus(t)"
-                  title="Haz clic para cambiar el estado"
-                >
-                  {{ t.status | taskStatus }}
-                </button>
+                @if (t.status === 'DONE') {
+                  <span class="status-badge status-done">Hecha</span>
+                } @else {
+                  <select 
+                    class="status-select" 
+                    [class.status-todo]="t.status === 'TODO'" 
+                    [class.status-progress]="t.status === 'IN_PROGRESS'" 
+                    (change)="updateTaskStatus(t, $event)"
+                  >
+                    <option value="TODO" [selected]="t.status === 'TODO'">Por hacer</option>
+                    <option value="IN_PROGRESS" [selected]="t.status === 'IN_PROGRESS'">En proceso</option>
+                    <option value="DONE">Hecha</option>
+                  </select>
+                }
               </div>
             }
           </div>

@@ -138,18 +138,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return total === 0 ? 0 : Math.round((value / total) * 100);
   }
 
-  cycleProjectStatus(project: Project) {
+  updateProjectStatus(project: Project, event: Event) {
     if (!project.id) return;
+    const select = event.target as HTMLSelectElement;
+    const nextStatus = select.value as 'PLANNED' | 'ACTIVE' | 'CLOSED';
     
     // Guardamos estado anterior para rollback
-    const oldStatus = project.status;
     const oldProjects = [...this.projects()];
-
-    // PLANNED -> ACTIVE -> CLOSED -> PLANNED
-    let nextStatus: 'PLANNED' | 'ACTIVE' | 'CLOSED' = 'PLANNED';
-    if (project.status === 'PLANNED') nextStatus = 'ACTIVE';
-    else if (project.status === 'ACTIVE') nextStatus = 'CLOSED';
-
     const updatedProject = { ...project, status: nextStatus };
     
     // Optimistic Update
@@ -164,18 +159,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  cycleTaskStatus(task: Task) {
+  updateTaskStatus(task: Task, event: Event) {
     if (!task.id || !task.projectId) return;
+    const select = event.target as HTMLSelectElement;
+    const nextStatus = select.value as 'TODO' | 'IN_PROGRESS' | 'DONE';
 
     // Guardamos estado anterior para rollback
-    const oldStatus = task.status;
     const oldTasks = [...this.tasks()];
-
-    // TODO -> IN_PROGRESS -> DONE -> TODO
-    let nextStatus: 'TODO' | 'IN_PROGRESS' | 'DONE' = 'TODO';
-    if (task.status === 'TODO') nextStatus = 'IN_PROGRESS';
-    else if (task.status === 'IN_PROGRESS') nextStatus = 'DONE';
-
     const updatedTask = { ...task, status: nextStatus };
 
     // Optimistic Update
