@@ -11,7 +11,7 @@ export class ThemeService {
   public readonly availableThemes: { id: AppTheme, name: string, color: string }[] = [
     { id: 'light', name: 'Claro (Framer)', color: '#fcfcfd' },
     { id: 'dark', name: 'Oscuro Profundo', color: '#05050a' },
-    { id: 'minimal', name: 'Minimalista Clásico', color: '#ffffff' },
+    { id: 'minimal', name: 'Minimalista Clásico', color: '#18181b' },
     { id: 'cyberpunk', name: 'Cyberpunk Neón', color: '#090014' },
     { id: 'ocean', name: 'Océano', color: '#0f172a' },
     { id: 'sunset', name: 'Atardecer', color: '#fff1f2' },

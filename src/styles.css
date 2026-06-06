@@ -69,23 +69,30 @@
 }
 
 [data-theme="minimal"] {
-  /* MINIMAL THEME (Clásico) */
-  --bg-primary: #f8fafc;
-  --bg-secondary: #ffffff;
+  /* MINIMAL THEME (Monocromo / Flat) */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f4f4f5;
   --card-bg: #ffffff;
-  --card-border: #e2e8f0;
-  --text-primary: #0f172a;
-  --text-secondary: #64748b;
-  --border-color: #e2e8f0;
+  --card-border: #e4e4e7;
+  --text-primary: #18181b;
+  --text-secondary: #71717a;
+  --border-color: #e4e4e7;
   
-  --primary-color: #4f46e5;
-  --primary-hover: #4338ca;
+  --primary-color: #18181b;
+  --primary-hover: #3f3f46;
   --primary-glow: transparent;
 
-  --glass-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  --glass-backdrop: blur(0px);
+  --badge-planned-bg: #f4f4f5;
+  --badge-planned-text: #52525b;
+  --badge-active-bg: #18181b;
+  --badge-active-text: #ffffff;
+  --badge-closed-bg: #e4e4e7;
+  --badge-closed-text: #18181b;
+
+  --glass-shadow: none;
+  --glass-backdrop: none;
   --input-bg: #ffffff;
-  --input-border: #cbd5e1;
+  --input-border: #d4d4d8;
 
   --mesh-c1: transparent;
   --mesh-c2: transparent;
