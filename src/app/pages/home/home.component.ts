@@ -8,12 +8,12 @@ import { ProjectService } from '../../services/project.service';
 import { TaskService } from '../../services/task.service';
 import { Project } from '../../models/project.model';
 import { Task } from '../../models/task.model';
-import { LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus } from '@lucide/angular';
+import { LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideChevronDown } from '@lucide/angular';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus],
+  imports: [CommonModule, RouterModule, LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideChevronDown],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -34,6 +34,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private projectChartInst: Chart | null = null;
   private taskChartInst: Chart | null = null;
+
+  activeDropdownId = signal<string | null>(null);
 
   constructor() {
     effect(() => {
@@ -136,10 +138,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return total === 0 ? 0 : Math.round((value / total) * 100);
   }
 
-  updateProjectStatus(project: Project, event: Event) {
+  toggleDropdown(event: Event, id: string) {
+    event.stopPropagation();
+    if (this.activeDropdownId() === id) {
+      this.activeDropdownId.set(null);
+    } else {
+      this.activeDropdownId.set(id);
+    }
+  }
+
+  @HostListener('document:click')
+  closeDropdowns() {
+    this.activeDropdownId.set(null);
+  }
+
+  updateProjectStatus(project: Project, nextStatus: 'PLANNED' | 'ACTIVE' | 'CLOSED') {
     if (!project.id) return;
-    const select = event.target as HTMLSelectElement;
-    const nextStatus = select.value as 'PLANNED' | 'ACTIVE' | 'CLOSED';
+    this.activeDropdownId.set(null);
     
     // Guardamos estado anterior para rollback
     const oldProjects = [...this.projects()];
@@ -157,10 +172,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  updateTaskStatus(task: Task, event: Event) {
+  updateTaskStatus(task: Task, nextStatus: 'TODO' | 'IN_PROGRESS' | 'DONE') {
     if (!task.id || !task.projectId) return;
-    const select = event.target as HTMLSelectElement;
-    const nextStatus = select.value as 'TODO' | 'IN_PROGRESS' | 'DONE';
+    this.activeDropdownId.set(null);
 
     // Guardamos estado anterior para rollback
     const oldTasks = [...this.tasks()];

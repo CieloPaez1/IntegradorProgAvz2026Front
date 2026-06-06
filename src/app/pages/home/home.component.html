@@ -91,16 +91,26 @@
                 @if (p.status === 'CLOSED') {
                   <span class="status-badge status-done">Terminado</span>
                 } @else {
-                  <select 
-                    class="status-select" 
-                    [class.status-todo]="p.status === 'PLANNED'" 
-                    [class.status-progress]="p.status === 'ACTIVE'" 
-                    (change)="updateProjectStatus(p, $event)"
-                  >
-                    <option value="PLANNED" [selected]="p.status === 'PLANNED'">Planificado</option>
-                    <option value="ACTIVE" [selected]="p.status === 'ACTIVE'">En proceso</option>
-                    <option value="CLOSED">Terminado</option>
-                  </select>
+                  <div class="custom-dropdown-container">
+                    <button 
+                      class="status-badge custom-dropdown-trigger" 
+                      [class.status-todo]="p.status === 'PLANNED'" 
+                      [class.status-progress]="p.status === 'ACTIVE'"
+                      (click)="toggleDropdown($event, 'proj_' + p.id)"
+                    >
+                      {{ p.status | projectStatus }}
+                      <svg lucideChevronDown class="dropdown-chevron"></svg>
+                    </button>
+
+                    @if (activeDropdownId() === 'proj_' + p.id) {
+                      <div class="custom-dropdown-menu">
+                        <button class="dropdown-option" (click)="updateProjectStatus(p, 'PLANNED')" [class.active]="p.status === 'PLANNED'">Planificado</button>
+                        <button class="dropdown-option" (click)="updateProjectStatus(p, 'ACTIVE')" [class.active]="p.status === 'ACTIVE'">En proceso</button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-option done-option" (click)="updateProjectStatus(p, 'CLOSED')">Marcar Terminado</button>
+                      </div>
+                    }
+                  </div>
                 }
               </div>
             }
@@ -159,16 +169,26 @@
                 @if (t.status === 'DONE') {
                   <span class="status-badge status-done">Hecha</span>
                 } @else {
-                  <select 
-                    class="status-select" 
-                    [class.status-todo]="t.status === 'TODO'" 
-                    [class.status-progress]="t.status === 'IN_PROGRESS'" 
-                    (change)="updateTaskStatus(t, $event)"
-                  >
-                    <option value="TODO" [selected]="t.status === 'TODO'">Por hacer</option>
-                    <option value="IN_PROGRESS" [selected]="t.status === 'IN_PROGRESS'">En proceso</option>
-                    <option value="DONE">Hecha</option>
-                  </select>
+                  <div class="custom-dropdown-container">
+                    <button 
+                      class="status-badge custom-dropdown-trigger" 
+                      [class.status-todo]="t.status === 'TODO'" 
+                      [class.status-progress]="t.status === 'IN_PROGRESS'"
+                      (click)="toggleDropdown($event, 'task_' + t.id)"
+                    >
+                      {{ t.status | taskStatus }}
+                      <svg lucideChevronDown class="dropdown-chevron"></svg>
+                    </button>
+
+                    @if (activeDropdownId() === 'task_' + t.id) {
+                      <div class="custom-dropdown-menu">
+                        <button class="dropdown-option" (click)="updateTaskStatus(t, 'TODO')" [class.active]="t.status === 'TODO'">Por hacer</button>
+                        <button class="dropdown-option" (click)="updateTaskStatus(t, 'IN_PROGRESS')" [class.active]="t.status === 'IN_PROGRESS'">En proceso</button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-option done-option" (click)="updateTaskStatus(t, 'DONE')">Marcar Hecha</button>
+                      </div>
+                    }
+                  </div>
                 }
               </div>
             }

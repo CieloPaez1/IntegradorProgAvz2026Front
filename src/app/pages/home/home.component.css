@@ -379,53 +379,92 @@
 .status-progress { background: var(--badge-active-bg); color: var(--badge-active-text); }
 .status-done { background: var(--badge-closed-bg); color: var(--badge-closed-text); }
 
-select.status-select {
-  border: 1px solid var(--border-color);
-  background-color: var(--input-bg);
+/* Custom Dropdown Menus */
+.custom-dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+button.custom-dropdown-trigger {
+  border: none;
   cursor: pointer;
-  appearance: none; /* remove native arrow */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 6px center;
-  background-size: 14px;
-  padding: 5px 24px 5px 8px; /* space for the arrow */
-  border-radius: var(--radius-badge);
-  font-size: 0.72rem;
-  font-weight: 700;
-  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 4px;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-select.status-select:hover {
+button.custom-dropdown-trigger:hover {
   filter: brightness(0.95);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-select.status-select:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px var(--primary-glow);
+.dropdown-chevron {
+  width: 14px;
+  height: 14px;
+  opacity: 0.6;
 }
 
-/* Inherit colored backgrounds but let text be legible or dark */
-select.status-select.status-todo {
-  background-color: var(--badge-planned-bg);
-  color: var(--badge-planned-text);
-  border-color: transparent;
+.custom-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  width: 160px;
+  background: var(--card-bg);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-card);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  animation: dropdownFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-select.status-select.status-progress {
-  background-color: var(--badge-active-bg);
-  color: var(--badge-active-text);
-  border-color: transparent;
+@keyframes dropdownFadeIn {
+  from { opacity: 0; transform: translateY(-8px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-select.status-select option {
-  background-color: var(--card-bg);
+.dropdown-option {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  border-radius: calc(var(--radius-btn) / 2);
   color: var(--text-primary);
+  font-size: 0.85rem;
   font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.dropdown-option:hover {
+  background: var(--bg-secondary);
+}
+
+.dropdown-option.active {
+  color: var(--primary-color);
+  background: var(--primary-glow);
+  font-weight: 700;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: var(--border-color);
+  margin: 4px 0;
+}
+
+.done-option {
+  color: var(--success-color);
+}
+
+.done-option:hover {
+  background: var(--badge-closed-bg);
 }
 
 .empty-state {
