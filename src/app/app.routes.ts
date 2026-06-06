@@ -3,6 +3,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { ReportsSummaryComponent } from './pages/reports/reports-summary.component';
 import { ProjectReportComponent } from './pages/reports/project-report.component';
 import { ProjectDetailComponent } from './pages/projects/project-detail.component';
+import { ProjectListComponent } from './pages/projects/list/project-list.component';
 import { TaskDetailComponent } from './pages/tasks/task-detail.component';
 import { CreateProjectComponent } from './pages/create-project/create-project.component';
 import { DeleteProjectComponent } from './pages/delete-project/delete-project.component';
@@ -14,6 +15,7 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'reports', component: ReportsSummaryComponent },
   { path: 'reports/project', component: ProjectReportComponent },
+  { path: 'projects', component: ProjectListComponent },
   { path: 'projects/create', component: CreateProjectComponent },
   { path: 'projects/delete', component: DeleteProjectComponent },
   { path: 'projects/:id', component: ProjectDetailComponent },
