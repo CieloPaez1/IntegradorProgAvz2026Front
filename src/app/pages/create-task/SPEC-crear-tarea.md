@@ -32,29 +32,41 @@ Si hay error, muestra un mensaje descriptivo.
 
 ## Criterios de aceptación
 
-- Dado que el usuario completa todos los campos válidos,
-  cuando hace click en Guardar,
-  entonces la tarea se crea y aparece en la tabla.
+### Escenario: Creación exitosa de una tarea
+- **Given** que el usuario completó todos los campos requeridos con datos válidos
+- **When** hace click en el botón Guardar
+- **Then** la tarea se crea exitosamente
+- **And** la nueva tarea se muestra en la tabla inferior
 
-- Dado que el usuario deja el título vacío,
-  cuando hace click en Guardar,
-  entonces ve el mensaje "El título es obligatorio".
+### Escenario: Error de validación (título vacío)
+- **Given** que el usuario dejó el título de la tarea vacío
+- **When** hace click en el botón Guardar
+- **Then** el formulario no se envía
+- **And** se muestra un mensaje de error indicando "El título es obligatorio"
 
-- Dado que el usuario ingresa estimateHours <= 0,
-  cuando hace click en Guardar,
-  entonces ve el mensaje "Las horas deben ser mayor a 0".
+### Escenario: Error de validación (horas inválidas)
+- **Given** que el usuario ingresó un valor menor o igual a 0 en las horas estimadas
+- **When** hace click en el botón Guardar
+- **Then** el formulario no se envía
+- **And** se muestra un mensaje de error indicando "Las horas deben ser mayor a 0"
 
-- Dado que el proyecto está CLOSED,
-  cuando el usuario intenta crear una tarea,
-  entonces ve el mensaje de error 409 del backend.
+### Escenario: Error de negocio (proyecto cerrado)
+- **Given** que el proyecto seleccionado se encuentra en estado CLOSED
+- **When** el usuario intenta crear la tarea
+- **Then** el sistema recibe un error 409 del backend
+- **And** se muestra un mensaje de error con el detalle provisto por el servidor
 
-- Dado que el proyecto no existe,
-  cuando se intenta crear la tarea,
-  entonces ve el mensaje "Proyecto no encontrado".
+### Escenario: Error de negocio (proyecto inexistente)
+- **Given** que el proyecto seleccionado no existe en la base de datos
+- **When** el usuario intenta crear la tarea
+- **Then** el sistema recibe un error 404 del backend
+- **And** se muestra un mensaje de error indicando "Proyecto no encontrado"
 
-- Dado que el backend no está disponible (sin conexión),
-  cuando se intenta crear una tarea o cargar proyectos,
-  entonces ve el mensaje de error indicando que no hay conexión.
+### Escenario: Error de conectividad
+- **Given** que el backend no está disponible
+- **When** el usuario intenta crear una tarea o cargar proyectos
+- **Then** la petición falla
+- **And** se muestra un mensaje de error indicando problemas de conexión
 
 ## Agente IA
 Antigravity — prompts documentados en prompt-crear-tarea.md
