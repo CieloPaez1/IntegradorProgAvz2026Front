@@ -10,12 +10,12 @@ import { Project } from '../../models/project.model';
 import { Task } from '../../models/task.model';
 import { TaskStatusPipe } from '../../pipes/task-status.pipe';
 import { ProjectStatusPipe } from '../../pipes/project-status.pipe';
-import { LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideChevronDown } from '@lucide/angular';
+import { LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideChevronDown, LucideCalendar } from '@lucide/angular';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, TaskStatusPipe, ProjectStatusPipe, LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideChevronDown],
+  imports: [CommonModule, RouterModule, TaskStatusPipe, ProjectStatusPipe, LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideChevronDown, LucideCalendar],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -76,6 +76,60 @@ export class HomeComponent implements OnInit, AfterViewInit {
   tareasEnProgreso = computed(() => this.tasks().filter(t => t.status === 'IN_PROGRESS').length);
   tareasCompletadas = computed(() => this.tasks().filter(t => t.status === 'DONE').length);
   tareasPendientes = computed(() => this.tasks().filter(t => t.status === 'TODO').length);
+
+  // --- CALENDARIO DE VENCIMIENTOS ---
+  private getTodayStr(): string {
+    return new Date().toISOString().split('T')[0];
+  }
+  private getTomorrowStr(): string {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().split('T')[0];
+  }
+  private getNextWeekStr(): string {
+    const d = new Date();
+    d.setDate(d.getDate() + 7);
+    return d.toISOString().split('T')[0];
+  }
+
+  tareasConVencimiento = computed(() => {
+    return this.tasks().map(t => {
+      // Usamos la fecha de fin del proyecto como vencimiento de la tarea
+      const p = this.projects().find(proj => proj.id === t.projectId);
+      return {
+        ...t,
+        dueDate: p?.endDate || '9999-12-31',
+        projectName: p?.name || 'Sin Proyecto'
+      };
+    }).sort((a, b) => a.dueDate.localeCompare(b.dueDate));
+  });
+
+  tareasVencidas = computed(() => {
+    const today = this.getTodayStr();
+    return this.tareasConVencimiento().filter(t => t.dueDate < today && t.status !== 'DONE');
+  });
+
+  tareasVenceHoy = computed(() => {
+    const today = this.getTodayStr();
+    return this.tareasConVencimiento().filter(t => t.dueDate === today && t.status !== 'DONE');
+  });
+
+  tareasVenceManana = computed(() => {
+    const tomorrow = this.getTomorrowStr();
+    return this.tareasConVencimiento().filter(t => t.dueDate === tomorrow && t.status !== 'DONE');
+  });
+
+  tareasProximaSemana = computed(() => {
+    const tomorrow = this.getTomorrowStr();
+    const nextWeek = this.getNextWeekStr();
+    return this.tareasConVencimiento().filter(t => t.dueDate > tomorrow && t.dueDate <= nextWeek && t.status !== 'DONE');
+  });
+
+  tareasCompletadasRecientes = computed(() => {
+    return this.tareasConVencimiento().filter(t => t.status === 'DONE').slice(0, 5);
+  });
+  // ----------------------------------
+
   porcentajeTareasCompletadas = computed(() => this.percentage(this.tareasCompletadas(), this.totalTareas()));
 
   ngAfterViewInit() {
