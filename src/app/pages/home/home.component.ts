@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   tareasCompletadas = computed(() => this.tasks().filter(t => t.status === 'DONE').length);
   tareasPendientes = computed(() => this.tasks().filter(t => t.status === 'TODO').length);
 
-  // --- CALENDARIO DE VENCIMIENTOS ---
+  // --- CALENDARIO DE VENCIMIENTOS DE PROYECTOS ---
   private getTodayStr(): string {
     return new Date().toISOString().split('T')[0];
   }
@@ -92,41 +92,29 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return d.toISOString().split('T')[0];
   }
 
-  tareasConVencimiento = computed(() => {
-    return this.tasks().map(t => {
-      // Usamos la fecha de fin del proyecto como vencimiento de la tarea
-      const p = this.projects().find(proj => proj.id === t.projectId);
-      return {
-        ...t,
-        dueDate: p?.endDate || '9999-12-31',
-        projectName: p?.name || 'Sin Proyecto'
-      };
-    }).sort((a, b) => a.dueDate.localeCompare(b.dueDate));
-  });
-
-  tareasVencidas = computed(() => {
+  proyectosVencidos = computed(() => {
     const today = this.getTodayStr();
-    return this.tareasConVencimiento().filter(t => t.dueDate < today && t.status !== 'DONE');
+    return this.projects().filter(p => p.endDate < today && p.status !== 'CLOSED');
   });
 
-  tareasVenceHoy = computed(() => {
+  proyectosVenceHoy = computed(() => {
     const today = this.getTodayStr();
-    return this.tareasConVencimiento().filter(t => t.dueDate === today && t.status !== 'DONE');
+    return this.projects().filter(p => p.endDate === today && p.status !== 'CLOSED');
   });
 
-  tareasVenceManana = computed(() => {
+  proyectosVenceManana = computed(() => {
     const tomorrow = this.getTomorrowStr();
-    return this.tareasConVencimiento().filter(t => t.dueDate === tomorrow && t.status !== 'DONE');
+    return this.projects().filter(p => p.endDate === tomorrow && p.status !== 'CLOSED');
   });
 
-  tareasProximaSemana = computed(() => {
+  proyectosProximaSemana = computed(() => {
     const tomorrow = this.getTomorrowStr();
     const nextWeek = this.getNextWeekStr();
-    return this.tareasConVencimiento().filter(t => t.dueDate > tomorrow && t.dueDate <= nextWeek && t.status !== 'DONE');
+    return this.projects().filter(p => p.endDate > tomorrow && p.endDate <= nextWeek && p.status !== 'CLOSED');
   });
 
-  tareasCompletadasRecientes = computed(() => {
-    return this.tareasConVencimiento().filter(t => t.status === 'DONE').slice(0, 5);
+  proyectosCompletadosRecientes = computed(() => {
+    return this.projects().filter(p => p.status === 'CLOSED').slice(0, 5);
   });
   // ----------------------------------
 

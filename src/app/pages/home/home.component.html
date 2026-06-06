@@ -198,46 +198,46 @@
     </article>
   </section>
 
-  <!-- CALENDARIO DE VENCIMIENTOS -->
+  <!-- CALENDARIO DE VENCIMIENTOS DE PROYECTOS -->
   <section class="alerts-section" style="margin-top: 40px;">
     <article class="alerts-card">
       <div class="card-header">
         <div class="icon-wrapper" style="background: rgba(59, 130, 246, 0.15); color: var(--primary-color);">
           <svg lucideCalendar></svg>
         </div>
-        <h2>Calendario de Vencimientos</h2>
+        <h2>Vencimientos de Proyectos</h2>
       </div>
 
       <div class="calendar-grid-layout">
         
-        <!-- Columna Vencidas / Hoy -->
+        <!-- Columna Vencidos / Hoy -->
         <div class="calendar-col">
-          @if (tareasVencidas().length > 0) {
-            <h3 class="calendar-title danger">🔴 Vencidas</h3>
+          @if (proyectosVencidos().length > 0) {
+            <h3 class="calendar-title danger">🔴 Vencidos</h3>
             <div class="tasks-list mb-4">
-              @for (t of tareasVencidas(); track t.id) {
+              @for (p of proyectosVencidos(); track p.id) {
                 <div class="calendar-task-card danger-border">
                   <div class="cal-task-header">
-                    <strong>{{ t.title }}</strong>
-                    <span class="cal-date">{{ t.dueDate }}</span>
+                    <strong>{{ p.name }}</strong>
+                    <span class="cal-date">{{ p.endDate }}</span>
                   </div>
-                  <span class="cal-proj">{{ t.projectName }}</span>
+                  <span class="cal-proj">Inicio: {{ p.startDate }}</span>
                 </div>
               }
             </div>
           }
 
           <h3 class="calendar-title warning">🟡 Vence hoy</h3>
-          @if (tareasVenceHoy().length === 0) {
-             <p class="empty-state-small">No hay tareas para hoy.</p>
+          @if (proyectosVenceHoy().length === 0) {
+             <p class="empty-state-small">Ningún proyecto vence hoy.</p>
           } @else {
             <div class="tasks-list">
-              @for (t of tareasVenceHoy(); track t.id) {
+              @for (p of proyectosVenceHoy(); track p.id) {
                 <div class="calendar-task-card warning-border">
                   <div class="cal-task-header">
-                    <strong>{{ t.title }}</strong>
+                    <strong>{{ p.name }}</strong>
                   </div>
-                  <span class="cal-proj">{{ t.projectName }}</span>
+                  <span class="cal-proj">Inicio: {{ p.startDate }}</span>
                 </div>
               }
             </div>
@@ -247,53 +247,53 @@
         <!-- Columna Mañana / Próxima semana -->
         <div class="calendar-col">
           <h3 class="calendar-title info">🔵 Mañana</h3>
-          @if (tareasVenceManana().length === 0) {
-             <p class="empty-state-small">Libre por ahora.</p>
+          @if (proyectosVenceManana().length === 0) {
+             <p class="empty-state-small">Ninguno.</p>
           } @else {
             <div class="tasks-list mb-4">
-              @for (t of tareasVenceManana(); track t.id) {
+              @for (p of proyectosVenceManana(); track p.id) {
                 <div class="calendar-task-card info-border">
                   <div class="cal-task-header">
-                    <strong>{{ t.title }}</strong>
+                    <strong>{{ p.name }}</strong>
                   </div>
-                  <span class="cal-proj">{{ t.projectName }}</span>
+                  <span class="cal-proj">Inicio: {{ p.startDate }}</span>
                 </div>
               }
             </div>
           }
 
           <h3 class="calendar-title primary">🔵 Próxima semana</h3>
-          @if (tareasProximaSemana().length === 0) {
-             <p class="empty-state-small">Sin tareas próximas.</p>
+          @if (proyectosProximaSemana().length === 0) {
+             <p class="empty-state-small">Sin vencimientos próximos.</p>
           } @else {
             <div class="tasks-list">
-              @for (t of tareasProximaSemana(); track t.id) {
+              @for (p of proyectosProximaSemana(); track p.id) {
                 <div class="calendar-task-card border-slate">
                   <div class="cal-task-header">
-                    <strong>{{ t.title }}</strong>
-                    <span class="cal-date">{{ t.dueDate }}</span>
+                    <strong>{{ p.name }}</strong>
+                    <span class="cal-date">{{ p.endDate }}</span>
                   </div>
-                  <span class="cal-proj">{{ t.projectName }}</span>
+                  <span class="cal-proj">Inicio: {{ p.startDate }}</span>
                 </div>
               }
             </div>
           }
         </div>
 
-        <!-- Columna Completadas -->
+        <!-- Columna Completados -->
         <div class="calendar-col">
-          <h3 class="calendar-title success">🟢 Completadas</h3>
-          @if (tareasCompletadasRecientes().length === 0) {
-             <p class="empty-state-small">Aún no hay tareas completadas.</p>
+          <h3 class="calendar-title success">🟢 Completados</h3>
+          @if (proyectosCompletadosRecientes().length === 0) {
+             <p class="empty-state-small">Aún no hay proyectos cerrados.</p>
           } @else {
             <div class="tasks-list">
-              @for (t of tareasCompletadasRecientes(); track t.id) {
+              @for (p of proyectosCompletadosRecientes(); track p.id) {
                 <div class="calendar-task-card success-border done-bg">
                   <div class="cal-task-header">
-                    <strong style="text-decoration: line-through; color: var(--text-secondary);">{{ t.title }}</strong>
-                    <span class="cal-date">Hecha</span>
+                    <strong style="text-decoration: line-through; color: var(--text-secondary);">{{ p.name }}</strong>
+                    <span class="cal-date">Cerrado</span>
                   </div>
-                  <span class="cal-proj">{{ t.projectName }}</span>
+                  <span class="cal-proj">{{ p.endDate }}</span>
                 </div>
               }
             </div>
