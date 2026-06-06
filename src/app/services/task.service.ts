@@ -22,7 +22,7 @@ export class TaskService {
 
   filter(minEstimate?: number, assignee?: string): Observable<Task[]> {
     let params = new HttpParams();
-    if (minEstimate) params = params.set('minEstimate', minEstimate.toString());
+    if (minEstimate != null) params = params.set('minEstimate', minEstimate.toString());
     if (assignee) params = params.set('assignee', assignee);
 
     return this.http.get<Task[]>(this.tasksUrl, { params }).pipe(
