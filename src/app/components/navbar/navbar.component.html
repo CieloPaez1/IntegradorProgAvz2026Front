@@ -4,13 +4,18 @@
       <svg lucideSearch class="search-icon" aria-hidden="true"></svg>
 
       <input
+        #searchInput
         type="text"
         [(ngModel)]="searchQuery"
         (input)="onSearchInput()"
-        placeholder="Buscar por nombre, estado o responsable"
+        placeholder="Buscar proyectos o tareas (Ctrl + K)"
         autocomplete="off"
         aria-label="Buscar proyectos y tareas"
       />
+
+      <div class="search-shortcut" *ngIf="!searchQuery">
+        <kbd>Ctrl</kbd> <kbd>K</kbd>
+      </div>
 
       <button
         type="button"

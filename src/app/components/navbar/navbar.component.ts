@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -44,6 +44,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   get hasSearchTerm(): boolean {
     return this.searchQuery.trim().length > 0;
   }
+
+  @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
 
   constructor(
     private searchService: SearchService,
@@ -158,6 +160,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.closeDropdown();
     this.showThemeMenu = false;
     this.showUserMenu = false;
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    // Escuchar Ctrl+K o Cmd+K
+    if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
+      event.preventDefault(); // Previene la barra de busqueda nativa del navegador
+      if (this.searchInput) {
+        this.searchInput.nativeElement.focus();
+      }
+    }
   }
 
   ngOnDestroy() {

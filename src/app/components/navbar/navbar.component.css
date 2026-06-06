@@ -62,6 +62,25 @@
   color: var(--text-secondary);
 }
 
+.search-shortcut {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.search-shortcut kbd {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-family: inherit;
+}
+
 .clear-btn {
   width: 26px;
   height: 26px;
