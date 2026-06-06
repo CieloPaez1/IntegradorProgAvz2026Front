@@ -57,7 +57,7 @@ export class CreateProjectComponent implements OnInit {
       title: ['', Validators.required],
       estimateHours: [0, [Validators.required, Validators.min(1)]],
       assignee: [''],
-      status: ['TODO', Validators.required]
+      status: ['', Validators.required]
     });
     this.tasks.push(taskGroup);
   }
