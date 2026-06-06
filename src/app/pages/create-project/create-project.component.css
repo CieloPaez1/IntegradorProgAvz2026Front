@@ -29,7 +29,7 @@
   background: var(--card-bg);
   backdrop-filter: var(--glass-backdrop);
   -webkit-backdrop-filter: var(--glass-backdrop);
-  border-radius: 20px;
+  border-radius: var(--radius-card);
   padding: 40px;
   border: 1px solid var(--card-border);
   box-shadow: var(--glass-shadow);
@@ -38,7 +38,7 @@
 }
 
 .dashboard-card:hover {
-  transform: translateY(-2px);
+  transform: var(--hover-translate);
 }
 
 .form-label {
@@ -50,14 +50,13 @@
 }
 
 .form-control {
-  height: 52px;
-  border-radius: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: var(--radius-btn);
   border: 1px solid var(--input-border);
   background: var(--input-bg);
-  padding: 0 20px;
   font-size: 1rem;
   color: var(--text-primary);
-  width: 100%;
   transition: all 0.3s ease;
   box-sizing: border-box;
 }
@@ -96,18 +95,18 @@ textarea.form-control {
   color: white;
   font-weight: 800;
   font-size: 1rem;
-  padding: 0 32px;
-  height: 52px;
-  border-radius: 12px;
+  padding: 14px 28px;
+  border-radius: var(--radius-btn);
   border: none;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 8px 20px var(--primary-glow);
 }
 
-.btn-primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 25px var(--primary-glow);
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: var(--hover-translate);
+  box-shadow: 0 15px 30px var(--primary-glow);
 }
 
 .btn-outline {
@@ -119,17 +118,18 @@ textarea.form-control {
   color: var(--text-primary);
   font-weight: 800;
   font-size: 1rem;
-  padding: 0 32px;
-  height: 52px;
-  border-radius: 12px;
+  padding: 14px 28px;
+  border-radius: var(--radius-btn);
   border: 1px solid var(--border-color);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.btn-outline:hover:not(:disabled) {
+.btn-outline:hover {
   background: var(--bg-secondary);
   border-color: var(--text-primary);
+  color: var(--text-primary);
+  transform: var(--hover-translate);
 }
 
 .btn-primary:disabled, .btn-outline:disabled {
@@ -139,18 +139,21 @@ textarea.form-control {
   box-shadow: none;
 }
 
-.alert-success {
-  background: rgba(16, 185, 129, 0.1);
-  color: var(--success-color);
+.alert-success, .alert-error {
   padding: 16px 20px;
-  border-radius: 12px;
+  border-radius: var(--radius-btn);
+  margin-bottom: 24px;
   font-weight: 700;
   font-size: 0.95rem;
-  margin-bottom: 24px;
-  border: 1px solid rgba(16, 185, 129, 0.2);
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.alert-success {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success-color);
+  border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
 .alert-error {
@@ -199,13 +202,13 @@ textarea.form-control {
   backdrop-filter: var(--glass-backdrop);
   -webkit-backdrop-filter: var(--glass-backdrop);
   border: 1px solid var(--card-border);
-  border-radius: 20px;
+  border-radius: var(--radius-card);
   box-shadow: var(--glass-shadow);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .floating-row:hover {
-  transform: scale(1.02) translateY(-4px);
+  transform: scale(1.02) var(--hover-translate);
   border-color: var(--primary-color);
   box-shadow: 0 20px 40px -10px var(--primary-glow);
 }
@@ -262,7 +265,7 @@ textarea.form-control {
 
 .badge {
   padding: 10px 20px;
-  border-radius: 999px;
+  border-radius: var(--radius-badge);
   font-size: 0.8rem;
   font-weight: 800;
   text-transform: uppercase;
@@ -282,6 +285,6 @@ textarea.form-control {
   font-size: 1.05rem;
   font-weight: 600;
   background: var(--card-bg);
-  border-radius: 20px;
+  border-radius: var(--radius-card);
   border: 1px dashed var(--border-color);
 }

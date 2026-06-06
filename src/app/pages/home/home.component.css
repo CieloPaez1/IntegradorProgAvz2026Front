@@ -40,10 +40,9 @@
   gap: 12px;
   background: var(--primary-color);
   color: white;
-  font-weight: 800;
   font-size: 1.05rem;
   padding: 16px 28px;
-  border-radius: 16px;
+  border-radius: var(--radius-btn);
   text-decoration: none;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: none;
@@ -51,7 +50,7 @@
 }
 
 .btn-primary:hover {
-  transform: translateY(-4px) scale(1.03);
+  transform: var(--hover-translate) scale(1.03);
   box-shadow: 0 20px 40px var(--primary-glow);
   background: var(--primary-hover);
 }
@@ -74,7 +73,7 @@
   justify-content: center;
   width: 52px;
   height: 52px;
-  border-radius: 16px;
+  border-radius: var(--radius-btn);
   background: var(--card-bg);
   color: var(--text-secondary);
   text-decoration: none;
@@ -86,7 +85,7 @@
 .btn-icon:hover {
   background: var(--text-primary);
   color: var(--bg-primary);
-  transform: translateY(-4px);
+  transform: var(--hover-translate);
   box-shadow: 0 12px 25px rgba(0,0,0,0.1);
   border-color: transparent;
 }
@@ -110,7 +109,7 @@
   background: var(--card-bg);
   backdrop-filter: var(--glass-backdrop);
   -webkit-backdrop-filter: var(--glass-backdrop);
-  border-radius: 32px;
+  border-radius: var(--radius-card);
   padding: 40px;
   border: 1px solid var(--card-border);
   box-shadow: var(--glass-shadow);
@@ -120,7 +119,7 @@
 }
 
 .chart-card:hover, .alerts-card:hover {
-  transform: translateY(-8px);
+  transform: calc(var(--hover-translate) * 2);
   box-shadow: 0 30px 60px -15px rgba(0,0,0,0.15);
 }
 
@@ -141,7 +140,7 @@
 .icon-wrapper {
   width: 52px;
   height: 52px;
-  border-radius: 16px;
+  border-radius: var(--radius-btn);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -251,7 +250,7 @@
   align-items: center;
   padding: 24px 32px;
   border: 1px solid var(--border-color);
-  border-radius: 20px;
+  border-radius: var(--radius-card);
   background: var(--card-bg);
   transition: all 0.4s ease;
 }
@@ -291,7 +290,7 @@
   color: var(--text-primary);
   background: var(--bg-secondary);
   padding: 8px 20px;
-  border-radius: 14px;
+  border-radius: var(--radius-btn);
   letter-spacing: -0.05em;
 }
 
@@ -307,7 +306,7 @@
   color: var(--primary-color);
   background: var(--primary-glow);
   padding: 12px 20px;
-  border-radius: 12px;
+  border-radius: var(--radius-btn);
   transition: 0.3s ease;
 }
 
@@ -338,7 +337,7 @@
   align-items: center;
   padding: 24px 32px;
   border: 1px solid var(--border-color);
-  border-radius: 20px;
+  border-radius: var(--radius-card);
   background: var(--card-bg);
   transition: all 0.4s ease;
 }
@@ -368,7 +367,7 @@
 
 .status-badge {
   padding: 10px 20px;
-  border-radius: 999px;
+  border-radius: var(--radius-badge);
   font-size: 0.8rem;
   font-weight: 800;
   text-transform: uppercase;

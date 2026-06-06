@@ -33,6 +33,13 @@
   --mesh-c1: #ffb6ff;
   --mesh-c2: #b6ffe4;
   --mesh-c3: #b6c8ff;
+
+  /* STRUCTURAL VARIABLES */
+  --font-main: 'Inter', "Helvetica Neue", sans-serif;
+  --radius-card: 24px;
+  --radius-btn: 16px;
+  --radius-badge: 999px;
+  --hover-translate: translateY(-4px);
 }
 
 [data-theme="dark"] {
@@ -66,6 +73,13 @@
   --mesh-c1: #3b0764;
   --mesh-c2: #082f49;
   --mesh-c3: #064e3b;
+
+  /* STRUCTURAL VARIABLES */
+  --font-main: 'Inter', "Helvetica Neue", sans-serif;
+  --radius-card: 24px;
+  --radius-btn: 16px;
+  --radius-badge: 999px;
+  --hover-translate: translateY(-4px);
 }
 
 [data-theme="minimal"] {
@@ -97,6 +111,13 @@
   --mesh-c1: transparent;
   --mesh-c2: transparent;
   --mesh-c3: transparent;
+
+  /* STRUCTURAL VARIABLES */
+  --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --radius-card: 0px;
+  --radius-btn: 0px;
+  --radius-badge: 0px;
+  --hover-translate: translateY(0px);
 }
 
 [data-theme="cyberpunk"] {
@@ -129,6 +150,13 @@
   --mesh-c1: rgba(255, 0, 255, 0.25);
   --mesh-c2: rgba(0, 255, 204, 0.25);
   --mesh-c3: rgba(255, 255, 0, 0.15);
+
+  /* STRUCTURAL VARIABLES */
+  --font-main: 'Courier New', Courier, monospace;
+  --radius-card: 0px;
+  --radius-btn: 0px;
+  --radius-badge: 4px;
+  --hover-translate: translateY(-4px);
 }
 
 [data-theme="ocean"] {
@@ -161,6 +189,13 @@
   --mesh-c1: #0c4a6e;
   --mesh-c2: #1e3a8a;
   --mesh-c3: #083344;
+
+  /* STRUCTURAL VARIABLES */
+  --font-main: 'Trebuchet MS', 'Lucida Sans Unicode', sans-serif;
+  --radius-card: 40px;
+  --radius-btn: 999px;
+  --radius-badge: 999px;
+  --hover-translate: translateY(-6px);
 }
 
 [data-theme="sunset"] {
@@ -186,6 +221,13 @@
   --mesh-c1: #fbcfe8;
   --mesh-c2: #fed7aa;
   --mesh-c3: #fecdd3;
+
+  /* STRUCTURAL VARIABLES */
+  --font-main: 'Georgia', 'Times New Roman', serif;
+  --radius-card: 12px;
+  --radius-btn: 8px;
+  --radius-badge: 8px;
+  --hover-translate: translateY(-4px);
 }
 
 [data-theme="forest"] {
@@ -211,12 +253,19 @@
   --mesh-c1: #bbf7d0;
   --mesh-c2: #d9f99d;
   --mesh-c3: #a7f3d0;
+
+  /* STRUCTURAL VARIABLES */
+  --font-main: system-ui, -apple-system, sans-serif;
+  --radius-card: 16px;
+  --radius-btn: 12px;
+  --radius-badge: 12px;
+  --hover-translate: translateY(-4px);
 }
 
 html, body {
   margin: 0;
   padding: 0;
-  font-family: 'Inter', "Helvetica Neue", sans-serif;
+  font-family: var(--font-main);
   background-color: var(--bg-primary);
   color: var(--text-primary);
   transition: background-color 0.5s ease, color 0.5s ease;

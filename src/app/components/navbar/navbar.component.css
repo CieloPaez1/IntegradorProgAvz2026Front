@@ -30,7 +30,7 @@
   gap: 10px;
   background: var(--input-bg);
   border: 1px solid var(--input-border);
-  border-radius: 12px;
+  border-radius: var(--radius-btn);
   padding: 0 12px;
   transition: 0.2s ease;
 }
@@ -96,7 +96,7 @@
   backdrop-filter: var(--glass-backdrop);
   -webkit-backdrop-filter: var(--glass-backdrop);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: var(--radius-card);
   box-shadow: var(--glass-shadow);
   padding: 10px;
   z-index: 100;
@@ -141,7 +141,7 @@
   gap: 10px;
   padding: 7px 8px;
   border: none;
-  border-radius: 10px;
+  border-radius: calc(var(--radius-btn) / 2);
   background: transparent;
   text-align: left;
   cursor: pointer;
@@ -160,7 +160,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
+  border-radius: calc(var(--radius-btn) / 2);
   font-weight: 800;
 }
 
@@ -203,7 +203,7 @@
   flex: 0 0 auto;
   max-width: 118px;
   padding: 5px 8px;
-  border-radius: 999px;
+  border-radius: var(--radius-badge);
   font-size: 0.72rem;
   font-weight: 700;
   overflow: hidden;
@@ -295,7 +295,7 @@
   background: var(--card-bg);
   backdrop-filter: var(--glass-backdrop);
   -webkit-backdrop-filter: var(--glass-backdrop);
-  border-radius: 12px;
+  border-radius: var(--radius-card);
   box-shadow: var(--glass-shadow);
   border: 1px solid var(--border-color);
   padding: 8px;
@@ -324,7 +324,7 @@
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 600;
-  border-radius: 8px;
+  border-radius: calc(var(--radius-btn) / 2);
   border: none;
   background: transparent;
   cursor: pointer;
@@ -358,7 +358,7 @@
   align-items: center;
   gap: 12px;
   padding: 8px 14px;
-  border-radius: 14px;
+  border-radius: var(--radius-btn);
   cursor: pointer;
   background: transparent;
   border: none;
@@ -372,7 +372,7 @@
 .user-avatar {
   width: 42px;
   height: 42px;
-  border-radius: 12px;
+  border-radius: calc(var(--radius-btn) / 1.5);
   background: linear-gradient(135deg, var(--primary-color), var(--success-color));
   display: flex;
   align-items: center;
@@ -417,7 +417,7 @@
   background: var(--card-bg);
   backdrop-filter: var(--glass-backdrop);
   -webkit-backdrop-filter: var(--glass-backdrop);
-  border-radius: 12px;
+  border-radius: var(--radius-card);
   box-shadow: var(--glass-shadow);
   border: 1px solid var(--border-color);
   padding: 8px;
@@ -435,7 +435,7 @@
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
-  border-radius: 8px;
+  border-radius: calc(var(--radius-btn) / 2);
   border: none;
   background: transparent;
   cursor: pointer;
