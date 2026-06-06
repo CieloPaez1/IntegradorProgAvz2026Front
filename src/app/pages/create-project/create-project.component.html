@@ -1,23 +1,23 @@
 <div class="create-project-page">
 
-  <div class="report-header">
+  <div class="page-header">
     <div>
       <p>Gestión de Proyectos</p>
       <h1>Crear Proyecto</h1>
     </div>
   </div>
 
-  <div class="project-card">
+  <div class="premium-card">
     @if (success()) {
       <div class="alert-success">
-        <svg lucideCheckCircle></svg>
+        <svg lucideCheckCircle style="width: 20px; height: 20px;"></svg>
         {{ success() }}
       </div>
     }
 
     @if (error()) {
       <div class="alert-error">
-        <svg lucideXCircle></svg>
+        <svg lucideXCircle style="width: 20px; height: 20px;"></svg>
         {{ error() }}
       </div>
     }
@@ -62,26 +62,27 @@
       </div>
 
       <div style="display: flex; gap: 16px;">
-        <button type="submit" class="btn-primary" [disabled]="loading()">
+        <button type="submit" class="btn-primary" [disabled]="form.invalid || loading()">
           @if (loading()) {
             Guardando...
           } @else {
-            <svg lucideSave style="width: 18px; height: 18px; margin-right: 8px;"></svg>
+            <svg lucideSave style="width: 18px; height: 18px;"></svg>
             Guardar Proyecto
           }
         </button>
 
         <button type="button" class="btn-primary outline" (click)="cancelar()" [disabled]="loading()">
-          <svg lucideX style="width: 18px; height: 18px; margin-right: 8px;"></svg>
+          <svg lucideX style="width: 18px; height: 18px;"></svg>
           Cancelar
         </button>
       </div>
     </form>
   </div>
 
-  <div class="project-card" style="padding: 0; overflow: hidden;">
-    <div style="padding: 24px 32px; border-bottom: 1px solid #eef2f7;">
-      <h2 style="font-size: 1.2rem; font-weight: 800; color: #0f172a; margin: 0;">Proyectos existentes</h2>
+  <div class="premium-card" style="padding: 0;">
+    <div style="padding: 32px 40px; border-bottom: 1px solid #f1f5f9;">
+      <h2 style="font-size: 1.3rem; font-weight: 800; color: #0f172a; margin: 0;">Proyectos existentes</h2>
+      <p style="margin: 4px 0 0; color: #64748b; font-size: 0.95rem;">Todos los proyectos registrados en el sistema</p>
     </div>
 
     @if (projects().length === 0) {
@@ -104,8 +105,8 @@
           <tbody>
             @for (p of projects(); track p.id) {
               <tr>
-                <td>{{ p.id }}</td>
-                <td style="color: #0f172a;">{{ p.name }}</td>
+                <td style="color: #64748b;">#{{ p.id }}</td>
+                <td style="color: #0f172a; font-weight: 700;">{{ p.name }}</td>
                 <td style="color: #64748b;">{{ p.startDate }}</td>
                 <td style="color: #64748b;">{{ p.endDate }}</td>
                 <td>

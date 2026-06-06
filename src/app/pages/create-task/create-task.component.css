@@ -1,4 +1,4 @@
-.create-project-page {
+.create-task-page {
   padding: 32px 40px;
   max-width: 1200px;
   margin: 0 auto;
@@ -58,12 +58,6 @@
   width: 100%;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   box-sizing: border-box;
-}
-
-textarea.form-control {
-  height: auto;
-  padding: 20px;
-  resize: vertical;
 }
 
 .form-control:focus, .form-select:focus {
@@ -200,9 +194,9 @@ textarea.form-control {
   display: inline-block;
 }
 
-.badge.planned { background: #fef3c7; color: #b45309; }
-.badge.active { background: #dbeafe; color: #1d4ed8; }
-.badge.closed { background: #fef2f2; color: #b91c1c; }
+.badge.todo { background: #fef3c7; color: #b45309; }
+.badge.progress { background: #dbeafe; color: #1d4ed8; }
+.badge.done { background: #dcfce7; color: #15803d; }
 
 .empty-state {
   text-align: center;

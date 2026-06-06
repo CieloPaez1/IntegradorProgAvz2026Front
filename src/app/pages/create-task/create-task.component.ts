@@ -11,7 +11,8 @@ import { LucideSave, LucideX } from '@lucide/angular';
   selector: 'app-create-task',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, LucideSave, LucideX],
-  templateUrl: './create-task.component.html'
+  templateUrl: './create-task.component.html',
+  styleUrl: './create-task.component.css'
 })
 export class CreateTaskComponent implements OnInit {
 
