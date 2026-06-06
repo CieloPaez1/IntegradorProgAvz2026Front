@@ -1,8 +1,9 @@
 .navbar-top {
   height: 72px;
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid #ececf3;
+  background: var(--card-bg);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -12,7 +13,7 @@
   left: var(--sidebar-width, 250px);
   right: 0;
   z-index: 99;
-  transition: left 0.3s ease;
+  transition: left 0.3s ease, background 0.4s ease, border-color 0.4s ease;
 }
 
 .navbar-search-wrapper {
@@ -27,22 +28,23 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #f8fafc;
-  border: 1px solid #e5e7eb;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
   border-radius: 12px;
   padding: 0 12px;
   transition: 0.2s ease;
 }
 
 .navbar-search:focus-within {
-  background: #ffffff;
-  border-color: #6366f1;
+  background: var(--bg-primary);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-glow);
 }
 
 .search-icon {
   width: 21px;
   height: 21px;
-  color: #64748b;
+  color: var(--text-secondary);
   stroke-width: 2.2;
 }
 
@@ -52,12 +54,12 @@
   border: none;
   background: transparent;
   outline: none;
-  color: #111827;
+  color: var(--text-primary);
   font-size: 0.93rem;
 }
 
 .navbar-search input::placeholder {
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
 .clear-btn {
@@ -65,8 +67,8 @@
   height: 26px;
   border: none;
   border-radius: 50%;
-  background: #e5e7eb;
-  color: #475569;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
   line-height: 1;
   cursor: pointer;
   display: inline-flex;
@@ -80,7 +82,7 @@
 }
 
 .clear-btn:hover {
-  background: #dbe1ea;
+  filter: brightness(0.9);
 }
 
 .search-dropdown {
@@ -90,11 +92,14 @@
   width: 100%;
   max-height: 420px;
   overflow-y: auto;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
+  background: var(--card-bg);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
-  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.14);
+  box-shadow: var(--glass-shadow);
   padding: 10px;
+  z-index: 100;
 }
 
 .dropdown-header {
@@ -103,12 +108,12 @@
   justify-content: space-between;
   gap: 12px;
   padding: 6px 6px 10px;
-  border-bottom: 1px solid #eef2f7;
+  border-bottom: 1px solid var(--border-color);
   margin-bottom: 8px;
 }
 
 .dropdown-header span {
-  color: #111827;
+  color: var(--text-primary);
   font-size: 0.88rem;
   font-weight: 700;
 }
@@ -116,12 +121,12 @@
 .dropdown-section + .dropdown-section {
   margin-top: 10px;
   padding-top: 10px;
-  border-top: 1px solid #eef2f7;
+  border-top: 1px solid var(--border-color);
 }
 
 .dropdown-section-label {
   padding: 4px 6px 7px;
-  color: #64748b;
+  color: var(--text-secondary);
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -140,10 +145,12 @@
   background: transparent;
   text-align: left;
   cursor: pointer;
+  color: var(--text-primary);
+  transition: background 0.2s;
 }
 
 .dropdown-item:hover {
-  background: #f8fafc;
+  background: var(--bg-secondary);
 }
 
 .type-badge {
@@ -158,13 +165,13 @@
 }
 
 .project-badge {
-  background: #e0f2fe;
-  color: #0369a1;
+  background: var(--primary-glow);
+  color: var(--primary-color);
 }
 
 .task-badge {
-  background: #dcfce7;
-  color: #166534;
+  background: var(--badge-closed-bg);
+  color: var(--badge-closed-text);
 }
 
 .item-body {
@@ -176,7 +183,7 @@
 }
 
 .item-name {
-  color: #111827;
+  color: var(--text-primary);
   font-size: 0.92rem;
   font-weight: 700;
   overflow: hidden;
@@ -185,7 +192,7 @@
 }
 
 .item-meta {
-  color: #64748b;
+  color: var(--text-secondary);
   font-size: 0.78rem;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -205,19 +212,19 @@
 }
 
 .status-todo {
-  background: #fef3c7;
-  color: #92400e;
+  background: var(--badge-planned-bg);
+  color: var(--badge-planned-text);
 }
 
 .status-progress,
 .status-active {
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: var(--badge-active-bg);
+  color: var(--badge-active-text);
 }
 
 .status-done {
-  background: #dcfce7;
-  color: #166534;
+  background: var(--badge-closed-bg);
+  color: var(--badge-closed-text);
 }
 
 .dropdown-empty,
@@ -228,11 +235,11 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  color: #64748b;
+  color: var(--text-secondary);
 }
 
 .dropdown-empty strong {
-  color: #111827;
+  color: var(--text-primary);
   font-size: 0.95rem;
 }
 
@@ -244,8 +251,8 @@
 .spinner {
   width: 22px;
   height: 22px;
-  border: 3px solid #e5e7eb;
-  border-top-color: #6366f1;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--primary-color);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -253,6 +260,27 @@
 .navbar-right {
   display: flex;
   align-items: center;
+  gap: 16px;
+}
+
+.theme-toggle {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.theme-toggle:hover {
+  background: var(--bg-secondary);
+  color: var(--primary-color);
+  transform: rotate(15deg);
 }
 
 .navbar-user {
@@ -262,24 +290,27 @@
   padding: 8px 14px;
   border-radius: 14px;
   cursor: pointer;
+  background: transparent;
+  border: none;
+  text-align: left;
 }
 
 .navbar-user:hover {
-  background: #f9fafb;
+  background: var(--bg-secondary);
 }
 
 .user-avatar {
   width: 42px;
   height: 42px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #6366f1, #14b8a6);
+  background: linear-gradient(135deg, var(--primary-color), var(--success-color));
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   font-size: 0.95rem;
   font-weight: 800;
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.24);
+  box-shadow: 0 4px 12px var(--primary-glow);
 }
 
 .user-info {
@@ -288,13 +319,13 @@
 }
 
 .user-name {
-  color: #111827;
+  color: var(--text-primary);
   font-size: 0.92rem;
   font-weight: 700;
 }
 
 .user-role {
-  color: #6b7280;
+  color: var(--text-secondary);
   font-size: 0.78rem;
 }
 
@@ -304,33 +335,7 @@
   }
 }
 
-.notification-btn {
-  position: relative;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: none;
-  background: transparent;
-  color: #64748b;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 16px;
-  transition: 0.2s;
-}
-
-.notification-btn:hover {
-  background: #f1f5f9;
-  color: #1e293b;
-}
-
-.notification-btn svg {
-  width: 22px;
-  height: 22px;
-}
-
-.navbar-user-container {
+.user-menu-container {
   position: relative;
 }
 
@@ -339,10 +344,12 @@
   top: calc(100% + 10px);
   right: 0;
   width: 220px;
-  background: white;
+  background: var(--card-bg);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
   border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e5e7eb;
+  box-shadow: var(--glass-shadow);
+  border: 1px solid var(--border-color);
   padding: 8px;
   display: flex;
   flex-direction: column;
@@ -354,7 +361,7 @@
   align-items: center;
   gap: 12px;
   padding: 10px 12px;
-  color: #334155;
+  color: var(--text-primary);
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
@@ -368,34 +375,33 @@
 .user-dropdown-item svg {
   width: 18px;
   height: 18px;
-  color: #64748b;
+  color: var(--text-secondary);
 }
 
 .user-dropdown-item:hover {
-  background: #f8fafc;
-  color: #0f172a;
+  background: var(--bg-secondary);
 }
 
 .user-dropdown-item:hover svg {
-  color: #6366f1;
+  color: var(--primary-color);
 }
 
 .dropdown-divider {
   border: none;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--border-color);
   margin: 6px 0;
 }
 
 .user-dropdown-item.danger {
-  color: #ef4444;
+  color: var(--danger-color);
 }
 
 .user-dropdown-item.danger svg {
-  color: #ef4444;
+  color: var(--danger-color);
 }
 
 .user-dropdown-item.danger:hover {
-  background: #fef2f2;
+  background: rgba(239, 68, 68, 0.1);
 }
 
 @media (max-width: 800px) {

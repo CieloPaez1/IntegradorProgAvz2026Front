@@ -14,11 +14,13 @@ import { ProjectStatusPipe } from '../../pipes/project-status.pipe';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, LucideSearch, LucideX, LucideUser, LucideSettings, LucideLogOut, TaskStatusPipe, ProjectStatusPipe],
+  imports: [CommonModule, FormsModule, RouterModule, LucideSearch, LucideX, LucideUser, LucideSettings, LucideLogOut, LucideSun, LucideMoon, TaskStatusPipe, ProjectStatusPipe],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent implements OnInit, OnDestroy {
+  protected readonly themeService = inject(ThemeService);
+  
   searchQuery = '';
   results: { projects: Project[]; tasks: Task[] } = { projects: [], tasks: [] };
   showDropdown = false;
