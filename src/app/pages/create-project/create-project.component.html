@@ -61,7 +61,65 @@
         <textarea formControlName="description" class="form-control" rows="4" placeholder="Descripción opcional del proyecto"></textarea>
       </div>
 
-      <div style="display: flex; gap: 16px;">
+      <div class="tasks-toggle-container">
+        <div class="toggle-section">
+          <label class="form-label" style="margin-bottom: 0;">¿Querés agregar tareas a este proyecto?</label>
+          <div class="toggle-buttons">
+            <button type="button" class="btn-toggle" [class.active]="form.get('includeTasks')?.value === true" (click)="toggleIncludeTasks(true)">Sí</button>
+            <button type="button" class="btn-toggle" [class.active]="form.get('includeTasks')?.value === false" (click)="toggleIncludeTasks(false)">No</button>
+          </div>
+        </div>
+
+        @if (form.get('includeTasks')?.value) {
+          <div formArrayName="tasks" class="tasks-subform">
+            <div class="subform-header">
+              <h3>Tareas iniciales</h3>
+              <p>Se crearán automáticamente y se asociarán a este proyecto.</p>
+            </div>
+            
+            @for (task of tasks.controls; track $index) {
+              <div [formGroupName]="$index" class="task-card">
+                <div class="task-card-header">
+                  <h4>Tarea {{ $index + 1 }}</h4>
+                  <button type="button" class="btn-icon-small danger" (click)="removeTask($index)" title="Eliminar tarea">
+                    <svg lucideTrash2 style="width: 16px; height: 16px;"></svg>
+                  </button>
+                </div>
+                
+                <div class="task-grid">
+                  <div class="col-span-2">
+                    <label class="form-label">Título <span class="required">*</span></label>
+                    <input type="text" formControlName="title" class="form-control" placeholder="Ej: Diseño de UI" />
+                  </div>
+                  <div>
+                    <label class="form-label">Responsable</label>
+                    <input type="text" formControlName="assignee" class="form-control" placeholder="Ej: Juan" />
+                  </div>
+                  <div>
+                    <label class="form-label">Horas Est. <span class="required">*</span></label>
+                    <input type="number" formControlName="estimateHours" class="form-control" min="1" />
+                  </div>
+                  <div class="col-span-2">
+                    <label class="form-label">Estado <span class="required">*</span></label>
+                    <select formControlName="status" class="form-control">
+                      <option value="TODO">Por Hacer</option>
+                      <option value="IN_PROGRESS">En Progreso</option>
+                      <option value="DONE">Terminado</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            }
+
+            <button type="button" class="btn-outline dashed" (click)="addTask()">
+              <svg lucidePlus style="width: 18px; height: 18px;"></svg>
+              Agregar otra tarea
+            </button>
+          </div>
+        }
+      </div>
+
+      <div style="display: flex; gap: 16px; margin-top: 20px;">
         <button type="submit" class="btn-primary" [disabled]="form.invalid || loading()">
           @if (loading()) {
             Guardando...
