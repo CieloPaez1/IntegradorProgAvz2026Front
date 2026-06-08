@@ -262,6 +262,45 @@
   --hover-translate: translateY(-4px);
 }
 
+[data-theme="crimson"] {
+  /* CRIMSON THEME (Red & Black) */
+  --bg-primary: #0a0000;
+  --bg-secondary: #1a0505;
+  --card-bg: rgba(26, 5, 5, 0.7);
+  --card-border: rgba(220, 38, 38, 0.2);
+  --text-primary: #fecaca;
+  --text-secondary: #f87171;
+  --border-color: rgba(220, 38, 38, 0.2);
+  
+  --primary-color: #dc2626;
+  --primary-hover: #ef4444;
+  --primary-glow: rgba(220, 38, 38, 0.4);
+
+  --badge-planned-bg: rgba(245, 158, 11, 0.15);
+  --badge-planned-text: #fcd34d;
+  --badge-active-bg: rgba(220, 38, 38, 0.15);
+  --badge-active-text: #fecaca;
+  --badge-closed-bg: rgba(16, 185, 129, 0.15);
+  --badge-closed-text: #6ee7b7;
+
+  --glass-shadow: 0 10px 40px -10px rgba(220, 38, 38, 0.3);
+  --glass-backdrop: blur(20px);
+
+  --input-bg: rgba(10, 0, 0, 0.8);
+  --input-border: rgba(220, 38, 38, 0.3);
+
+  --mesh-c1: #450a0a;
+  --mesh-c2: #7f1d1d;
+  --mesh-c3: #991b1b;
+
+  /* STRUCTURAL VARIABLES */
+  --font-main: 'Inter', "Helvetica Neue", sans-serif;
+  --radius-card: 20px;
+  --radius-btn: 12px;
+  --radius-badge: 12px;
+  --hover-translate: translateY(-4px);
+}
+
 html, body {
   margin: 0;
   padding: 0;
