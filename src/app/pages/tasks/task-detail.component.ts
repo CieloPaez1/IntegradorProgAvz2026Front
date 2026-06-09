@@ -4,12 +4,12 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task.model';
 import { TaskStatusPipe } from '../../pipes/task-status.pipe';
-import { LucideArrowLeft } from '@lucide/angular';
+import { LucideArrowLeft, LucideEdit } from '@lucide/angular';
 
 @Component({
   selector: 'app-task-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, TaskStatusPipe, LucideArrowLeft],
+  imports: [CommonModule, RouterModule, TaskStatusPipe, LucideArrowLeft, LucideEdit],
   templateUrl: './task-detail.component.html',
   styleUrl: './task-detail.component.css'
 })

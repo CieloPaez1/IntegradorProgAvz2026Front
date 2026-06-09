@@ -17,6 +17,12 @@
         <svg lucideArrowLeft style="width: 18px; height: 18px;"></svg>
         Volver
       </button>
+      @if (task()?.status !== 'DONE') {
+        <button class="btn-primary" [routerLink]="['/tasks/edit', task()?.id]">
+          <svg lucideEdit style="width: 18px; height: 18px;"></svg>
+          Editar
+        </button>
+      }
     </div>
   </div>
 

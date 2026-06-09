@@ -8,6 +8,16 @@
   gap: 24px;
 }
 
+.info-block {
+  background: var(--bg-body);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .info-block label {
   display: block;
   font-size: 0.85rem;

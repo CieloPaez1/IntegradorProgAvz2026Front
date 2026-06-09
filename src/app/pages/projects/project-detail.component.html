@@ -17,10 +17,12 @@
         <svg lucideArrowLeft style="width: 18px; height: 18px;"></svg>
         Volver
       </button>
-      <button class="btn-primary" [routerLink]="['/projects/edit', project()?.id]">
-        <svg lucideEdit style="width: 18px; height: 18px;"></svg>
-        Editar
-      </button>
+      @if (project()?.status !== 'CLOSED') {
+        <button class="btn-primary" [routerLink]="['/projects/edit', project()?.id]">
+          <svg lucideEdit style="width: 18px; height: 18px;"></svg>
+          Editar
+        </button>
+      }
     </div>
   </div>
 
