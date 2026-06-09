@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, computed, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProjectService } from '../../services/project.service';
@@ -25,6 +25,7 @@ export class CreateProjectComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   projects = signal<Project[]>([]);
+  recentProjects = computed(() => [...this.projects()].reverse().slice(0, 5));
   loading = signal<boolean>(false);
   error = signal<string | null>(null);
   success = signal<string | null>(null);

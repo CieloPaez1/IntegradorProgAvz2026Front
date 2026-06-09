@@ -143,13 +143,13 @@
       <h2>Últimos Proyectos</h2>
     </div>
 
-    @if (projects().length === 0) {
+    @if (recentProjects().length === 0) {
       <div class="empty-state">
         No hay proyectos creados aún.
       </div>
     } @else {
       <div class="floating-list">
-        @for (p of projects(); track p.id) {
+        @for (p of recentProjects(); track p.id) {
           <div class="floating-row">
             <div class="row-main">
               <strong class="row-title">{{ p.name }}</strong>
