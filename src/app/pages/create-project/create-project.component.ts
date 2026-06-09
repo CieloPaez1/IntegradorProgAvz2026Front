@@ -1,6 +1,7 @@
 import { Component, inject, signal, computed, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
 import { Project } from '../../models/project.model';
 import { TaskService } from '../../services/task.service';
@@ -13,7 +14,7 @@ import { LucideCheckCircle, LucideXCircle, LucideSave, LucideX, LucidePlus, Luci
 @Component({
   selector: 'app-create-project',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, LucideCheckCircle, LucideXCircle, LucideSave, LucideX, LucidePlus, LucideTrash2],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, LucideCheckCircle, LucideXCircle, LucideSave, LucideX, LucidePlus, LucideTrash2],
   templateUrl: './create-project.component.html',
   styleUrl: './create-project.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush

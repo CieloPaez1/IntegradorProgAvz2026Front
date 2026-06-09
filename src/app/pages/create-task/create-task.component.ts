@@ -1,6 +1,7 @@
 import { Component, inject, signal, OnInit, computed } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { TaskService } from '../../services/task.service';
 import { ProjectService } from '../../services/project.service';
 import { Task } from '../../models/task.model';
@@ -10,7 +11,7 @@ import { LucideSave, LucideX } from '@lucide/angular';
 @Component({
   selector: 'app-create-task',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, LucideSave, LucideX],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, LucideSave, LucideX],
   templateUrl: './create-task.component.html',
   styleUrl: './create-task.component.css'
 })
