@@ -49,7 +49,7 @@
             </div>
             <div class="alert-right">
               <span class="alert-value danger">{{ attentionRequiredTasks().length }}</span>
-              <a routerLink="/tasks/list" class="alert-link">Ver tareas</a>
+              <a [routerLink]="['/tasks/list']" [queryParams]="{ minEstimate: 10, status: 'TODO' }" class="alert-link">Ver tareas</a>
             </div>
           </div>
         </div>
