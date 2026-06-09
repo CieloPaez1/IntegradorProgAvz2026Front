@@ -43,6 +43,39 @@
       <p class="description-text">{{ project()?.description || 'Sin descripción detallada.' }}</p>
     </div>
   </div>
+
+  <div class="list-section">
+    <div class="list-title">
+      <h2>Tareas del Proyecto ({{ tasks().length }})</h2>
+    </div>
+
+    @if (tasks().length === 0) {
+      <div class="empty-state">
+        No hay tareas asociadas a este proyecto.
+      </div>
+    } @else {
+      <div class="floating-list">
+        @for (t of tasks(); track t.id) {
+          <div class="floating-row" [routerLink]="['/tasks', t.id]" style="cursor: pointer;">
+            <div class="row-main">
+              <span class="row-title">{{ t.title }}</span>
+              <span class="row-desc">Responsable: {{ t.assignee || 'Sin asignar' }} • {{ t.estimateHours }} hs estimadas</span>
+            </div>
+            <div class="row-meta">
+              <div class="meta-badge">
+                <span class="badge" 
+                      [class.todo]="t.status === 'TODO'" 
+                      [class.progress]="t.status === 'IN_PROGRESS'" 
+                      [class.done]="t.status === 'DONE'">
+                  {{ t.status | taskStatus }}
+                </span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
 </div>
 
 <ng-template #loading>
