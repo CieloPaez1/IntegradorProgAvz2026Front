@@ -1,0 +1,45 @@
+<div class="task-detail-page" *ngIf="task(); else loading">
+  <div class="page-header">
+    <div>
+      <p>DETALLE DE TAREA</p>
+      <div style="display: flex; align-items: center; gap: 12px; margin-top: 8px;">
+        <h1>{{ task()?.title }}</h1>
+        <span class="badge" 
+              [class.todo]="task()?.status === 'TODO'" 
+              [class.progress]="task()?.status === 'IN_PROGRESS'" 
+              [class.done]="task()?.status === 'DONE'">
+          {{ task()?.status | taskStatus }}
+        </span>
+      </div>
+    </div>
+    <div style="display: flex; gap: 12px;">
+      <button class="btn-outline" routerLink="/home">
+        <svg lucideArrowLeft style="width: 18px; height: 18px;"></svg>
+        Volver
+      </button>
+    </div>
+  </div>
+
+  <div class="dashboard-card" style="margin-top: 24px;">
+    <div class="info-grid">
+      <div class="info-block">
+        <label>Proyecto Asignado</label>
+        <p>{{ task()?.projectName || 'Sin proyecto' }}</p>
+      </div>
+      <div class="info-block">
+        <label>Responsable</label>
+        <p>{{ task()?.assignee || 'Sin asignar' }}</p>
+      </div>
+      <div class="info-block">
+        <label>Horas Estimadas</label>
+        <p>{{ task()?.estimateHours || 0 }} hs</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="loading-state">
+    <p>Cargando detalle de la tarea...</p>
+  </div>
+</ng-template>

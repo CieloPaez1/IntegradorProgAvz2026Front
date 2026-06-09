@@ -1,0 +1,50 @@
+<div class="project-detail-page" *ngIf="project(); else loading">
+  <div class="page-header">
+    <div>
+      <p>DETALLE DE PROYECTO</p>
+      <div style="display: flex; align-items: center; gap: 12px; margin-top: 8px;">
+        <h1>{{ project()?.name }}</h1>
+        <span class="badge" 
+              [class.planned]="project()?.status === 'PLANNED'" 
+              [class.active]="project()?.status === 'ACTIVE'" 
+              [class.closed]="project()?.status === 'CLOSED'">
+          {{ project()?.status | projectStatus }}
+        </span>
+      </div>
+    </div>
+    <div style="display: flex; gap: 12px;">
+      <button class="btn-outline" routerLink="/home">
+        <svg lucideArrowLeft style="width: 18px; height: 18px;"></svg>
+        Volver
+      </button>
+      <button class="btn-primary" [routerLink]="['/projects/edit', project()?.id]">
+        <svg lucideEdit style="width: 18px; height: 18px;"></svg>
+        Editar
+      </button>
+    </div>
+  </div>
+
+  <div class="dashboard-card" style="margin-top: 24px;">
+    <div class="info-grid">
+      <div class="info-block">
+        <label>Fecha de Inicio</label>
+        <p>{{ project()?.startDate | date:'dd/MM/yyyy' }}</p>
+      </div>
+      <div class="info-block">
+        <label>Fecha de Fin</label>
+        <p>{{ project()?.endDate | date:'dd/MM/yyyy' }}</p>
+      </div>
+    </div>
+    
+    <div class="info-block" style="margin-top: 24px;">
+      <label>Descripción</label>
+      <p class="description-text">{{ project()?.description || 'Sin descripción detallada.' }}</p>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="loading-state">
+    <p>Cargando detalle del proyecto...</p>
+  </div>
+</ng-template>
