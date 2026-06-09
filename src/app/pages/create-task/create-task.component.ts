@@ -23,6 +23,7 @@ export class CreateTaskComponent implements OnInit {
   projects = signal<Project[]>([]);
   activeProjects = computed(() => this.projects().filter(p => p.status !== 'CLOSED'));
   tasks = signal<Task[]>([]);
+  recentTasks = computed(() => [...this.tasks()].reverse().slice(0, 5));
   loading = signal<boolean>(false);
   error = signal<string | null>(null);
   success = signal<string | null>(null);

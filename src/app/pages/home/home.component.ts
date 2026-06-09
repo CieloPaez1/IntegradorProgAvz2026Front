@@ -27,6 +27,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   projects = signal<Project[]>([]);
   tasks = signal<Task[]>([]);
+  
+  recentProjects = computed(() => [...this.projects()].reverse().slice(0, 4));
+  recentTasks = computed(() => [...this.tasks()].reverse().slice(0, 4));
+  
   loading = signal<boolean>(true);
   error = signal<string | null>(null);
   updateError = signal<string | null>(null);
@@ -138,7 +142,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   });
 
   proyectosCompletadosRecientes = computed(() => {
-    return this.projects().filter(p => p.status === 'CLOSED').slice(0, 5);
+    return [...this.projects()].reverse().filter(p => p.status === 'CLOSED').slice(0, 5);
   });
   // ----------------------------------
 

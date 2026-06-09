@@ -87,13 +87,13 @@
       <h2>Tareas existentes</h2>
     </div>
 
-    @if (tasks().length === 0) {
+    @if (recentTasks().length === 0) {
       <div class="empty-state">
-        No hay tareas creadas aún.
+        No hay tareas creadadas aún.
       </div>
     } @else {
       <div class="floating-list">
-        @for (t of tasks(); track t.id) {
+        @for (t of recentTasks(); track t.id) {
           <div class="floating-row">
             <div class="row-main">
               <strong class="row-title">{{ t.title }}</strong>

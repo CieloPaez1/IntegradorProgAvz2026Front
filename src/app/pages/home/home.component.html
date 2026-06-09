@@ -95,11 +95,11 @@
 
       <div class="recent-list mt-4">
         <div class="list-title">Últimos Proyectos</div>
-        @if (projects().length === 0) {
+        @if (recentProjects().length === 0) {
           <p class="empty-state">Todavía no hay proyectos.</p>
         } @else {
           <div class="tasks-list">
-            @for (p of projects().slice(0, 4); track p.id) {
+            @for (p of recentProjects(); track p.id) {
               <div class="task-row" [class.z-elevated]="activeDropdownId() === 'proj_' + p.id">
                 <div class="task-info">
                   <strong>{{ p.name }}</strong>
@@ -173,11 +173,11 @@
 
       <div class="recent-list mt-4">
         <div class="list-title">Últimas Tareas</div>
-        @if (tasks().length === 0) {
+        @if (recentTasks().length === 0) {
           <p class="empty-state">Todavía no hay tareas.</p>
         } @else {
           <div class="tasks-list">
-            @for (t of tasks().slice(0, 4); track t.id) {
+            @for (t of recentTasks(); track t.id) {
               <div class="task-row" [class.z-elevated]="activeDropdownId() === 'task_' + t.id">
                 <div class="task-info">
                   <strong>{{ t.title }}</strong>
