@@ -100,7 +100,7 @@
         } @else {
           <div class="tasks-list">
             @for (p of recentProjects(); track p.id) {
-              <div class="task-row" [class.z-elevated]="activeDropdownId() === 'proj_' + p.id">
+              <div class="task-row" [class.z-elevated]="activeDropdownId() === 'proj_' + p.id" [routerLink]="['/projects', p.id]" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                 <div class="task-info">
                   <strong>{{ p.name }}</strong>
                   <span>{{ p.description || 'Sin descripción' }}</span>
@@ -178,7 +178,7 @@
         } @else {
           <div class="tasks-list">
             @for (t of recentTasks(); track t.id) {
-              <div class="task-row" [class.z-elevated]="activeDropdownId() === 'task_' + t.id">
+              <div class="task-row" [class.z-elevated]="activeDropdownId() === 'task_' + t.id" [routerLink]="['/tasks', t.id]" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                 <div class="task-info">
                   <strong>{{ t.title }}</strong>
                   <span>{{ t.assignee || 'Sin asignar' }}</span>

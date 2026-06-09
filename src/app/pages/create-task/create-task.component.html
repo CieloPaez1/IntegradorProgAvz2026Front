@@ -94,7 +94,7 @@
     } @else {
       <div class="floating-list">
         @for (t of recentTasks(); track t.id) {
-          <div class="floating-row">
+          <div class="floating-row" [routerLink]="['/tasks', t.id]" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
             <div class="row-main">
               <strong class="row-title">{{ t.title }}</strong>
               <span class="row-desc">Proyecto: {{ projects().find(p => p.id === t.projectId)?.name ?? '-' }}</span>

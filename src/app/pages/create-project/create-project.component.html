@@ -150,7 +150,7 @@
     } @else {
       <div class="floating-list">
         @for (p of recentProjects(); track p.id) {
-          <div class="floating-row">
+          <div class="floating-row" [routerLink]="['/projects', p.id]" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
             <div class="row-main">
               <strong class="row-title">{{ p.name }}</strong>
               <span class="row-desc">{{ p.description || 'Sin descripción' }}</span>
