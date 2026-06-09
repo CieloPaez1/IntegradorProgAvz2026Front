@@ -22,3 +22,18 @@ Se solicita un rediseño completo de la interfaz gráfica ("Estilo Stripe/Framer
    - Refactorizar todos los componentes (`home`, `create-project`, `create-task`, `navbar`) para eliminar valores "quemados" y consumir estas variables.
 6. **Persistencia**:
    - El tema elegido por el usuario debe persistir en recargas utilizando el `localStorage`.
+
+## Criterios de Aceptación (BDD)
+
+- Dado que el usuario está en cualquier página,
+  Cuando selecciona el tema "Cyberpunk" en el selector del navbar,
+  Entonces todos los componentes cambian de paleta sin recargar la página,
+  Y la estructura visual refleja el radio de bordes y sombras de "Cyberpunk".
+
+- Dado que el usuario seleccionó previamente el tema "Minimalista",
+  Cuando recarga la página o cierra y abre el navegador,
+  Entonces el tema Minimalista sigue activo y aplicado inmediatamente (localStorage).
+
+- Dado que el usuario navega por las tarjetas flotantes,
+  Cuando pasa el mouse por encima de una fila,
+  Entonces la tarjeta escala suavemente y se eleva indicando interactividad, utilizando `--hover-translate`.

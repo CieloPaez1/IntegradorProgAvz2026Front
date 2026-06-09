@@ -17,6 +17,23 @@
     </div>
   </header>
 
+  @if (updateError()) {
+    <div class="alert alert-danger" style="margin-bottom: 20px;">
+      {{ updateError() }}
+    </div>
+  }
+
+  @if (error()) {
+    <div class="alert alert-danger" style="margin-bottom: 20px;">
+      <svg lucideAlertTriangle></svg> {{ error() }}
+    </div>
+  } @else if (loading()) {
+    <div class="loading-state" style="text-align: center; padding: 40px;">
+      <div class="spinner"></div>
+      <p>Cargando panel...</p>
+    </div>
+  } @else {
+
   @if (attentionRequiredTasks().length > 0) {
     <section class="alerts-section">
       <article class="alerts-card">
@@ -303,5 +320,7 @@
       </div>
     </article>
   </section>
+
+  }
 
 </div>

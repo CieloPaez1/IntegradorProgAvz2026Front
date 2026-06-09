@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed, OnInit, effect, ViewChild, ElementRef, AfterViewInit, HostListener } from '@angular/core';
+import { Component, inject, signal, computed, OnInit, effect, ViewChild, ElementRef, AfterViewInit, HostListener, ChangeDetectionStrategy } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
@@ -17,7 +17,8 @@ import { LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, Lucid
   standalone: true,
   imports: [CommonModule, RouterModule, TaskStatusPipe, ProjectStatusPipe, LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideChevronDown, LucideCalendar],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit, AfterViewInit {
 
@@ -26,6 +27,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   projects = signal<Project[]>([]);
   tasks = signal<Task[]>([]);
+  loading = signal<boolean>(true);
+  error = signal<string | null>(null);
+  updateError = signal<string | null>(null);
 
   attentionRequiredTasks = computed(() => {
     return this.tasks().filter(t => t.status === 'TODO' && (t.estimateHours || 0) >= 10);
@@ -56,13 +60,33 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    let projectsLoaded = false;
+    let tasksLoaded = false;
+    
     this.projectService.getAll().subscribe({
-      next: (data) => this.projects.set(data),
-      error: () => this.projects.set([])
+      next: (data) => {
+        this.projects.set(data);
+        projectsLoaded = true;
+        if (tasksLoaded) this.loading.set(false);
+      },
+      error: (err) => {
+        this.error.set(err.message || 'Error al cargar proyectos');
+        this.projects.set([]);
+        this.loading.set(false);
+      }
     });
+
     this.taskService.getAll().subscribe({
-      next: (data) => this.tasks.set(data),
-      error: () => this.tasks.set([])
+      next: (data) => {
+        this.tasks.set(data);
+        tasksLoaded = true;
+        if (projectsLoaded) this.loading.set(false);
+      },
+      error: (err) => {
+        this.error.set(err.message || 'Error al cargar tareas');
+        this.tasks.set([]);
+        this.loading.set(false);
+      }
     });
   }
 
@@ -209,9 +233,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.projectService.update(project.id, updatedProject).subscribe({
       error: (err) => {
-        console.error('Error updating project status', err);
+        this.updateError.set('No se pudo actualizar el estado del proyecto. Intentá de nuevo.');
         // Rollback on error
         this.projects.set(oldProjects);
+        setTimeout(() => this.updateError.set(null), 3000);
       }
     });
   }
@@ -229,9 +254,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.taskService.update(task.projectId, task.id, updatedTask).subscribe({
       error: (err) => {
-        console.error('Error updating task status', err);
+        this.updateError.set('No se pudo actualizar el estado de la tarea. Intentá de nuevo.');
         // Rollback on error
         this.tasks.set(oldTasks);
+        setTimeout(() => this.updateError.set(null), 3000);
       }
     });
   }
