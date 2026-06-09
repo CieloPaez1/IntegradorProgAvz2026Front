@@ -1,4 +1,5 @@
-import { Routes } from '@angular/router';
+﻿import { Routes } from '@angular/router';
+import { FilterTasksComponent } from './pages/filter-tasks/filter-tasks.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ReportsSummaryComponent } from './pages/reports/reports-summary.component';
 import { ProjectReportComponent } from './pages/reports/project-report.component';
@@ -19,5 +20,6 @@ export const routes: Routes = [
   { path: 'projects/:id', component: ProjectDetailComponent },
   { path: 'tasks/create', component: CreateTaskComponent },
   { path: 'tasks/delete', component: DeleteTaskComponent },
+  { path: 'tasks/filter', component: FilterTasksComponent },
   { path: 'tasks/:id', component: TaskDetailComponent }
 ];

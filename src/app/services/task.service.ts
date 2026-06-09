@@ -35,7 +35,7 @@ export class TaskService {
       catchError(this.handleError)
     );
   }
-  
+
   update(projectId: number, taskId: number, task: Task): Observable<Task> {
     return this.http.put<Task>(`${this.apiUrl}/${projectId}/tasks/${taskId}`, task).pipe(
       catchError(this.handleError)
