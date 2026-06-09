@@ -85,7 +85,7 @@ export class EditTaskComponent implements OnInit {
         this.saving.set(false);
         this.success.set(true);
         setTimeout(() => {
-          this.router.navigate(['/tasks/list']);
+          this.router.navigate(['/projects', this.projectId]);
         }, 2000);
       },
       error: (err: Error) => {

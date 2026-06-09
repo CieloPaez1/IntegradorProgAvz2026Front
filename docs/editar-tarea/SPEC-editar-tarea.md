@@ -55,6 +55,10 @@ El usuario puede modificar la información de una tarea existente (por ejemplo, 
   cuando el usuario intenta guardar los cambios,
   entonces se muestra un mensaje indicando que la tarea no fue encontrada.
 
+- Dado que hay una regla de negocio no cumplida (409),
+  cuando el usuario intenta guardar los cambios,
+  entonces se muestra el error devuelto por el backend.
+
 - Dado que el usuario supera los 100 caracteres en el título,
   cuando intenta guardar,
   entonces el botón se deshabilita y el formulario muestra el error de validación visualmente.
