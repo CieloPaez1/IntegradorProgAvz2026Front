@@ -87,7 +87,7 @@
             class="btn btn-light px-4 py-2 d-flex align-items-center" 
             style="border-radius: 12px; font-weight: 600; color: #4b5563; background: #f3f4f6; border: none;"
             [disabled]="saving()"
-            routerLink="/tasks/list"
+            [routerLink]="['/projects', projectId]"
           >
             <lucide-icon name="x" style="width: 18px; height: 18px; margin-right: 8px;"></lucide-icon>
             Cancelar

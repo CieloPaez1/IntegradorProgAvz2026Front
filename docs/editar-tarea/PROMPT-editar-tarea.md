@@ -15,7 +15,7 @@
 8. En el HTML, mientras `loading` sea true, muestra un spinner centrado.
 9. El HTML debe contener campos estilizados con CSS custom para un diseño premium (bordes redondeados, focus con sombra).
 10. Muestra alertas condicionales para `error()` o `success()`. 
-11. Si la petición PUT (`onSubmit`) es exitosa, establece `success` a true, oculta el `saving`, y usa un `setTimeout` de 2000ms para redirigir mediante `Router` a `/tasks/list`.
+11. Si la petición PUT (`onSubmit`) es exitosa, establece `success` a true, oculta el `saving`, y usa un `setTimeout` de 2000ms para redirigir mediante `Router` a `/projects/:projectId`.
 12. Añade la ruta `{ path: 'projects/:projectId/tasks/edit/:taskId', component: EditTaskComponent }` en `app.routes.ts`.
 
 **Diseño Premium:**

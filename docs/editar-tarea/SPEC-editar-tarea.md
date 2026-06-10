@@ -27,7 +27,7 @@ El usuario puede modificar la información de una tarea existente (por ejemplo, 
 - Uso de `ActivatedRoute` para obtener `projectId` y `taskId` desde la ruta (`/projects/:projectId/tasks/edit/:taskId`).
 - Uso de Signals para manejo de estado (`loading`, `saving`, `error`, `success`)
 - `HttpClient` con uso exclusivo de `environment.apiUrl` (sin strings harcodeados, sin `console.error`) en `TaskService`.
-- Navegación automática hacia `/tasks/list` 2 segundos después de un guardado exitoso usando `Router`.
+- Navegación automática hacia `/projects/:projectId` 2 segundos después de un guardado exitoso usando `Router`.
 
 ## Criterios de aceptación
 
@@ -45,7 +45,7 @@ El usuario puede modificar la información de una tarea existente (por ejemplo, 
 
 - Dado que el usuario edita datos y envía el formulario exitosamente,
   cuando el backend devuelve status 200,
-  entonces se muestra un mensaje de éxito y tras 2 segundos redirige a la lista de tareas.
+  entonces se muestra un mensaje de éxito y tras 2 segundos redirige al detalle del proyecto.
 
 - Dado que la conexión falla al intentar obtener los datos,
   cuando se carga la página,
