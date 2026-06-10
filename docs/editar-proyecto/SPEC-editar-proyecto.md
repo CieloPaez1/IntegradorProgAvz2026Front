@@ -27,7 +27,7 @@ El usuario puede modificar la información de un proyecto existente mediante un 
 - Uso de `ActivatedRoute` para obtener el ID desde la ruta (`/projects/edit/:id`)
 - Uso de Signals para manejo de estado (`loading`, `saving`, `error`, `success`)
 - `HttpClient` con uso exclusivo de `environment.apiUrl` (sin strings harcodeados, sin `console.error`) en `ProjectService`.
-- Navegación automática hacia `/projects/list` 2 segundos después de un guardado exitoso usando `Router`.
+- Navegación automática hacia `/projects` 2 segundos después de un guardado exitoso usando `Router`.
 
 ## Criterios de aceptación
 
