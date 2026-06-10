@@ -48,7 +48,8 @@ export class TaskListComponent implements OnInit {
     });
   }
 
-  getProjectName(projectId: number): string {
+  getProjectName(projectId: number | undefined): string {
+    if (!projectId) return 'Desconocido';
     return this.projects().find(p => p.id === projectId)?.name || 'Desconocido';
   }
 }
