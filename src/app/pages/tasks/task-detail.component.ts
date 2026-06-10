@@ -5,12 +5,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task.model';
 import { TaskStatusPipe } from '../../pipes/task-status.pipe';
-import { LucideArrowLeft, LucideEdit, LucideTrash2, LucideSave, LucideX } from '@lucide/angular';
+import { LucideArrowLeft, LucideEdit, LucideTrash2, LucideSave } from '@lucide/angular';
 
 @Component({
   selector: 'app-task-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, TaskStatusPipe, LucideArrowLeft, LucideEdit, LucideTrash2, LucideSave, LucideX],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, TaskStatusPipe, LucideArrowLeft, LucideEdit, LucideTrash2, LucideSave],
   templateUrl: './task-detail.component.html',
   styleUrl: './task-detail.component.css'
 })
@@ -22,7 +22,7 @@ export class TaskDetailComponent implements OnInit {
   
   task = signal<Task | null>(null);
   isEditing = signal(false);
-  loading = signal(false);
+  isLoading = signal(false);
 
   taskForm: FormGroup = this.fb.group({
     title: ['', Validators.required],
@@ -54,17 +54,21 @@ export class TaskDetailComponent implements OnInit {
 
   saveTask() {
     if (this.taskForm.invalid || !this.task()) return;
-    this.loading.set(true);
+    this.isLoading.set(true);
     const updated = { ...this.task(), ...this.taskForm.value };
-    this.taskService.update(updated.projectId!, updated.id!, updated).subscribe({
+    if (!updated.projectId || !updated.id) {
+      this.isLoading.set(false);
+      return;
+    }
+    this.taskService.update(updated.projectId, updated.id, updated).subscribe({
       next: (res) => {
         this.task.set(res);
         this.isEditing.set(false);
-        this.loading.set(false);
+        this.isLoading.set(false);
       },
       error: (err) => {
         alert('Error al actualizar tarea: ' + err.message);
-        this.loading.set(false);
+        this.isLoading.set(false);
       }
     });
   }
@@ -73,14 +77,15 @@ export class TaskDetailComponent implements OnInit {
     const t = this.task();
     if (!t) return;
     if (confirm(`¿Estás seguro de eliminar la tarea "${t.title}"?`)) {
-      this.loading.set(true);
-      this.taskService.delete(t.projectId, t.id!).subscribe({
+      if (!t.projectId || !t.id) return;
+      this.isLoading.set(true);
+      this.taskService.delete(t.projectId, t.id).subscribe({
         next: () => {
           this.router.navigate(['/tasks/list']);
         },
         error: (err) => {
           alert('Error al eliminar la tarea: ' + err.message);
-          this.loading.set(false);
+          this.isLoading.set(false);
         }
       });
     }

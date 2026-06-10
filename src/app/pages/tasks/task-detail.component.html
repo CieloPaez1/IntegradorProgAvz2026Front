@@ -1,4 +1,4 @@
-<div class="task-detail-page" *ngIf="task(); else loading">
+<div class="task-detail-page" *ngIf="task(); else loadingTemplate">
   <div class="page-header">
     <div>
       <p>DETALLE DE TAREA</p>
@@ -17,11 +17,11 @@
         <svg lucideArrowLeft style="width: 18px; height: 18px;"></svg>
         Volver
       </button>
-      <button class="btn-outline" (click)="toggleEdit()" [disabled]="loading()">
+      <button class="btn-outline" (click)="toggleEdit()" [disabled]="isLoading()">
         <svg lucideEdit style="width: 18px; height: 18px;"></svg>
         {{ isEditing() ? 'Cancelar' : 'Modificar' }}
       </button>
-      <button class="btn-outline danger" (click)="deleteTask()" [disabled]="loading()">
+      <button class="btn-outline danger" (click)="deleteTask()" [disabled]="isLoading()">
         <svg lucideTrash2 style="width: 18px; height: 18px;"></svg>
         Eliminar
       </button>
@@ -60,7 +60,7 @@
             </select>
           </div>
         </div>
-        <button type="submit" class="btn-primary" [disabled]="taskForm.invalid || loading()">
+        <button type="submit" class="btn-primary" [disabled]="taskForm.invalid || isLoading()">
           <svg lucideSave style="width: 18px; height: 18px;"></svg>
           Guardar Cambios
         </button>
@@ -90,7 +90,7 @@
   }
 </div>
 
-<ng-template #loading>
+<ng-template #loadingTemplate>
   <div class="loading-state">
     <p>Cargando detalle de la tarea...</p>
   </div>
