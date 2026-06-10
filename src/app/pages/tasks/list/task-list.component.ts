@@ -52,4 +52,16 @@ export class TaskListComponent implements OnInit {
     if (!projectId) return 'Desconocido';
     return this.projects().find(p => p.id === projectId)?.name || 'Desconocido';
   }
+
+  eliminarTarea(t: Task): void {
+    if (!t.id || !t.projectId) return;
+    if (confirm(`¿Estás seguro de que quieres eliminar la tarea "${t.title}"?`)) {
+      this.taskService.delete(t.projectId, t.id).subscribe({
+        next: () => {
+          this.tasks.update(ts => ts.filter(task => task.id !== t.id));
+        },
+        error: (err: Error) => alert('Error al eliminar la tarea: ' + err.message)
+      });
+    }
+  }
 }

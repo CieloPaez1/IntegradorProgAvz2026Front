@@ -39,4 +39,16 @@ export class ProjectListComponent implements OnInit {
     });
   }
 
+  eliminarProyecto(p: Project): void {
+    if (!p.id) return;
+    if (confirm(`¿Estás seguro de que quieres eliminar el proyecto "${p.name}"?`)) {
+      this.projectService.delete(p.id).subscribe({
+        next: () => {
+          this.projects.update(ps => ps.filter(proj => proj.id !== p.id));
+        },
+        error: (err: Error) => alert('Error al eliminar el proyecto: ' + err.message)
+      });
+    }
+  }
+
 }
