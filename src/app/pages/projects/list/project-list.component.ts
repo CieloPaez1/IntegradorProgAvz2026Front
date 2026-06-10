@@ -1,16 +1,17 @@
-import { Component, inject, signal, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, computed, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { ProjectService } from '../../../services/project.service';
 import { TaskService } from '../../../services/task.service';
 import { Project } from '../../../models/project.model';
-import { LucideFolderKanban, LucideEdit, LucideTrash2, LucidePlus } from '@lucide/angular';
+import { LucideFolderKanban, LucideEdit, LucideTrash2, LucidePlus, LucideSearch } from '@lucide/angular';
 import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-project-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, LucideFolderKanban, LucideEdit, LucideTrash2, LucidePlus],
+  imports: [CommonModule, RouterModule, FormsModule, LucideFolderKanban, LucideEdit, LucideTrash2, LucidePlus, LucideSearch],
   templateUrl: './project-list.component.html',
   styleUrl: './project-list.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -25,6 +26,16 @@ export class ProjectListComponent implements OnInit {
   loading = signal<boolean>(true);
   error = signal<string | null>(null);
   filter = signal<string | null>(null);
+  searchTerm = signal<string>('');
+
+  filteredProjects = computed(() => {
+    const term = this.searchTerm().toLowerCase();
+    if (!term) return this.projects();
+    return this.projects().filter(p => 
+      (p.name && p.name.toLowerCase().includes(term)) || 
+      (p.description && p.description.toLowerCase().includes(term))
+    );
+  });
 
   ngOnInit(): void {
     this.filter.set(this.route.snapshot.queryParamMap.get('filter'));

@@ -20,6 +20,10 @@
         }
       </p>
     </div>
+    <div class="search-bar" style="position: relative;">
+      <svg lucideSearch style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #9ca3af; pointer-events: none;"></svg>
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar tarea, proyecto o asignado..." style="padding: 10px 16px 10px 40px; border-radius: 12px; border: 1px solid #e5e7eb; outline: none; width: 300px; font-size: 0.95rem; background: #ffffff; transition: all 0.2s;" onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99, 102, 241, 0.1)'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+    </div>
   </div>
 
   @if (loading()) {
@@ -47,7 +51,7 @@
     <div class="card border-0 shadow-sm" style="border-radius: 24px; overflow: hidden; background: #ffffff;">
       <div class="table-responsive">
         <div class="tasks-list" style="padding: 16px;">
-          @for (t of tasks(); track t.id) {
+          @for (t of filteredTasks(); track t.id) {
             <div class="task-row" [routerLink]="['/tasks', t.id]" style="cursor: pointer; gap: 24px;">
               
               <div class="task-info" style="flex: 2; min-width: 0;">

@@ -1,17 +1,18 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { TaskService } from '../../../services/task.service';
 import { ProjectService } from '../../../services/project.service';
 import { Task } from '../../../models/task.model';
 import { Project } from '../../../models/project.model';
-import { LucideListTodo, LucideEdit, LucideTrash2 } from '@lucide/angular';
+import { LucideListTodo, LucideEdit, LucideTrash2, LucideSearch } from '@lucide/angular';
 import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, LucideListTodo, LucideEdit, LucideTrash2],
+  imports: [CommonModule, RouterModule, FormsModule, LucideListTodo, LucideEdit, LucideTrash2, LucideSearch],
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css']
 })
@@ -25,6 +26,17 @@ export class TaskListComponent implements OnInit {
   loading = signal<boolean>(true);
   error = signal<string | null>(null);
   filter = signal<string | null>(null);
+  searchTerm = signal<string>('');
+
+  filteredTasks = computed(() => {
+    const term = this.searchTerm().toLowerCase();
+    if (!term) return this.tasks();
+    return this.tasks().filter(t => 
+      (t.title && t.title.toLowerCase().includes(term)) || 
+      (t.assignee && t.assignee.toLowerCase().includes(term)) ||
+      (this.getProjectName(t.projectId).toLowerCase().includes(term))
+    );
+  });
 
   ngOnInit(): void {
     this.filter.set(this.route.snapshot.queryParamMap.get('filter'));
