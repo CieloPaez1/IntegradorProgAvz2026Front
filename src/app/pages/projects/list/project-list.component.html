@@ -26,50 +26,38 @@
       </div>
     } @else {
       <div class="table-responsive">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Fechas</th>
-              <th>Estado</th>
-              <th>Descripción</th>
-              <th style="text-align: right;">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (p of projects(); track p.id) {
-              <tr [routerLink]="['/projects', p.id]" style="cursor: pointer; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f8fafc'" onmouseout="this.style.backgroundColor='transparent'">
-                <td><span style="color: #94a3b8; font-family: monospace;">#{{ p.id }}</span></td>
-                <td>
-                  <span style="color: #0f172a; font-weight: 700;">{{ p.name }}</span>
-                </td>
-                <td style="color: #64748b; font-size: 0.9rem;">
-                  <div><strong style="color: #475569;">I:</strong> {{ p.startDate }}</div>
-                  <div><strong style="color: #475569;">F:</strong> {{ p.endDate }}</div>
-                </td>
-                <td>
-                  <span class="badge" [class.planned]="p.status === 'PLANNED'" [class.active]="p.status === 'ACTIVE'" [class.closed]="p.status === 'CLOSED'">
-                    {{ p.status === 'PLANNED' ? 'Planificado' : p.status === 'ACTIVE' ? 'Activo' : 'Cerrado' }}
-                  </span>
-                </td>
-                <td style="color: #64748b; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                  {{ p.description || '-' }}
-                </td>
-                <td style="text-align: right;">
-                  <div style="display: inline-flex; gap: 8px;">
-                    <button type="button" class="btn-action edit" title="Modificar" [routerLink]="['/projects/edit', p.id]" [disabled]="p.status === 'CLOSED'" (click)="$event.stopPropagation()">
-                      <svg lucideEdit></svg>
-                    </button>
-                    <button type="button" class="btn-action delete" title="Eliminar" (click)="$event.stopPropagation(); eliminarProyecto(p)">
-                      <svg lucideTrash2></svg>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
+        <div class="tasks-list">
+          @for (p of projects(); track p.id) {
+            <div class="task-row" [routerLink]="['/projects', p.id]" style="cursor: pointer;">
+              
+              <div class="task-info" style="flex: 2;">
+                <strong>{{ p.name }}</strong>
+                <span>ID: #{{ p.id }} <span style="margin-left: 8px; opacity: 0.7;">{{ p.description || 'Sin descripción' }}</span></span>
+              </div>
+              
+              <div class="task-info" style="flex: 1;">
+                <strong style="font-size: 0.95rem; color: var(--text-secondary);">Inicio: {{ p.startDate }}</strong>
+                <span>Fin: {{ p.endDate }}</span>
+              </div>
+              
+              <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center; padding-right: 24px;">
+                <span class="badge" [class.planned]="p.status === 'PLANNED'" [class.active]="p.status === 'ACTIVE'" [class.closed]="p.status === 'CLOSED'">
+                  {{ p.status === 'PLANNED' ? 'Planificado' : p.status === 'ACTIVE' ? 'Activo' : 'Cerrado' }}
+                </span>
+              </div>
+              
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn-action edit" title="Modificar" [routerLink]="['/projects/edit', p.id]" [disabled]="p.status === 'CLOSED'" (click)="$event.stopPropagation()">
+                  <svg lucideEdit style="width: 18px; height: 18px;"></svg>
+                </button>
+                <button type="button" class="btn-action delete" title="Eliminar" (click)="$event.stopPropagation(); eliminarProyecto(p)">
+                  <svg lucideTrash2 style="width: 18px; height: 18px;"></svg>
+                </button>
+              </div>
+              
+            </div>
+          }
+        </div>
       </div>
     }
   </div>

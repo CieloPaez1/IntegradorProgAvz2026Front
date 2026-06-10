@@ -452,3 +452,44 @@ html, body {
 .badge.todo, .badge.planned { background: var(--badge-planned-bg); color: var(--badge-planned-text); }
 .badge.progress, .badge.active { background: var(--badge-active-bg); color: var(--badge-active-text); }
 .badge.done, .badge.closed { background: var(--badge-closed-bg); color: var(--badge-closed-text); }
+
+/* --- PREMIUM LIST COMPONENTS --- */
+.tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.task-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-card);
+  background: var(--card-bg);
+  transition: all 0.4s ease;
+}
+
+.task-row:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 15px 30px var(--primary-glow);
+  transform: translateX(8px);
+}
+
+.task-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task-info strong {
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  font-weight: 800;
+}
+
+.task-info span {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
