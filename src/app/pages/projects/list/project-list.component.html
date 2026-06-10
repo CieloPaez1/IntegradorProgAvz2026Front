@@ -39,12 +39,10 @@
           </thead>
           <tbody>
             @for (p of projects(); track p.id) {
-              <tr>
+              <tr [routerLink]="['/projects', p.id]" style="cursor: pointer; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f8fafc'" onmouseout="this.style.backgroundColor='transparent'">
                 <td><span style="color: #94a3b8; font-family: monospace;">#{{ p.id }}</span></td>
                 <td>
-                  <a [routerLink]="['/projects', p.id]" style="color: #2563eb; font-weight: 700; text-decoration: none; cursor: pointer;">
-                    {{ p.name }}
-                  </a>
+                  <span style="color: #0f172a; font-weight: 700;">{{ p.name }}</span>
                 </td>
                 <td style="color: #64748b; font-size: 0.9rem;">
                   <div><strong style="color: #475569;">I:</strong> {{ p.startDate }}</div>
@@ -60,10 +58,10 @@
                 </td>
                 <td style="text-align: right;">
                   <div style="display: inline-flex; gap: 8px;">
-                    <button type="button" class="btn-action edit" title="Modificar" [routerLink]="['/projects/edit', p.id]" [disabled]="p.status === 'CLOSED'">
+                    <button type="button" class="btn-action edit" title="Modificar" [routerLink]="['/projects/edit', p.id]" [disabled]="p.status === 'CLOSED'" (click)="$event.stopPropagation()">
                       <svg lucideEdit></svg>
                     </button>
-                    <button type="button" class="btn-action delete" title="Eliminar" (click)="eliminarProyecto(p)">
+                    <button type="button" class="btn-action delete" title="Eliminar" (click)="$event.stopPropagation(); eliminarProyecto(p)">
                       <svg lucideTrash2></svg>
                     </button>
                   </div>
