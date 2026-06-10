@@ -36,8 +36,13 @@
               </div>
               
               <div class="task-info" style="flex: 1;">
-                <strong style="font-size: 0.95rem; color: var(--text-secondary);">Inicio: {{ p.startDate }}</strong>
-                <span>Fin: {{ p.endDate }}</span>
+                <strong style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase;">Inicio</strong>
+                <span style="font-weight: 500; font-size: 0.95rem;">{{ p.startDate | date:'shortDate' }}</span>
+              </div>
+
+              <div class="task-info" style="flex: 1;">
+                <strong style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase;">Fin</strong>
+                <span style="font-weight: 500; font-size: 0.95rem;">{{ p.endDate | date:'shortDate' }}</span>
               </div>
               
               <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center; padding-right: 24px;">
