@@ -10,7 +10,7 @@ import { LucideArrowLeft, LucideEdit, LucideTrash2, LucideSave } from '@lucide/a
 @Component({
   selector: 'app-task-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, TaskStatusPipe, LucideArrowLeft, LucideEdit, LucideTrash2, LucideSave],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, TaskStatusPipe, LucideArrowLeft, LucideTrash2, LucideSave],
   templateUrl: './task-detail.component.html',
   styleUrl: './task-detail.component.css'
 })
@@ -21,16 +21,7 @@ export class TaskDetailComponent implements OnInit {
   private fb = inject(FormBuilder);
   
   task = signal<Task | null>(null);
-  isEditing = signal(false);
   isLoading = signal(false);
-
-  taskForm: FormGroup = this.fb.group({
-    title: ['', Validators.required],
-    estimateHours: [1, [Validators.required, Validators.min(1)]],
-    assignee: [''],
-    status: ['TODO', Validators.required],
-    dueDate: ['']
-  });
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -38,39 +29,8 @@ export class TaskDetailComponent implements OnInit {
       this.taskService.getAll().subscribe(tasks => {
         const t = tasks.find(x => x.id === id);
         this.task.set(t || null);
-        if (t) {
-          this.taskForm.patchValue(t);
-        }
       });
     }
-  }
-
-  toggleEdit() {
-    this.isEditing.set(!this.isEditing());
-    if (!this.isEditing() && this.task()) {
-      this.taskForm.patchValue(this.task()!);
-    }
-  }
-
-  saveTask() {
-    if (this.taskForm.invalid || !this.task()) return;
-    this.isLoading.set(true);
-    const updated = { ...this.task(), ...this.taskForm.value };
-    if (!updated.projectId || !updated.id) {
-      this.isLoading.set(false);
-      return;
-    }
-    this.taskService.update(updated.projectId, updated.id, updated).subscribe({
-      next: (res) => {
-        this.task.set(res);
-        this.isEditing.set(false);
-        this.isLoading.set(false);
-      },
-      error: (err) => {
-        alert('Error al actualizar tarea: ' + err.message);
-        this.isLoading.set(false);
-      }
-    });
   }
 
   deleteTask() {

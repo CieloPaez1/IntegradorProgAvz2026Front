@@ -13,7 +13,7 @@ import { LucideArrowLeft, LucideEdit, LucideTrash2, LucidePlus, LucideSave } fro
 @Component({
   selector: 'app-project-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, ProjectStatusPipe, TaskStatusPipe, LucideArrowLeft, LucideEdit, LucideTrash2, LucidePlus, LucideSave],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, ProjectStatusPipe, TaskStatusPipe, LucideArrowLeft, LucideTrash2, LucidePlus, LucideSave],
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.css'
 })
@@ -27,17 +27,11 @@ export class ProjectDetailComponent implements OnInit {
   project = signal<Project | null>(null);
   tasks = signal<Task[]>([]);
   
-  isEditingProject = signal(false);
+  project = signal<Project | null>(null);
+  tasks = signal<Task[]>([]);
+  
   isAddingTask = signal(false);
   isLoading = signal(false);
-
-  projectForm: FormGroup = this.fb.group({
-    name: ['', Validators.required],
-    description: [''],
-    startDate: ['', Validators.required],
-    endDate: ['', Validators.required],
-    status: ['', Validators.required]
-  });
 
   taskForm: FormGroup = this.fb.group({
     title: ['', Validators.required],
@@ -57,38 +51,11 @@ export class ProjectDetailComponent implements OnInit {
       this.projectService.getAll().subscribe(projects => {
         const p = projects.find(x => x.id === id);
         this.project.set(p || null);
-        if (p) {
-          this.projectForm.patchValue(p);
-        }
       });
       this.taskService.getAll().subscribe(allTasks => {
         this.tasks.set(allTasks.filter(t => t.projectId === id).reverse());
       });
     }
-  }
-
-  toggleEditProject() {
-    this.isEditingProject.set(!this.isEditingProject());
-    if (!this.isEditingProject() && this.project()) {
-      this.projectForm.patchValue(this.project()!);
-    }
-  }
-
-  saveProject() {
-    if (this.projectForm.invalid || !this.project()) return;
-    this.isLoading.set(true);
-    const updated = { ...this.project(), ...this.projectForm.value };
-    this.projectService.update(updated.id!, updated).subscribe({
-      next: (res) => {
-        this.project.set(res);
-        this.isEditingProject.set(false);
-        this.isLoading.set(false);
-      },
-      error: (err) => {
-        alert('Error al actualizar el proyecto: ' + err.message);
-        this.isLoading.set(false);
-      }
-    });
   }
 
   deleteProject() {

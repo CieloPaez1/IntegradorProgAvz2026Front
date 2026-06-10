@@ -17,10 +17,6 @@
         <svg lucideArrowLeft style="width: 18px; height: 18px;"></svg>
         Volver
       </button>
-      <button class="btn-outline" (click)="toggleEditProject()" [disabled]="isLoading()">
-        <svg lucideEdit style="width: 18px; height: 18px;"></svg>
-        {{ isEditingProject() ? 'Cancelar' : 'Modificar' }}
-      </button>
       <button class="btn-outline danger" (click)="deleteProject()" [disabled]="isLoading()">
         <svg lucideTrash2 style="width: 18px; height: 18px;"></svg>
         Eliminar
@@ -28,45 +24,8 @@
     </div>
   </div>
 
-  @if (isEditingProject()) {
-    <div class="dashboard-card" style="margin-top: 24px;">
-      <h3>Modificar Proyecto</h3>
-      <form [formGroup]="projectForm" (ngSubmit)="saveProject()" style="margin-top: 16px;">
-        <div style="margin-bottom: 16px;">
-          <label class="form-label">Nombre</label>
-          <input type="text" formControlName="name" class="form-control" />
-        </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
-          <div>
-            <label class="form-label">Fecha de Inicio</label>
-            <input type="date" formControlName="startDate" class="form-control" />
-          </div>
-          <div>
-            <label class="form-label">Fecha de Fin</label>
-            <input type="date" formControlName="endDate" class="form-control" />
-          </div>
-        </div>
-        <div style="margin-bottom: 16px;">
-          <label class="form-label">Estado</label>
-          <select formControlName="status" class="form-control">
-            <option value="PLANNED">Planificado</option>
-            <option value="ACTIVE">Activo</option>
-            <option value="CLOSED">Cerrado</option>
-          </select>
-        </div>
-        <div style="margin-bottom: 24px;">
-          <label class="form-label">Descripción</label>
-          <textarea formControlName="description" class="form-control" rows="3"></textarea>
-        </div>
-        <button type="submit" class="btn-primary" [disabled]="projectForm.invalid || isLoading()">
-          <svg lucideSave style="width: 18px; height: 18px;"></svg>
-          Guardar Cambios
-        </button>
-      </form>
-    </div>
-  } @else {
-    <div class="dashboard-card" style="margin-top: 24px;">
-      <div class="info-grid">
+  <div class="dashboard-card" style="margin-top: 24px;">
+    <div class="info-grid">
       <div class="info-block">
         <label>Fecha de Inicio</label>
         <p>{{ project()?.startDate | date:'dd/MM/yyyy' }}</p>
@@ -82,7 +41,6 @@
       <p class="description-text">{{ project()?.description || 'Sin descripción detallada.' }}</p>
     </div>
   </div>
-  }
 
   <div class="list-section">
     <div class="list-title" style="display: flex; justify-content: space-between; align-items: center;">
