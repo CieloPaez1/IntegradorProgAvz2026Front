@@ -64,9 +64,7 @@ export class TaskListComponent implements OnInit {
 
     forkJoin({
       projects: this.projectService.getAll(),
-      tasks: this.filter() === 'unassigned' 
-        ? this.taskService.filter(undefined, 'unassigned')
-        : this.taskService.getAll()
+      tasks: this.taskService.getAll()
     }).subscribe({
       next: (result) => {
         this.projects.set(result.projects);
