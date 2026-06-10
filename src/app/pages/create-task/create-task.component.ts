@@ -34,7 +34,8 @@ export class CreateTaskComponent implements OnInit {
     title: ['', [Validators.required]],
     estimateHours: [null, [Validators.required, Validators.min(1)]],
     assignee: [''],
-    status: ['', [Validators.required]]
+    status: ['', [Validators.required]],
+    dueDate: ['']
   });
 
   ngOnInit(): void {
@@ -71,7 +72,7 @@ export class CreateTaskComponent implements OnInit {
     this.taskService.create(projectId, taskData as Task).subscribe({
       next: (created) => {
         this.tasks.update(list => [...list, created]);
-        this.form.reset({ status: '', projectId: '', assignee: '' });
+        this.form.reset({ status: '', projectId: '', assignee: '', dueDate: '' });
         this.success.set('Tarea creada correctamente.');
         this.loading.set(false);
       },
@@ -83,7 +84,7 @@ export class CreateTaskComponent implements OnInit {
   }
 
   cancelar(): void {
-    this.form.reset({ status: '', projectId: '', assignee: '' });
+    this.form.reset({ status: '', projectId: '', assignee: '', dueDate: '' });
     this.error.set(null);
     this.success.set(null);
   }

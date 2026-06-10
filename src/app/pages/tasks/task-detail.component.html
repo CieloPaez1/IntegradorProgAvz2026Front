@@ -40,6 +40,10 @@
         <label>Horas Estimadas</label>
         <p>{{ task()?.estimateHours || 0 }} hs</p>
       </div>
+      <div class="info-block">
+        <label>Vencimiento</label>
+        <p>{{ task()?.dueDate ? (task()?.dueDate | date:'short') : 'Sin fecha' }}</p>
+      </div>
     </div>
   </div>
 </div>

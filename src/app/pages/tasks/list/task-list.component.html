@@ -43,9 +43,12 @@
                 <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-secondary);">{{ getProjectName(t.projectId) }} <span style="opacity: 0.5; margin-left: 8px;">#{{ t.id }}</span></span>
               </div>
               
-              <div class="task-info" style="flex: 1;">
+              <div class="task-info" style="flex: 1.2;">
                 <strong style="font-size: 0.85rem; color: var(--text-secondary);">Creada: {{ t.createdAt ? (t.createdAt | date:'shortDate') : '-' }}</strong>
                 <span style="font-size: 0.85rem;">Fin: {{ t.finishedAt ? (t.finishedAt | date:'shortDate') : '-' }}</span>
+                @if (t.dueDate && t.status !== 'DONE') {
+                  <span style="font-size: 0.85rem; color: #ef4444; font-weight: 600;">Vence: {{ t.dueDate | date:'shortDate' }}</span>
+                }
               </div>
               
               <div class="task-info" style="flex: 1;">

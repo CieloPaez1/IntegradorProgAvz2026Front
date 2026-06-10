@@ -53,15 +53,22 @@
         </div>
       </div>
 
-      <div style="margin-bottom: 32px;">
-        <label class="form-label">Estado <span style="color: #ef4444;">*</span></label>
-        <select formControlName="status" class="form-control" [class.is-invalid]="isInvalid('status')">
-          <option value="" disabled>-- Seleccioná un estado --</option>
-          <option value="TODO">Por hacer</option>
-          <option value="IN_PROGRESS">En progreso</option>
-          <option value="DONE">Hecho</option>
-        </select>
-        @if (isInvalid('status')) { <span class="error-text">El estado es obligatorio.</span> }
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px;">
+        <div>
+          <label class="form-label">Estado <span style="color: #ef4444;">*</span></label>
+          <select formControlName="status" class="form-control" [class.is-invalid]="isInvalid('status')">
+            <option value="" disabled>-- Seleccioná un estado --</option>
+            <option value="TODO">Por hacer</option>
+            <option value="IN_PROGRESS">En progreso</option>
+            <option value="DONE">Hecho</option>
+          </select>
+          @if (isInvalid('status')) { <span class="error-text">El estado es obligatorio.</span> }
+        </div>
+
+        <div>
+          <label class="form-label">Vencimiento</label>
+          <input type="datetime-local" formControlName="dueDate" class="form-control" />
+        </div>
       </div>
 
       <div style="display: flex; gap: 16px;">
@@ -107,6 +114,10 @@
               <div class="meta-item">
                 <span class="meta-label">Asignado</span>
                 <span class="meta-val">{{ t.assignee ?? '-' }}</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Vencimiento</span>
+                <span class="meta-val">{{ t.dueDate ? (t.dueDate | date:'short') : '-' }}</span>
               </div>
               <div class="meta-badge">
                 <span class="badge" [class.todo]="t.status === 'TODO'" [class.progress]="t.status === 'IN_PROGRESS'" [class.done]="t.status === 'DONE'">
