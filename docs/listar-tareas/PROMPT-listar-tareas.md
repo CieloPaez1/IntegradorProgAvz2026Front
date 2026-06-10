@@ -14,10 +14,10 @@
    - Cargando: Un spinner moderno centrado.
    - Error: Un recuadro rojo estilizado que muestre el error del Signal.
    - Vacío: Un mensaje amigable si la lista de tareas tiene length === 0 ("No hay tareas aún").
-   - Lleno: Una tabla que liste: ID, Título, Proyecto (cruzando los datos con el signal de projects mediante una función `getProjectName(id)`), Horas, Asignado y Estado.
+   - Lleno: Una tabla que liste: ID, Título, Proyecto (cruzando los datos con el signal de projects mediante una función `getProjectName(id)`), Horas, Asignado y Estado, y una columna de Acciones.
 7. Para el Estado, usa badges condicionales: 'TODO' (Por hacer, amarillo), 'IN_PROGRESS' (En progreso, azul), 'DONE' (Hecho, verde).
-8. Agrega iconos de Lucide-Angular (`ListTodo`, `Edit`, `Trash2`) en los botones de "Acciones".
-9. Asegúrate de añadir el componente en `app.routes.ts` bajo la ruta `tasks/list`.
+8. Agrega iconos de Lucide-Angular (`ListTodo`, `Edit`, `Trash2`) en los botones de "Acciones". Implementa la lógica para eliminar una tarea usando el `TaskService.delete(projectId, taskId)` y actualizando la lista de forma reactiva si el usuario confirma el cuadro de diálogo. El botón de editar debe navegar a `/projects/:projectId/tasks/edit/:taskId` y estar deshabilitado si el estado es 'DONE'.
+9. Asegúrate de añadir el componente en `app.routes.ts` bajo la ruta `tasks/list`. El título de la vista (h1) debe ser "Lista de tareas".
 
 **Requisitos de Estilo (Premium):**
 - Usa bordes muy redondeados (`border-radius: 24px` para cards, 16px para alertas).
