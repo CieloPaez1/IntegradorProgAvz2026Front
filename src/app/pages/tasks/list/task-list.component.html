@@ -92,9 +92,6 @@
               </div>
               
               <div style="display: flex; gap: 8px; justify-content: flex-end;">
-                <button type="button" class="btn-action edit" title="Modificar" [routerLink]="['/projects', t.projectId, 'tasks', 'edit', t.id]" [disabled]="t.status === 'DONE'" (click)="$event.stopPropagation()">
-                  <svg lucideEdit style="width: 18px; height: 18px;"></svg>
-                </button>
                 <button type="button" class="btn-action delete" title="Eliminar" (click)="$event.stopPropagation(); eliminarTarea(t)">
                   <svg lucideTrash2 style="width: 18px; height: 18px;"></svg>
                 </button>
