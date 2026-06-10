@@ -27,19 +27,34 @@ export class TaskListComponent implements OnInit {
   error = signal<string | null>(null);
   filter = signal<string | null>(null);
   searchTerm = signal<string>('');
+  statusFilter = signal<string>('ALL');
 
   filteredTasks = computed(() => {
     const term = this.searchTerm().toLowerCase();
-    if (!term) return this.tasks();
-    return this.tasks().filter(t => 
-      (t.title && t.title.toLowerCase().includes(term)) || 
-      (t.assignee && t.assignee.toLowerCase().includes(term)) ||
-      (this.getProjectName(t.projectId).toLowerCase().includes(term))
-    );
+    const status = this.statusFilter();
+    let result = this.tasks();
+
+    if (status !== 'ALL') {
+      result = result.filter(t => t.status === status);
+    }
+
+    if (term) {
+      result = result.filter(t => 
+        (t.title && t.title.toLowerCase().includes(term)) || 
+        (t.assignee && t.assignee.toLowerCase().includes(term)) ||
+        (this.getProjectName(t.projectId).toLowerCase().includes(term))
+      );
+    }
+
+    return result;
   });
 
   ngOnInit(): void {
-    this.filter.set(this.route.snapshot.queryParamMap.get('filter'));
+    const routeFilter = this.route.snapshot.queryParamMap.get('filter');
+    this.filter.set(routeFilter);
+    if (routeFilter === 'todo') {
+      this.statusFilter.set('TODO');
+    }
     this.cargarDatos();
   }
 

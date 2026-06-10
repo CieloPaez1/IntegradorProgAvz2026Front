@@ -27,14 +27,25 @@ export class ProjectListComponent implements OnInit {
   error = signal<string | null>(null);
   filter = signal<string | null>(null);
   searchTerm = signal<string>('');
+  statusFilter = signal<string>('ALL');
 
   filteredProjects = computed(() => {
     const term = this.searchTerm().toLowerCase();
-    if (!term) return this.projects();
-    return this.projects().filter(p => 
-      (p.name && p.name.toLowerCase().includes(term)) || 
-      (p.description && p.description.toLowerCase().includes(term))
-    );
+    const status = this.statusFilter();
+    let result = this.projects();
+
+    if (status !== 'ALL') {
+      result = result.filter(p => p.status === status);
+    }
+
+    if (term) {
+      result = result.filter(p => 
+        (p.name && p.name.toLowerCase().includes(term)) || 
+        (p.description && p.description.toLowerCase().includes(term))
+      );
+    }
+
+    return result;
   });
 
   ngOnInit(): void {
