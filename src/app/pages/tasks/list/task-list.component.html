@@ -34,27 +34,37 @@
   } @else {
     <div class="card border-0 shadow-sm" style="border-radius: 24px; overflow: hidden; background: #ffffff;">
       <div class="table-responsive">
-        <div class="tasks-list">
+        <div class="tasks-list" style="padding: 16px;">
           @for (t of tasks(); track t.id) {
-            <div class="task-row" [routerLink]="['/tasks', t.id]" style="cursor: pointer;">
+            <div class="task-row" [routerLink]="['/tasks', t.id]" style="cursor: pointer; gap: 24px;">
               
-              <div class="task-info" style="flex: 2;">
-                <strong>{{ t.title }}</strong>
-                <span>{{ getProjectName(t.projectId) }} <span style="opacity: 0.5; margin-left: 8px;">#{{ t.id }}</span></span>
+              <div class="task-info" style="flex: 2; min-width: 0;">
+                <strong style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 1.1rem; color: var(--text-primary);">{{ t.title }}</strong>
+                <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-secondary);">{{ getProjectName(t.projectId) }} <span style="opacity: 0.5; margin-left: 8px;">#{{ t.id }}</span></span>
               </div>
               
               <div class="task-info" style="flex: 1;">
-                <strong style="font-size: 1rem;">{{ t.estimateHours }}h</strong>
-                <span>{{ t.assignee || 'Sin asignar' }}</span>
+                <strong style="font-size: 0.85rem; color: var(--text-secondary);">Creada: {{ t.createdAt ? (t.createdAt | date:'shortDate') : '-' }}</strong>
+                <span style="font-size: 0.85rem;">Fin: {{ t.finishedAt ? (t.finishedAt | date:'shortDate') : '-' }}</span>
               </div>
               
-              <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center; padding-right: 24px;">
+              <div class="task-info" style="flex: 1;">
+                <strong style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase;">Asignado</strong>
+                <span style="color: var(--text-primary); font-weight: 600; font-size: 0.95rem;">{{ t.assignee || 'Sin asignar' }}</span>
+              </div>
+
+              <div class="task-info" style="flex: 0.8; text-align: center;">
+                <strong style="font-size: 1.2rem; color: var(--primary-color);">{{ t.estimateHours }}h</strong>
+                <span style="font-size: 0.75rem; text-transform: uppercase;">Estimadas</span>
+              </div>
+              
+              <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
                 <span class="badge" [ngClass]="'status-' + t.status.toLowerCase()">
                   {{ t.status === 'TODO' ? 'POR HACER' : t.status === 'IN_PROGRESS' ? 'EN PROGRESO' : 'HECHO' }}
                 </span>
               </div>
               
-              <div style="display: flex; gap: 8px;">
+              <div style="display: flex; gap: 8px; justify-content: flex-end;">
                 <button type="button" class="btn-action edit" title="Modificar" [routerLink]="['/projects', t.projectId, 'tasks', 'edit', t.id]" [disabled]="t.status === 'DONE'" (click)="$event.stopPropagation()">
                   <svg lucideEdit style="width: 18px; height: 18px;"></svg>
                 </button>
