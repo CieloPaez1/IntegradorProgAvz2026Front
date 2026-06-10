@@ -24,8 +24,10 @@ export class TaskListComponent implements OnInit {
   projects = signal<Project[]>([]);
   loading = signal<boolean>(true);
   error = signal<string | null>(null);
+  filter = signal<string | null>(null);
 
   ngOnInit(): void {
+    this.filter.set(this.route.snapshot.queryParamMap.get('filter'));
     this.cargarDatos();
   }
 

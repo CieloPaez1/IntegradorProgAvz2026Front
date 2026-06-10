@@ -2,10 +2,22 @@
   <div class="d-flex justify-content-between align-items-center mb-5">
     <div>
       <h1 class="mb-1" style="color: #111827; font-weight: 800; font-size: 2.25rem; letter-spacing: -0.025em;">
-        Lista de tareas
+        @if (filter() === 'unassigned') {
+          Tareas Huérfanas
+        } @else if (filter() === 'todo') {
+          Cuello de botella (Pendientes)
+        } @else {
+          Lista de tareas
+        }
       </h1>
       <p class="mb-0" style="color: #6b7280; font-size: 1.1rem;">
-        Visualiza todas las tareas de tus proyectos
+        @if (filter() === 'unassigned') {
+          Tareas que no tienen a nadie asignado para su resolución.
+        } @else if (filter() === 'todo') {
+          Listado de todas las tareas del sistema que aún no fueron iniciadas.
+        } @else {
+          Visualiza todas las tareas de tus proyectos
+        }
       </p>
     </div>
   </div>
