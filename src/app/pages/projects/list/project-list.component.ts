@@ -1,9 +1,11 @@
 import { Component, inject, signal, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ProjectService } from '../../../services/project.service';
+import { TaskService } from '../../../services/task.service';
 import { Project } from '../../../models/project.model';
 import { LucideFolderKanban, LucideEdit, LucideTrash2, LucidePlus } from '@lucide/angular';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-project-list',
@@ -16,6 +18,8 @@ import { LucideFolderKanban, LucideEdit, LucideTrash2, LucidePlus } from '@lucid
 export class ProjectListComponent implements OnInit {
 
   private projectService = inject(ProjectService);
+  private taskService = inject(TaskService);
+  private route = inject(ActivatedRoute);
 
   projects = signal<Project[]>([]);
   loading = signal<boolean>(true);
@@ -27,9 +31,20 @@ export class ProjectListComponent implements OnInit {
 
   cargarProyectos(): void {
     this.loading.set(true);
-    this.projectService.getAll().subscribe({
-      next: (data) => {
-        this.projects.set(data);
+    forkJoin({
+      projects: this.projectService.getAll(),
+      tasks: this.taskService.getAll()
+    }).subscribe({
+      next: (res) => {
+        let filteredProjects = res.projects;
+        const filter = this.route.snapshot.queryParamMap.get('filter');
+        
+        if (filter === 'empty') {
+          const projectIdsWithTasks = new Set(res.tasks.map(t => t.projectId));
+          filteredProjects = filteredProjects.filter(p => p.id && !projectIdsWithTasks.has(p.id));
+        }
+
+        this.projects.set(filteredProjects);
         this.loading.set(false);
       },
       error: (err: Error) => {

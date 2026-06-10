@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TaskService } from '../../../services/task.service';
 import { ProjectService } from '../../../services/project.service';
 import { Task } from '../../../models/task.model';
@@ -18,6 +18,7 @@ import { forkJoin } from 'rxjs';
 export class TaskListComponent implements OnInit {
   private taskService = inject(TaskService);
   private projectService = inject(ProjectService);
+  private route = inject(ActivatedRoute);
 
   tasks = signal<Task[]>([]);
   projects = signal<Project[]>([]);
@@ -37,7 +38,16 @@ export class TaskListComponent implements OnInit {
       projects: this.projectService.getAll()
     }).subscribe({
       next: (res) => {
-        this.tasks.set(res.tasks);
+        let filteredTasks = res.tasks;
+        const filter = this.route.snapshot.queryParamMap.get('filter');
+        
+        if (filter === 'unassigned') {
+          filteredTasks = filteredTasks.filter(t => !t.assignee || t.assignee.trim() === '');
+        } else if (filter === 'todo') {
+          filteredTasks = filteredTasks.filter(t => t.status === 'TODO');
+        }
+
+        this.tasks.set(filteredTasks);
         this.projects.set(res.projects);
         this.loading.set(false);
       },

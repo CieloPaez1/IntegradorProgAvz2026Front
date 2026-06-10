@@ -131,21 +131,21 @@
         <h2>Alertas del Sistema</h2>
       </div>
       <div class="alerts-list">
-        <div class="alert-item">
+        <div class="alert-item" routerLink="/projects" [queryParams]="{filter: 'empty'}" style="cursor: pointer; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f8fafc'" onmouseout="this.style.backgroundColor='transparent'">
           <div class="alert-info">
             <strong>Proyectos vacíos</strong>
             <span>Proyectos que no tienen tareas asignadas</span>
           </div>
           <span class="alert-value" [class.danger]="projectsWithoutTasks() > 0">{{ projectsWithoutTasks() }}</span>
         </div>
-        <div class="alert-item">
+        <div class="alert-item" routerLink="/tasks/list" [queryParams]="{filter: 'unassigned'}" style="cursor: pointer; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f8fafc'" onmouseout="this.style.backgroundColor='transparent'">
           <div class="alert-info">
             <strong>Tareas huérfanas</strong>
             <span>Tareas que no tienen un usuario asignado</span>
           </div>
           <span class="alert-value" [class.danger]="unassignedTasks() > 0">{{ unassignedTasks() }}</span>
         </div>
-        <div class="alert-item">
+        <div class="alert-item" routerLink="/tasks/list" [queryParams]="{filter: 'todo'}" style="cursor: pointer; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f8fafc'" onmouseout="this.style.backgroundColor='transparent'">
           <div class="alert-info">
             <strong>Cuello de botella</strong>
             <span>Cantidad de tareas pendientes (TODO) totales</span>
