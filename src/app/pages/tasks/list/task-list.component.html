@@ -51,7 +51,9 @@
               <tr>
                 <td style="color: #6b7280; font-weight: 500;">#{{ t.id }}</td>
                 <td>
-                  <span style="font-weight: 600; color: #111827;">{{ t.title }}</span>
+                  <a [routerLink]="['/tasks', t.id]" style="font-weight: 600; color: #2563eb; text-decoration: none; cursor: pointer;">
+                    {{ t.title }}
+                  </a>
                 </td>
                 <td>
                   <span style="color: #4b5563;">{{ getProjectName(t.projectId) }}</span>
