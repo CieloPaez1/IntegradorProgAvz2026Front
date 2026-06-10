@@ -10,7 +10,7 @@
           Lista de Proyectos
         }
       </h1>
-      <p class="mb-0" style="color: #6b7280; font-size: 1.1rem; margin-top: 4px;">
+      <p class="mb-0" style="color: var(--text-secondary); font-size: 1.1rem; margin-top: 4px;">
         @if (filter() === 'empty') {
           Proyectos que no tienen ninguna tarea planificada.
         } @else {
@@ -19,15 +19,15 @@
       </p>
     </div>
     <div style="display: flex; gap: 16px; align-items: center;">
-      <select [(ngModel)]="statusFilter" style="padding: 10px 16px; border-radius: 12px; border: 1px solid #e5e7eb; outline: none; font-size: 0.95rem; background: #ffffff; cursor: pointer; color: #374151;">
+      <select [(ngModel)]="statusFilter" style="padding: 10px 16px; border-radius: 12px; border: 1px solid var(--border-color); outline: none; font-size: 0.95rem; background: var(--input-bg); cursor: pointer; color: var(--text-primary);">
         <option value="ALL">Todos los estados</option>
         <option value="PLANNED">Planificado</option>
         <option value="ACTIVE">Activo</option>
         <option value="CLOSED">Cerrado</option>
       </select>
       <div class="search-bar" style="position: relative;">
-        <svg lucideSearch style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #9ca3af; pointer-events: none;"></svg>
-        <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar proyecto..." style="padding: 10px 16px 10px 40px; border-radius: 12px; border: 1px solid #e5e7eb; outline: none; width: 250px; font-size: 0.95rem; background: #f9fafb; transition: all 0.2s;" onfocus="this.style.background='#ffffff'; this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99, 102, 241, 0.1)'" onblur="this.style.background='#f9fafb'; this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+        <svg lucideSearch style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--text-secondary); pointer-events: none;"></svg>
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar proyecto..." style="padding: 10px 16px 10px 40px; border-radius: 12px; border: 1px solid var(--border-color); outline: none; width: 250px; font-size: 0.95rem; background: var(--input-bg); color: var(--text-primary); transition: all 0.2s;" onfocus="this.style.background='var(--bg-secondary)'; this.style.borderColor='var(--primary-color)'; this.style.boxShadow='0 0 0 4px var(--primary-glow)'" onblur="this.style.background='var(--input-bg)'; this.style.borderColor='var(--border-color)'; this.style.boxShadow='none'">
       </div>
       <a routerLink="/projects/create" class="btn-primary">
         <svg lucidePlus></svg> Nuevo Proyecto
@@ -40,12 +40,12 @@
     @if (loading()) {
       <div class="empty-state">Cargando proyectos...</div>
     } @else if (error()) {
-      <div class="empty-state" style="color: #ef4444;">{{ error() }}</div>
+      <div class="empty-state" style="color: var(--danger-color);">{{ error() }}</div>
     } @else if (projects().length === 0) {
       <div class="empty-state">
-        <svg lucideFolderKanban style="width: 48px; height: 48px; color: #94a3b8; margin-bottom: 16px;"></svg>
+        <svg lucideFolderKanban style="width: 48px; height: 48px; color: var(--text-secondary); margin-bottom: 16px;"></svg>
         <p style="margin: 0;">No hay proyectos creados aún.</p>
-        <a routerLink="/projects/create" style="color: #6366f1; text-decoration: none; font-weight: 600; display: inline-block; margin-top: 8px;">
+        <a routerLink="/projects/create" style="color: var(--primary-color); text-decoration: none; font-weight: 600; display: inline-block; margin-top: 8px;">
           Crea tu primer proyecto
         </a>
       </div>
