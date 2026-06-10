@@ -99,6 +99,10 @@
                     <label class="form-label">Horas Est. <span class="required">*</span></label>
                     <input type="number" formControlName="estimateHours" class="form-control" min="1" />
                   </div>
+                  <div>
+                    <label class="form-label">Vencimiento</label>
+                    <input type="datetime-local" formControlName="dueDate" class="form-control" />
+                  </div>
                   <div class="col-span-2">
                     <label class="form-label">Estado <span class="required">*</span></label>
                     <select formControlName="status" class="form-control">

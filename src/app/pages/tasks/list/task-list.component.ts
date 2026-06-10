@@ -63,21 +63,19 @@ export class TaskListComponent implements OnInit {
     this.error.set(null);
 
     forkJoin({
-      tasks: this.taskService.getAll(),
-      projects: this.projectService.getAll()
+      projects: this.projectService.getAll(),
+      tasks: this.filter() === 'unassigned' 
+        ? this.taskService.filter(undefined, 'unassigned')
+        : this.taskService.getAll()
     }).subscribe({
-      next: (res) => {
-        let filteredTasks = res.tasks;
-        const filter = this.route.snapshot.queryParamMap.get('filter');
+      next: (result) => {
+        this.projects.set(result.projects);
         
-        if (filter === 'unassigned') {
-          filteredTasks = filteredTasks.filter(t => !t.assignee || t.assignee.trim() === '');
-        } else if (filter === 'todo') {
-          filteredTasks = filteredTasks.filter(t => t.status === 'TODO');
+        let fetchedTasks = result.tasks.reverse();
+        if (this.filter() === 'unassigned') {
+          fetchedTasks = fetchedTasks.filter(t => !t.assignee || t.assignee.trim() === '');
         }
-
-        this.tasks.set(filteredTasks);
-        this.projects.set(res.projects);
+        this.tasks.set(fetchedTasks);
         this.loading.set(false);
       },
       error: (err: Error) => {

@@ -68,7 +68,7 @@ export class ProjectListComponent implements OnInit {
           filteredProjects = filteredProjects.filter(p => p.id && !projectIdsWithTasks.has(p.id));
         }
 
-        this.projects.set(filteredProjects);
+        this.projects.set(filteredProjects.reverse());
         this.loading.set(false);
       },
       error: (err: Error) => {
