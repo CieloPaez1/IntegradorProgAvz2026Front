@@ -45,7 +45,7 @@
 
       @if (projectsOpen() && !collapsed()) {
         <div class="nav-submenu">
-          <a routerLink="/projects/list" routerLinkActive="active" class="nav-subitem">
+          <a routerLink="/projects" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-subitem">
             <svg lucideList class="sub-icon"></svg>
             <span>Ver proyectos</span>
           </a>
