@@ -175,6 +175,12 @@
   flex-direction: column;
   align-items: center;
   pointer-events: none;
+  background: var(--card-bg);
+  padding: 15px 25px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  backdrop-filter: var(--glass-backdrop);
 }
 
 .chart-center strong {

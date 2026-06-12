@@ -174,10 +174,41 @@ export class HomeComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       const getThemeColor = (varName: string) => getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || '#000';
       const bgColors = [getThemeColor('--warning-color'), getThemeColor('--primary-color'), getThemeColor('--success-color')];
+      const theme = this.themeService.currentTheme();
+    
+      let projectChartType: any = 'doughnut';
+      let taskChartType: any = 'doughnut';
+      
+      switch(theme) {
+        case 'minimal': 
+          projectChartType = 'pie'; 
+          taskChartType = 'pie'; 
+          break;
+        case 'cyberpunk': 
+          projectChartType = 'polarArea'; 
+          taskChartType = 'polarArea'; 
+          break;
+        case 'sunset': 
+          projectChartType = 'pie'; 
+          taskChartType = 'doughnut'; 
+          break;
+        case 'crimson': 
+          projectChartType = 'polarArea'; 
+          taskChartType = 'pie'; 
+          break;
+        case 'ocean': 
+          projectChartType = 'doughnut'; 
+          taskChartType = 'pie'; 
+          break;
+        default:
+          projectChartType = 'doughnut';
+          taskChartType = 'doughnut';
+          break;
+      }
 
       if (this.projectChartRef?.nativeElement) {
         this.projectChartInst = new Chart(this.projectChartRef.nativeElement, {
-          type: 'doughnut',
+          type: projectChartType,
           data: {
             labels: ['Planificados', 'En proceso', 'Terminados'],
             datasets: [{
@@ -202,7 +233,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
       if (this.taskChartRef?.nativeElement) {
         this.taskChartInst = new Chart(this.taskChartRef.nativeElement, {
-          type: 'doughnut',
+          type: taskChartType,
           data: {
             labels: ['Por hacer', 'En proceso', 'Hechas'],
             datasets: [{
