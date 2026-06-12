@@ -1,15 +1,15 @@
 <div class="container py-5" style="max-width: 800px;">
   <div class="mb-5 text-center">
-    <h1 class="mb-2" style="color: #111827; font-weight: 800; font-size: 2.25rem; letter-spacing: -0.025em;">
+    <h1 class="mb-2" style="color: var(--text-primary); font-weight: 800; font-size: 2.25rem; letter-spacing: -0.025em;">
       Editar Proyecto
     </h1>
-    <p style="color: #6b7280; font-size: 1.1rem;">
+    <p style="color: var(--text-secondary); font-size: 1.1rem;">
       Actualiza la información del proyecto seleccionado
     </p>
   </div>
 
   @if (loading()) {
-    <div class="card border-0 shadow-sm" style="border-radius: 24px; padding: 60px 20px;">
+    <div class="dashboard-card" style="padding: 60px 20px;">
       <div class="text-center">
         <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
           <span class="visually-hidden">Cargando...</span>
@@ -18,7 +18,7 @@
       </div>
     </div>
   } @else {
-    <div class="card border-0 shadow-sm" style="border-radius: 24px; padding: 40px; background: #ffffff;">
+    <div class="dashboard-card" style="padding: 40px;">
       @if (error()) {
         <div class="alert alert-danger" style="border-radius: 12px; font-weight: 500;">
           ✖ {{ error() }}
@@ -35,7 +35,7 @@
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-2">
         
         <div class="mb-4">
-          <label class="form-label" style="font-weight: 600; color: #374151;">Nombre del Proyecto *</label>
+          <label class="form-label">Nombre del Proyecto *</label>
           <input 
             type="text" 
             formControlName="name" 
@@ -49,7 +49,7 @@
         </div>
 
         <div class="mb-4">
-          <label class="form-label" style="font-weight: 600; color: #374151;">Descripción</label>
+          <label class="form-label">Descripción</label>
           <textarea 
             formControlName="description" 
             class="form-control" 
@@ -60,7 +60,7 @@
 
         <div class="row">
           <div class="col-md-6 mb-4">
-            <label class="form-label" style="font-weight: 600; color: #374151;">Fecha de Inicio *</label>
+            <label class="form-label">Fecha de Inicio *</label>
             <input 
               type="date" 
               formControlName="startDate" 
@@ -73,7 +73,7 @@
           </div>
           
           <div class="col-md-6 mb-4">
-            <label class="form-label" style="font-weight: 600; color: #374151;">Fecha de Fin</label>
+            <label class="form-label">Fecha de Fin</label>
             <input 
               type="date" 
               formControlName="endDate" 
@@ -83,7 +83,7 @@
         </div>
 
         <div class="mb-5">
-          <label class="form-label" style="font-weight: 600; color: #374151;">Estado *</label>
+          <label class="form-label">Estado *</label>
           <select formControlName="status" class="form-select">
             <option value="PLANNED">Planificado</option>
             <option value="ACTIVE">En Progreso</option>
@@ -94,8 +94,7 @@
         <div class="d-flex justify-content-end gap-3 mt-4 pt-4" style="border-top: 1px solid #e5e7eb;">
           <button 
             type="button" 
-            class="btn btn-light px-4 py-2 d-flex align-items-center" 
-            style="border-radius: 12px; font-weight: 600; color: #4b5563; background: #f3f4f6; border: none;"
+            class="btn-outline px-4 py-2 d-flex align-items-center" 
             [disabled]="saving()"
             routerLink="/projects"
           >
@@ -105,8 +104,7 @@
           
           <button 
             type="submit" 
-            class="btn btn-primary px-4 py-2 d-flex align-items-center" 
-            style="border-radius: 12px; font-weight: 600; background: #2563eb; border: none; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);"
+            class="btn-primary px-4 py-2 d-flex align-items-center" 
             [disabled]="form.invalid || saving()"
           >
             @if (saving()) {
