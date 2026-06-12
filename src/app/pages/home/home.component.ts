@@ -162,7 +162,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       if (this.taskChartInst) this.taskChartInst.destroy();
 
       const getThemeColor = (varName: string) => getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || '#000';
-      const bgColors = [getThemeColor('--warning-color'), getThemeColor('--primary-color'), getThemeColor('--success-color')];
+      let bgColors: any[] = [getThemeColor('--warning-color'), getThemeColor('--primary-color'), getThemeColor('--success-color')];
       const theme = this.themeService.currentTheme();
     
       let chartCutout = '75%';
@@ -205,7 +205,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         case 'cute':
           chartCutout = '50%';
           chartBorderRadius = 50;
-          chartSpacing = 8;
+          chartSpacing = 0;
           chartBorderWidth = 0;
           chartRotation = -90;
           chartCircumference = 180;
@@ -215,15 +215,30 @@ export class HomeComponent implements OnInit, AfterViewInit {
           break;
       }
 
+      const createGradient = (canvas: HTMLCanvasElement) => {
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return bgColors;
+        const gradient = ctx.createLinearGradient(0, 0, canvas.offsetWidth || 200, 0);
+        gradient.addColorStop(0, getThemeColor('--danger-color'));
+        gradient.addColorStop(0.5, getThemeColor('--warning-color'));
+        gradient.addColorStop(1, getThemeColor('--success-color'));
+        return [gradient, gradient, gradient];
+      };
+
       if (this.projectChartRef?.nativeElement) {
+        let pBgColors = bgColors;
+        if (theme === 'cute') {
+          pBgColors = createGradient(this.projectChartRef.nativeElement) || bgColors;
+        }
+
         this.projectChartInst = new Chart(this.projectChartRef.nativeElement, {
           type: 'doughnut',
           data: {
             labels: ['Planificados', 'En proceso', 'Terminados'],
             datasets: [{
               data: [this.proyectosPlanificados(), this.proyectosEnProceso(), this.proyectosTerminados()],
-              backgroundColor: bgColors,
-              hoverBackgroundColor: bgColors,
+              backgroundColor: pBgColors,
+              hoverBackgroundColor: pBgColors,
               borderWidth: chartBorderWidth,
               borderColor: themeBg,
               borderRadius: chartBorderRadius,
@@ -246,14 +261,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
 
       if (this.taskChartRef?.nativeElement) {
+        let tBgColors = bgColors;
+        if (theme === 'cute') {
+          tBgColors = createGradient(this.taskChartRef.nativeElement) || bgColors;
+        }
+
         this.taskChartInst = new Chart(this.taskChartRef.nativeElement, {
           type: 'doughnut',
           data: {
             labels: ['Por hacer', 'En proceso', 'Hechas'],
             datasets: [{
               data: [this.tareasPendientes(), this.tareasEnProgreso(), this.tareasCompletadas()],
-              backgroundColor: bgColors,
-              hoverBackgroundColor: bgColors,
+              backgroundColor: tBgColors,
+              hoverBackgroundColor: tBgColors,
               borderWidth: chartBorderWidth,
               borderColor: themeBg,
               borderRadius: chartBorderRadius,
