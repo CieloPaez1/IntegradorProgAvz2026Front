@@ -200,6 +200,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
           chartSpacing = 2;
           chartBorderWidth = 4;
           break;
+        case 'cute':
+          chartCutout = '65%';
+          chartBorderRadius = 20;
+          chartSpacing = 10;
+          break;
         default:
           chartCutout = '75%';
           break;

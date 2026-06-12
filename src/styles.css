@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Orbitron:wght@400;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@400;700;800&family=Oswald:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Orbitron:wght@400;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@400;700;800&family=Oswald:wght@400;700&family=Quicksand:wght@500;700;900&display=swap');
 
 :root {
   /* LIGHT THEME - Stripe/Framer Style */
@@ -340,6 +340,52 @@
   /* THEME SPECIFIC PATTERNS */
   --theme-bg-pattern: repeating-linear-gradient(-45deg, rgba(220, 38, 38, 0.15) 0px, rgba(220, 38, 38, 0.15) 40px, transparent 40px, transparent 80px);
   --theme-bg-size: 100% 100%;
+  --theme-blob-display: none;
+}
+
+[data-theme="cute"] {
+  --bg-primary: #fff0f6;
+  --bg-secondary: #fce4ec;
+  --card-bg: rgba(255, 255, 255, 0.7);
+  --card-border: rgba(244, 114, 182, 0.3);
+  --text-primary: #831843;
+  --text-secondary: #be185d;
+  --border-color: rgba(244, 114, 182, 0.2);
+  
+  --primary-color: #f472b6;
+  --primary-hover: #ec4899;
+  --primary-glow: rgba(244, 114, 182, 0.4);
+  
+  --danger-color: #f43f5e;
+  --success-color: #34d399;
+  --warning-color: #fbbf24;
+  
+  --badge-planned-bg: #fdf2f8;
+  --badge-planned-text: #f472b6;
+  --badge-active-bg: #fff1f2;
+  --badge-active-text: #fb7185;
+  --badge-closed-bg: #ecfdf5;
+  --badge-closed-text: #10b981;
+  
+  --font-main: 'Quicksand', sans-serif;
+  --font-mono: 'Quicksand', monospace;
+  
+  --glass-backdrop: blur(12px);
+  --glass-shadow: 0 8px 32px 0 rgba(244, 114, 182, 0.15);
+  
+  --mesh-c1: #fbcfe8;
+  --mesh-c2: #fce7f3;
+  --mesh-c3: #fdf2f8;
+
+  --radius-card: 40px;
+  --radius-btn: 999px;
+  --radius-badge: 999px;
+  --hover-translate: translateY(-8px);
+
+  /* THEME SPECIFIC PATTERNS */
+  --theme-bg-pattern: radial-gradient(var(--primary-glow) 3px, transparent 4px), radial-gradient(var(--primary-glow) 3px, transparent 4px);
+  --theme-bg-size: 40px 40px;
+  --theme-bg-position: 0 0, 20px 20px;
   --theme-blob-display: none;
 }
 
