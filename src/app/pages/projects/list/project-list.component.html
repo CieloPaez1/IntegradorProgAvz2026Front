@@ -82,6 +82,9 @@
               </div>
               
               <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn-action edit" title="Modificar" [routerLink]="['/projects/edit', p.id]" [disabled]="p.status === 'CLOSED'" (click)="$event.stopPropagation()">
+                  <svg lucideEdit style="width: 18px; height: 18px;"></svg>
+                </button>
                 <button type="button" class="btn-action delete" title="Eliminar" (click)="$event.stopPropagation(); eliminarProyecto(p)">
                   <svg lucideTrash2 style="width: 18px; height: 18px;"></svg>
                 </button>

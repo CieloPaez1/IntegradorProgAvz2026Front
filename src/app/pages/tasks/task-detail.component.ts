@@ -10,7 +10,7 @@ import { LucideArrowLeft, LucideEdit, LucideTrash2 } from '@lucide/angular';
 @Component({
   selector: 'app-task-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, TaskStatusPipe, LucideArrowLeft, LucideTrash2],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, TaskStatusPipe, LucideArrowLeft, LucideEdit, LucideTrash2],
   templateUrl: './task-detail.component.html',
   styleUrl: './task-detail.component.css'
 })

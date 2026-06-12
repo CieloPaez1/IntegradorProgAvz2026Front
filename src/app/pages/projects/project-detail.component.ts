@@ -13,7 +13,7 @@ import { LucideArrowLeft, LucideEdit, LucideTrash2, LucidePlus, LucideSave } fro
 @Component({
   selector: 'app-project-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, ProjectStatusPipe, TaskStatusPipe, LucideArrowLeft, LucideTrash2, LucidePlus, LucideSave],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, ProjectStatusPipe, TaskStatusPipe, LucideArrowLeft, LucideEdit, LucideTrash2, LucidePlus, LucideSave],
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.css'
 })

@@ -17,6 +17,10 @@
         <svg lucideArrowLeft style="width: 18px; height: 18px;"></svg>
         Volver
       </button>
+      <button class="btn-outline" [routerLink]="['/projects', task()?.projectId, 'tasks', 'edit', task()?.id]">
+        <svg lucideEdit style="width: 18px; height: 18px;"></svg>
+        Editar
+      </button>
       <button class="btn-outline danger" (click)="deleteTask()" [disabled]="isLoading()">
         <svg lucideTrash2 style="width: 18px; height: 18px;"></svg>
         Eliminar
