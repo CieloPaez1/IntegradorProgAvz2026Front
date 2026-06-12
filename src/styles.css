@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Orbitron:wght@400;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@400;700;800&family=Oswald:wght@400;700&family=Quicksand:wght@500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Orbitron:wght@400;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@400;700;800&family=Oswald:wght@400;700&family=Quicksand:wght@500;700;900&family=Fredoka:wght@400;500;600;700&display=swap');
 
 :root {
   /* LIGHT THEME - Stripe/Framer Style */
@@ -344,49 +344,50 @@
 }
 
 [data-theme="cute"] {
-  --bg-primary: #fff0f6;
-  --bg-secondary: #fce4ec;
-  --card-bg: rgba(255, 255, 255, 0.7);
-  --card-border: rgba(244, 114, 182, 0.3);
-  --text-primary: #831843;
-  --text-secondary: #be185d;
-  --border-color: rgba(244, 114, 182, 0.2);
+  --bg-primary: #fff0f6; /* Rosa algodón de azúcar */
+  --bg-secondary: #ffdeeb;
+  --card-bg: rgba(255, 255, 255, 0.85); /* Más blanco y opaco */
+  --card-border: rgba(255, 105, 180, 0.4);
+  --text-primary: #9d174d; /* Rosa oscuro fuerte */
+  --text-secondary: #db2777;
+  --border-color: rgba(244, 114, 182, 0.4);
   
-  --primary-color: #f472b6;
+  --primary-color: #f472b6; /* Rosa chicle */
   --primary-hover: #ec4899;
-  --primary-glow: rgba(244, 114, 182, 0.4);
+  --primary-glow: rgba(244, 114, 182, 0.6);
   
-  --danger-color: #f43f5e;
-  --success-color: #34d399;
-  --warning-color: #fbbf24;
+  --danger-color: #fb7185;
+  --success-color: #a7f3d0; /* Verde menta pastel */
+  --warning-color: #fde047; /* Amarillo patito */
   
-  --badge-planned-bg: #fdf2f8;
-  --badge-planned-text: #f472b6;
-  --badge-active-bg: #fff1f2;
-  --badge-active-text: #fb7185;
+  --badge-planned-bg: #fff1f2;
+  --badge-planned-text: #fb7185;
+  --badge-active-bg: #e0e7ff;
+  --badge-active-text: #818cf8; /* Lila pastel */
   --badge-closed-bg: #ecfdf5;
-  --badge-closed-text: #10b981;
+  --badge-closed-text: #34d399;
   
-  --font-main: 'Quicksand', sans-serif;
-  --font-mono: 'Quicksand', monospace;
+  --font-main: 'Fredoka', 'Quicksand', sans-serif;
+  --font-mono: 'Fredoka', monospace;
   
-  --glass-backdrop: blur(12px);
-  --glass-shadow: 0 8px 32px 0 rgba(244, 114, 182, 0.15);
+  --glass-backdrop: blur(20px);
+  --glass-shadow: 0 15px 35px 0 rgba(244, 114, 182, 0.25);
   
+  /* Caramel blobs (Rosa, Celeste pastel, Amarillo pastel) */
   --mesh-c1: #fbcfe8;
-  --mesh-c2: #fce7f3;
-  --mesh-c3: #fdf2f8;
+  --mesh-c2: #bfdbfe;
+  --mesh-c3: #fef08a;
 
   --radius-card: 40px;
   --radius-btn: 999px;
   --radius-badge: 999px;
-  --hover-translate: translateY(-8px);
+  --hover-translate: translateY(-8px) scale(1.05);
 
-  /* THEME SPECIFIC PATTERNS */
-  --theme-bg-pattern: radial-gradient(var(--primary-glow) 3px, transparent 4px), radial-gradient(var(--primary-glow) 3px, transparent 4px);
-  --theme-bg-size: 40px 40px;
-  --theme-bg-position: 0 0, 20px 20px;
-  --theme-blob-display: none;
+  /* THEME SPECIFIC PATTERNS: Polka dots gigantes */
+  --theme-bg-pattern: radial-gradient(circle, rgba(244, 114, 182, 0.15) 15%, transparent 16%), radial-gradient(circle, rgba(244, 114, 182, 0.15) 15%, transparent 16%);
+  --theme-bg-size: 60px 60px;
+  --theme-bg-position: 0 0, 30px 30px;
+  --theme-blob-display: block; /* ENCENDEMOS LAS BURBUJAS */
 }
 
 html, body {
