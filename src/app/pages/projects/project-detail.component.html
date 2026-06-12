@@ -5,7 +5,12 @@
       <div style="display: flex; align-items: center; gap: 12px; margin-top: 8px;">
         <h1>{{ project()?.name }}</h1>
         @if (project()?.status === 'CLOSED') {
-          <span class="badge closed">Completado</span>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="badge closed">Completado</span>
+            <button class="btn-icon-small" (click)="reabrirProyecto()" title="Reabrir proyecto">
+              <svg lucideRotateCcw class="rotate-icon" style="width: 16px; height: 16px;"></svg>
+            </button>
+          </div>
         } @else if (project()) {
           <select class="status-select" 
                   [ngClass]="project()!.status.toLowerCase()" 
@@ -23,10 +28,12 @@
         <svg lucideArrowLeft style="width: 18px; height: 18px;"></svg>
         Volver
       </button>
-      <button class="btn-outline" [routerLink]="['/projects/edit', project()?.id]">
-        <svg lucideEdit style="width: 18px; height: 18px;"></svg>
-        Editar
-      </button>
+      @if (project()?.status !== 'CLOSED') {
+        <button class="btn-outline" [routerLink]="['/projects/edit', project()?.id]">
+          <svg lucideEdit style="width: 18px; height: 18px;"></svg>
+          Editar
+        </button>
+      }
       <button class="btn-outline danger" (click)="deleteProject()" [disabled]="isLoading()">
         <svg lucideTrash2 style="width: 18px; height: 18px;"></svg>
         Eliminar
@@ -119,7 +126,12 @@
             <div class="row-meta" style="display: flex; align-items: center; gap: 16px;">
               <div class="meta-badge">
                 @if (t.status === 'DONE') {
-                  <span class="badge done">Hecha</span>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="badge done">Hecha</span>
+                    <button class="btn-icon-small" (click)="reabrirTarea(t); $event.stopPropagation()" title="Reabrir tarea">
+                      <svg lucideRotateCcw class="rotate-icon" style="width: 16px; height: 16px;"></svg>
+                    </button>
+                  </div>
                 } @else {
                   <select class="status-select" 
                           [ngClass]="t.status.toLowerCase()" 
@@ -132,11 +144,13 @@
                   </select>
                 }
               </div>
-              <button class="btn-icon-small" [routerLink]="['/projects', t.projectId, 'tasks', 'edit', t.id]" title="Editar tarea">
-                <svg lucideEdit style="width: 16px; height: 16px;"></svg>
-              </button>
+              @if (t.status !== 'DONE') {
+                <button class="btn-icon-small" [routerLink]="['/projects', t.projectId, 'tasks', 'edit', t.id]" title="Editar tarea">
+                  <svg lucideEdit style="width: 16px; height: 16px;"></svg>
+                </button>
+              }
               <button class="btn-icon-small danger" (click)="deleteTask(t, $event)" title="Eliminar tarea">
-                <svg lucideTrash2 style="width: 16px; height: 16px;"></svg>
+                <svg lucideTrash2 class="trash-icon" style="width: 16px; height: 16px;"></svg>
               </button>
             </div>
           </div>

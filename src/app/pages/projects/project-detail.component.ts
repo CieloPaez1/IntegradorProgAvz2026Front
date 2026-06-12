@@ -6,12 +6,12 @@ import { ProjectService } from '../../services/project.service';
 import { Project } from '../../models/project.model';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task.model';
-import { LucideArrowLeft, LucideEdit, LucideTrash2, LucidePlus, LucideSave } from '@lucide/angular';
+import { LucideArrowLeft, LucideEdit, LucideTrash2, LucidePlus, LucideSave, LucideRotateCcw } from '@lucide/angular';
 
 @Component({
   selector: 'app-project-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, LucideArrowLeft, LucideEdit, LucideTrash2, LucidePlus, LucideSave],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, LucideArrowLeft, LucideEdit, LucideTrash2, LucidePlus, LucideSave, LucideRotateCcw],
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.css'
 })
@@ -110,6 +110,15 @@ export class ProjectDetailComponent implements OnInit {
     const p = this.project();
     if (!p || !p.id) return;
     
+    if (nuevoEstado === 'CLOSED' && p.status !== 'CLOSED') {
+      const ok = window.confirm('¿Seguro que querés marcar este proyecto como Completado? Se bloqueará su edición.');
+      if (!ok) {
+        // Trigger CD by re-setting the object
+        this.project.set({ ...p });
+        return;
+      }
+    }
+
     const estadoAnterior = p.status;
     p.status = nuevoEstado as any;
 
@@ -123,8 +132,24 @@ export class ProjectDetailComponent implements OnInit {
     });
   }
 
+  reabrirProyecto() {
+    const p = this.project();
+    if (!p) return;
+    if (confirm(`¿Estás seguro de que quieres reabrir el proyecto "${p.name}"?`)) {
+      this.cambiarEstadoProyecto('ACTIVE');
+    }
+  }
+
   cambiarEstadoTarea(t: Task, nuevoEstado: string): void {
     if (!t.id || !t.projectId) return;
+
+    if (nuevoEstado === 'DONE' && t.status !== 'DONE') {
+      const ok = window.confirm('¿Seguro que querés marcar esta tarea como Hecha? Se bloqueará su edición.');
+      if (!ok) {
+        this.tasks.update(ts => [...ts]);
+        return;
+      }
+    }
 
     const estadoAnterior = t.status;
     t.status = nuevoEstado as any;
@@ -137,5 +162,11 @@ export class ProjectDetailComponent implements OnInit {
         alert('No se pudo cambiar el estado de la tarea');
       }
     });
+  }
+
+  reabrirTarea(t: Task) {
+    if (confirm(`¿Estás seguro de que quieres reabrir la tarea "${t.title}"?`)) {
+      this.cambiarEstadoTarea(t, 'IN_PROGRESS');
+    }
   }
 }

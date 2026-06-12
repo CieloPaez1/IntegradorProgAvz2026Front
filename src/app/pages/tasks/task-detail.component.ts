@@ -4,12 +4,12 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task.model';
-import { LucideArrowLeft, LucideEdit, LucideTrash2 } from '@lucide/angular';
+import { LucideArrowLeft, LucideEdit, LucideTrash2, LucideRotateCcw } from '@lucide/angular';
 
 @Component({
   selector: 'app-task-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, LucideArrowLeft, LucideEdit, LucideTrash2],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, LucideArrowLeft, LucideEdit, LucideTrash2, LucideRotateCcw],
   templateUrl: './task-detail.component.html',
   styleUrl: './task-detail.component.css'
 })
@@ -54,6 +54,15 @@ export class TaskDetailComponent implements OnInit {
     const t = this.task();
     if (!t || !t.id || !t.projectId) return;
 
+    if (nuevoEstado === 'DONE' && t.status !== 'DONE') {
+      const ok = window.confirm('¿Seguro que querés marcar esta tarea como Hecha? Se bloqueará su edición.');
+      if (!ok) {
+        // Trigger CD by re-setting the object
+        this.task.set({ ...t });
+        return;
+      }
+    }
+
     const estadoAnterior = t.status;
     t.status = nuevoEstado as any;
 
@@ -65,5 +74,13 @@ export class TaskDetailComponent implements OnInit {
         alert('No se pudo cambiar el estado de la tarea');
       }
     });
+  }
+
+  reabrirTarea() {
+    const t = this.task();
+    if (!t) return;
+    if (confirm(`¿Estás seguro de que quieres reabrir la tarea "${t.title}"?`)) {
+      this.cambiarEstado('IN_PROGRESS');
+    }
   }
 }

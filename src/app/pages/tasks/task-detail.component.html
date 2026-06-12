@@ -5,7 +5,12 @@
       <div style="display: flex; align-items: center; gap: 12px; margin-top: 8px;">
         <h1>{{ task()?.title }}</h1>
         @if (task()?.status === 'DONE') {
-          <span class="badge done">Hecha</span>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="badge done">Hecha</span>
+            <button class="btn-icon-small" (click)="reabrirTarea()" title="Reabrir tarea">
+              <svg lucideRotateCcw class="rotate-icon" style="width: 16px; height: 16px;"></svg>
+            </button>
+          </div>
         } @else if (task()) {
           <select class="status-select" 
                   [ngClass]="task()!.status.toLowerCase()" 
@@ -23,10 +28,12 @@
         <svg lucideArrowLeft style="width: 18px; height: 18px;"></svg>
         Volver
       </button>
-      <button class="btn-outline" [routerLink]="['/projects', task()?.projectId, 'tasks', 'edit', task()?.id]">
-        <svg lucideEdit style="width: 18px; height: 18px;"></svg>
-        Editar
-      </button>
+      @if (task()?.status !== 'DONE') {
+        <button class="btn-outline" [routerLink]="['/projects', task()?.projectId, 'tasks', 'edit', task()?.id]">
+          <svg lucideEdit style="width: 18px; height: 18px;"></svg>
+          Editar
+        </button>
+      }
       <button class="btn-outline danger" (click)="deleteTask()" [disabled]="isLoading()">
         <svg lucideTrash2 style="width: 18px; height: 18px;"></svg>
         Eliminar
