@@ -48,30 +48,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   constructor() {
     effect(() => {
-      // Registrar dependencia del tema para re-dibujar cuando cambie
+      // Registrar dependencias síncronamente para que el efecto se dispare
       this.themeService.currentTheme();
+      this.proyectosPlanificados();
+      this.proyectosEnProceso();
+      this.proyectosTerminados();
+      this.tareasPendientes();
+      this.tareasEnProgreso();
+      this.tareasCompletadas();
       
-      const pData = [this.proyectosPlanificados(), this.proyectosEnProceso(), this.proyectosTerminados()];
-      const tData = [this.tareasPendientes(), this.tareasEnProgreso(), this.tareasCompletadas()];
-      
-      // Delay it slightly to make sure the CSS variables are updated in the DOM
-      setTimeout(() => {
-        const getThemeColor = (varName: string) => getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || '#000';
-        const bgColors = [getThemeColor('--warning-color'), getThemeColor('--primary-color'), getThemeColor('--success-color')];
-        
-        if (this.projectChartInst) {
-          this.projectChartInst.data.datasets[0].data = pData;
-          this.projectChartInst.data.datasets[0].backgroundColor = bgColors;
-          this.projectChartInst.data.datasets[0].hoverBackgroundColor = bgColors;
-          this.projectChartInst.update();
-        }
-        if (this.taskChartInst) {
-          this.taskChartInst.data.datasets[0].data = tData;
-          this.taskChartInst.data.datasets[0].backgroundColor = bgColors;
-          this.taskChartInst.data.datasets[0].hoverBackgroundColor = bgColors;
-          this.taskChartInst.update();
-        }
-      }, 0);
+      this.initCharts();
     });
   }
 
@@ -172,6 +158,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private initCharts() {
     setTimeout(() => {
+      if (this.projectChartInst) this.projectChartInst.destroy();
+      if (this.taskChartInst) this.taskChartInst.destroy();
+
       const getThemeColor = (varName: string) => getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || '#000';
       const bgColors = [getThemeColor('--warning-color'), getThemeColor('--primary-color'), getThemeColor('--success-color')];
       const theme = this.themeService.currentTheme();
