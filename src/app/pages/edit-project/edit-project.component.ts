@@ -59,8 +59,8 @@ export class EditProjectComponent implements OnInit {
         this.form.patchValue({
           name: project.name,
           description: project.description || '',
-          startDate: project.startDate,
-          endDate: project.endDate || '',
+          startDate: project.startDate ? project.startDate.split('T')[0] : '',
+          endDate: project.endDate ? project.endDate.split('T')[0] : '',
           status: project.status
         });
         this.loading.set(false);
