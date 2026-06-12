@@ -68,7 +68,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
       next: (data) => {
         this.projects.set(data);
         projectsLoaded = true;
-        if (tasksLoaded) this.loading.set(false);
+        if (tasksLoaded) {
+          this.loading.set(false);
+          this.initCharts();
+        }
       },
       error: (err) => {
         this.error.set(err.message || 'Error al cargar proyectos');
@@ -81,7 +84,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
       next: (data) => {
         this.tasks.set(data);
         tasksLoaded = true;
-        if (projectsLoaded) this.loading.set(false);
+        if (projectsLoaded) {
+          this.loading.set(false);
+          this.initCharts();
+        }
       },
       error: (err) => {
         this.error.set(err.message || 'Error al cargar tareas');
@@ -146,7 +152,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   porcentajeTareasCompletadas = computed(() => this.percentage(this.tareasCompletadas(), this.totalTareas()));
 
   ngAfterViewInit() {
-    this.initCharts();
+    // Initialization is now handled after loading data completes to ensure canvas exists
   }
 
   private initCharts() {
