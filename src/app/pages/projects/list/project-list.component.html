@@ -76,15 +76,19 @@
               </div>
               
               <div style="flex: 1; text-align: right;">
-                <select class="status-select" 
-                        [ngClass]="p.status.toLowerCase()" 
-                        [ngModel]="p.status" 
-                        (ngModelChange)="cambiarEstado(p, $event)" 
-                        (click)="$event.stopPropagation()">
-                  <option value="PLANNED">Planificado</option>
-                  <option value="ACTIVE">En Progreso</option>
-                  <option value="CLOSED">Completado</option>
-                </select>
+                @if (p.status === 'CLOSED') {
+                  <span class="badge closed">Completado</span>
+                } @else {
+                  <select class="status-select" 
+                          [ngClass]="p.status.toLowerCase()" 
+                          [ngModel]="p.status" 
+                          (ngModelChange)="cambiarEstado(p, $event)" 
+                          (click)="$event.stopPropagation()">
+                    <option value="PLANNED">Planificado</option>
+                    <option value="ACTIVE">En Progreso</option>
+                    <option value="CLOSED">Completado</option>
+                  </select>
+                }
               </div>
               
               <div style="display: flex; gap: 8px;">

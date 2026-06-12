@@ -478,7 +478,7 @@ html, body {
 }
 
 .status-select.todo, .status-select.planned { background-color: var(--badge-planned-bg); color: var(--badge-planned-text); }
-.status-select.progress, .status-select.active { background-color: var(--badge-active-bg); color: var(--badge-active-text); }
+.status-select.progress, .status-select.active, .status-select.in_progress { background-color: var(--badge-active-bg); color: var(--badge-active-text); }
 .status-select.done, .status-select.closed { background-color: var(--badge-closed-bg); color: var(--badge-closed-text); }
 
 /* --- PREMIUM LIST COMPONENTS --- */

@@ -4,7 +4,9 @@
       <p>DETALLE DE PROYECTO</p>
       <div style="display: flex; align-items: center; gap: 12px; margin-top: 8px;">
         <h1>{{ project()?.name }}</h1>
-        @if (project()) {
+        @if (project()?.status === 'CLOSED') {
+          <span class="badge closed">Completado</span>
+        } @else if (project()) {
           <select class="status-select" 
                   [ngClass]="project()!.status.toLowerCase()" 
                   [ngModel]="project()!.status" 
@@ -116,15 +118,19 @@
             </div>
             <div class="row-meta" style="display: flex; align-items: center; gap: 16px;">
               <div class="meta-badge">
-                <select class="status-select" 
-                        [ngClass]="t.status.toLowerCase()" 
-                        [ngModel]="t.status" 
-                        (ngModelChange)="cambiarEstadoTarea(t, $event)" 
-                        (click)="$event.stopPropagation()">
-                  <option value="TODO">Por Hacer</option>
-                  <option value="IN_PROGRESS">En Progreso</option>
-                  <option value="DONE">Hecho</option>
-                </select>
+                @if (t.status === 'DONE') {
+                  <span class="badge done">Hecha</span>
+                } @else {
+                  <select class="status-select" 
+                          [ngClass]="t.status.toLowerCase()" 
+                          [ngModel]="t.status" 
+                          (ngModelChange)="cambiarEstadoTarea(t, $event)" 
+                          (click)="$event.stopPropagation()">
+                    <option value="TODO">Por Hacer</option>
+                    <option value="IN_PROGRESS">En Progreso</option>
+                    <option value="DONE">Hecho</option>
+                  </select>
+                }
               </div>
               <button class="btn-icon-small" [routerLink]="['/projects', t.projectId, 'tasks', 'edit', t.id]" title="Editar tarea">
                 <svg lucideEdit style="width: 16px; height: 16px;"></svg>

@@ -86,15 +86,19 @@
               </div>
               
               <div style="flex: 1; text-align: right; padding-right: 24px;">
-                <select class="status-select" 
-                        [ngClass]="t.status.toLowerCase()" 
-                        [ngModel]="t.status" 
-                        (ngModelChange)="cambiarEstado(t, $event)" 
-                        (click)="$event.stopPropagation()">
-                  <option value="TODO">Por Hacer</option>
-                  <option value="IN_PROGRESS">En Progreso</option>
-                  <option value="DONE">Hecho</option>
-                </select>
+                @if (t.status === 'DONE') {
+                  <span class="badge done">Hecha</span>
+                } @else {
+                  <select class="status-select" 
+                          [ngClass]="t.status.toLowerCase()" 
+                          [ngModel]="t.status" 
+                          (ngModelChange)="cambiarEstado(t, $event)" 
+                          (click)="$event.stopPropagation()">
+                    <option value="TODO">Por Hacer</option>
+                    <option value="IN_PROGRESS">En Progreso</option>
+                    <option value="DONE">Hecho</option>
+                  </select>
+                }
               </div>
               
               <div style="display: flex; gap: 8px; justify-content: flex-end;">

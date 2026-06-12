@@ -4,7 +4,9 @@
       <p>DETALLE DE TAREA</p>
       <div style="display: flex; align-items: center; gap: 12px; margin-top: 8px;">
         <h1>{{ task()?.title }}</h1>
-        @if (task()) {
+        @if (task()?.status === 'DONE') {
+          <span class="badge done">Hecha</span>
+        } @else if (task()) {
           <select class="status-select" 
                   [ngClass]="task()!.status.toLowerCase()" 
                   [ngModel]="task()!.status" 
