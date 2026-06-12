@@ -164,8 +164,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
             labels: ['Planificados', 'En proceso', 'Terminados'],
             datasets: [{
               data: [this.proyectosPlanificados(), this.proyectosEnProceso(), this.proyectosTerminados()],
-              backgroundColor: ['#fef3c7', '#dbeafe', '#dcfce7'],
-              hoverBackgroundColor: ['#fde68a', '#bfdbfe', '#bbf7d0'],
+              backgroundColor: ['#fbbf24', '#3b82f6', '#10b981'],
+              hoverBackgroundColor: ['#f59e0b', '#2563eb', '#059669'],
               borderWidth: 0
             }]
           },
@@ -189,8 +189,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
             labels: ['Por hacer', 'En proceso', 'Hechas'],
             datasets: [{
               data: [this.tareasPendientes(), this.tareasEnProgreso(), this.tareasCompletadas()],
-              backgroundColor: ['#fef3c7', '#dbeafe', '#dcfce7'],
-              hoverBackgroundColor: ['#fde68a', '#bfdbfe', '#bbf7d0'],
+              backgroundColor: ['#fbbf24', '#3b82f6', '#10b981'],
+              hoverBackgroundColor: ['#f59e0b', '#2563eb', '#059669'],
               borderWidth: 0
             }]
           },
