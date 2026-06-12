@@ -19,6 +19,12 @@ export class ProjectService {
     );
   }
 
+  getById(id: number): Observable<Project> {
+    return this.http.get<Project>(`${this.apiUrl}/${id}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   create(project: Project): Observable<Project> {
     return this.http.post<Project>(this.apiUrl, project).pipe(
       catchError(this.handleError)

@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
 import { LucideSave, LucideX } from '@lucide/angular';
+import { Project } from '../../models/project.model';
 
 @Component({
   selector: 'app-edit-project',
@@ -54,7 +55,7 @@ export class EditProjectComponent implements OnInit {
 
   cargarProyecto(id: number): void {
     this.projectService.getById(id).subscribe({
-      next: (project) => {
+      next: (project: Project) => {
         this.form.patchValue({
           name: project.name,
           description: project.description || '',
