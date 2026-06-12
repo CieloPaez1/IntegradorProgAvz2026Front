@@ -27,9 +27,6 @@ export class ProjectDetailComponent implements OnInit {
   project = signal<Project | null>(null);
   tasks = signal<Task[]>([]);
   
-  project = signal<Project | null>(null);
-  tasks = signal<Task[]>([]);
-  
   isAddingTask = signal(false);
   isLoading = signal(false);
 

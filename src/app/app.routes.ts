@@ -1,4 +1,4 @@
-﻿import { Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { FilterTasksComponent } from './pages/filter-tasks/filter-tasks.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ReportsSummaryComponent } from './pages/reports/reports-summary.component';
@@ -12,6 +12,7 @@ import { EditProjectComponent } from './pages/edit-project/edit-project.componen
 import { DeleteProjectComponent } from './pages/delete-project/delete-project.component';
 import { CreateTaskComponent } from './pages/create-task/create-task.component';
 import { DeleteTaskComponent } from './pages/delete-task/delete-task.component';
+import { EditTaskComponent } from './pages/edit-task/edit-task.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -27,5 +28,6 @@ export const routes: Routes = [
   { path: 'tasks/create', component: CreateTaskComponent },
   { path: 'tasks/delete', component: DeleteTaskComponent },
   { path: 'tasks/filter', component: FilterTasksComponent },
+  { path: 'projects/:projectId/tasks/edit/:taskId', component: EditTaskComponent },
   { path: 'tasks/:id', component: TaskDetailComponent }
 ];

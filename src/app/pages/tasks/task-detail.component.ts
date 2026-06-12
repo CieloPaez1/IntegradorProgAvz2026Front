@@ -5,12 +5,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task.model';
 import { TaskStatusPipe } from '../../pipes/task-status.pipe';
-import { LucideArrowLeft, LucideEdit, LucideTrash2, LucideSave } from '@lucide/angular';
+import { LucideArrowLeft, LucideEdit, LucideTrash2 } from '@lucide/angular';
 
 @Component({
   selector: 'app-task-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, TaskStatusPipe, LucideArrowLeft, LucideTrash2, LucideSave],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, TaskStatusPipe, LucideArrowLeft, LucideTrash2],
   templateUrl: './task-detail.component.html',
   styleUrl: './task-detail.component.css'
 })
