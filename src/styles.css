@@ -344,50 +344,50 @@
 }
 
 [data-theme="cute"] {
-  --bg-primary: #fff0f6; /* Rosa algodón de azúcar */
-  --bg-secondary: #ffdeeb;
-  --card-bg: rgba(255, 255, 255, 0.85); /* Más blanco y opaco */
-  --card-border: rgba(255, 105, 180, 0.4);
-  --text-primary: #9d174d; /* Rosa oscuro fuerte */
-  --text-secondary: #db2777;
-  --border-color: rgba(244, 114, 182, 0.4);
+  --bg-primary: #f8faff; /* Blanco azulado muy suave */
+  --bg-secondary: #f3f0ff; /* Lila súper claro */
+  --card-bg: rgba(255, 255, 255, 0.85); 
+  --card-border: rgba(196, 181, 253, 0.5); /* Borde lila pastel */
+  --text-primary: #4c1d95; /* Violeta oscuro para legibilidad */
+  --text-secondary: #7c3aed; /* Violeta medio */
+  --border-color: rgba(196, 181, 253, 0.3);
   
-  --primary-color: #f472b6; /* Rosa chicle */
-  --primary-hover: #ec4899;
-  --primary-glow: rgba(244, 114, 182, 0.6);
+  --primary-color: #c4b5fd; /* Lila/Violeta pastel (color principal) */
+  --primary-hover: #a78bfa;
+  --primary-glow: rgba(196, 181, 253, 0.6);
   
-  --danger-color: #fb7185;
-  --success-color: #a7f3d0; /* Verde menta pastel */
-  --warning-color: #fde047; /* Amarillo patito */
+  --danger-color: #fca5a5; /* Rojo/Coral pastel */
+  --success-color: #6ee7b7; /* Verde menta pastel */
+  --warning-color: #fcd34d; /* Amarillo pastel */
   
   --badge-planned-bg: #fff1f2;
-  --badge-planned-text: #fb7185;
+  --badge-planned-text: #f43f5e; /* Coral más fuerte para texto */
   --badge-active-bg: #e0e7ff;
-  --badge-active-text: #818cf8; /* Lila pastel */
+  --badge-active-text: #6366f1; /* Azul/Lila fuerte para texto */
   --badge-closed-bg: #ecfdf5;
-  --badge-closed-text: #34d399;
+  --badge-closed-text: #10b981; /* Verde fuerte para texto */
   
   --font-main: 'Fredoka', 'Quicksand', sans-serif;
   --font-mono: 'Fredoka', monospace;
   
   --glass-backdrop: blur(20px);
-  --glass-shadow: 0 15px 35px 0 rgba(244, 114, 182, 0.25);
+  --glass-shadow: 0 15px 35px 0 rgba(196, 181, 253, 0.25);
   
   /* Caramel blobs (Rosa, Celeste pastel, Amarillo pastel) */
-  --mesh-c1: #fbcfe8;
-  --mesh-c2: #bfdbfe;
-  --mesh-c3: #fef08a;
+  --mesh-c1: #fbcfe8; /* Rosa pastel */
+  --mesh-c2: #bfdbfe; /* Celeste pastel */
+  --mesh-c3: #fef08a; /* Amarillo pastel */
 
   --radius-card: 40px;
   --radius-btn: 999px;
   --radius-badge: 999px;
   --hover-translate: translateY(-8px) scale(1.05);
 
-  /* THEME SPECIFIC PATTERNS: Polka dots gigantes */
-  --theme-bg-pattern: radial-gradient(circle, rgba(244, 114, 182, 0.15) 15%, transparent 16%), radial-gradient(circle, rgba(244, 114, 182, 0.15) 15%, transparent 16%);
+  /* THEME SPECIFIC PATTERNS: Polka dots gigantes multicolores (lila y rosa) */
+  --theme-bg-pattern: radial-gradient(circle, rgba(196, 181, 253, 0.3) 15%, transparent 16%), radial-gradient(circle, rgba(252, 165, 165, 0.25) 15%, transparent 16%);
   --theme-bg-size: 60px 60px;
   --theme-bg-position: 0 0, 30px 30px;
-  --theme-blob-display: block; /* ENCENDEMOS LAS BURBUJAS */
+  --theme-blob-display: block; 
 }
 
 html, body {
