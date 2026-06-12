@@ -9,6 +9,7 @@ import { ProjectService } from '../../services/project.service';
 import { TaskService } from '../../services/task.service';
 import { Project } from '../../models/project.model';
 import { Task } from '../../models/task.model';
+import { ThemeService } from '../../services/theme.service';
 import { LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideCalendar, LucideRotateCcw } from '@lucide/angular';
 
 @Component({
@@ -23,6 +24,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private projectService = inject(ProjectService);
   private taskService = inject(TaskService);
+  private themeService = inject(ThemeService);
 
   projects = signal<Project[]>([]);
   tasks = signal<Task[]>([]);
@@ -46,17 +48,30 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   constructor() {
     effect(() => {
+      // Registrar dependencia del tema para re-dibujar cuando cambie
+      this.themeService.currentTheme();
+      
       const pData = [this.proyectosPlanificados(), this.proyectosEnProceso(), this.proyectosTerminados()];
       const tData = [this.tareasPendientes(), this.tareasEnProgreso(), this.tareasCompletadas()];
       
-      if (this.projectChartInst) {
-        this.projectChartInst.data.datasets[0].data = pData;
-        this.projectChartInst.update();
-      }
-      if (this.taskChartInst) {
-        this.taskChartInst.data.datasets[0].data = tData;
-        this.taskChartInst.update();
-      }
+      // Delay it slightly to make sure the CSS variables are updated in the DOM
+      setTimeout(() => {
+        const getThemeColor = (varName: string) => getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || '#000';
+        const bgColors = [getThemeColor('--warning-color'), getThemeColor('--primary-color'), getThemeColor('--success-color')];
+        
+        if (this.projectChartInst) {
+          this.projectChartInst.data.datasets[0].data = pData;
+          this.projectChartInst.data.datasets[0].backgroundColor = bgColors;
+          this.projectChartInst.data.datasets[0].hoverBackgroundColor = bgColors;
+          this.projectChartInst.update();
+        }
+        if (this.taskChartInst) {
+          this.taskChartInst.data.datasets[0].data = tData;
+          this.taskChartInst.data.datasets[0].backgroundColor = bgColors;
+          this.taskChartInst.data.datasets[0].hoverBackgroundColor = bgColors;
+          this.taskChartInst.update();
+        }
+      }, 0);
     });
   }
 
@@ -157,6 +172,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private initCharts() {
     setTimeout(() => {
+      const getThemeColor = (varName: string) => getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || '#000';
+      const bgColors = [getThemeColor('--warning-color'), getThemeColor('--primary-color'), getThemeColor('--success-color')];
+
       if (this.projectChartRef?.nativeElement) {
         this.projectChartInst = new Chart(this.projectChartRef.nativeElement, {
           type: 'doughnut',
@@ -164,8 +182,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
             labels: ['Planificados', 'En proceso', 'Terminados'],
             datasets: [{
               data: [this.proyectosPlanificados(), this.proyectosEnProceso(), this.proyectosTerminados()],
-              backgroundColor: ['#fbbf24', '#3b82f6', '#10b981'],
-              hoverBackgroundColor: ['#f59e0b', '#2563eb', '#059669'],
+              backgroundColor: bgColors,
+              hoverBackgroundColor: bgColors,
               borderWidth: 0
             }]
           },
@@ -189,8 +207,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
             labels: ['Por hacer', 'En proceso', 'Hechas'],
             datasets: [{
               data: [this.tareasPendientes(), this.tareasEnProgreso(), this.tareasCompletadas()],
-              backgroundColor: ['#fbbf24', '#3b82f6', '#10b981'],
-              hoverBackgroundColor: ['#f59e0b', '#2563eb', '#059669'],
+              backgroundColor: bgColors,
+              hoverBackgroundColor: bgColors,
               borderWidth: 0
             }]
           },
