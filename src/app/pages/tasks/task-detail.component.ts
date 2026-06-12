@@ -1,16 +1,15 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task.model';
-import { TaskStatusPipe } from '../../pipes/task-status.pipe';
 import { LucideArrowLeft, LucideEdit, LucideTrash2 } from '@lucide/angular';
 
 @Component({
   selector: 'app-task-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, TaskStatusPipe, LucideArrowLeft, LucideEdit, LucideTrash2],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, LucideArrowLeft, LucideEdit, LucideTrash2],
   templateUrl: './task-detail.component.html',
   styleUrl: './task-detail.component.css'
 })

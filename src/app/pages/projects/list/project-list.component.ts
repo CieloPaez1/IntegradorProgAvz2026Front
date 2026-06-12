@@ -98,8 +98,7 @@ export class ProjectListComponent implements OnInit {
     }
   }
 
-  cambiarEstado(p: Project, nuevoEstado: string, event: Event): void {
-    event.stopPropagation();
+  cambiarEstado(p: Project, nuevoEstado: string): void {
     if (!p.id) return;
     
     // Optimistic UI update or just wait for backend

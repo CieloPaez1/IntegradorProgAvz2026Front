@@ -79,7 +79,7 @@
                 <select class="status-select" 
                         [ngClass]="p.status.toLowerCase()" 
                         [ngModel]="p.status" 
-                        (ngModelChange)="cambiarEstado(p, $event, $event)" 
+                        (ngModelChange)="cambiarEstado(p, $event)" 
                         (click)="$event.stopPropagation()">
                   <option value="PLANNED">Planificado</option>
                   <option value="ACTIVE">En Progreso</option>

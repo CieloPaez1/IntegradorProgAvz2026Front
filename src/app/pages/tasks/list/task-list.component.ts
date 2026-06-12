@@ -108,8 +108,7 @@ export class TaskListComponent implements OnInit {
     }
   }
 
-  cambiarEstado(t: Task, nuevoEstado: string, event: Event): void {
-    event.stopPropagation();
+  cambiarEstado(t: Task, nuevoEstado: string): void {
     if (!t.id || !t.projectId) return;
 
     const estadoAnterior = t.status;

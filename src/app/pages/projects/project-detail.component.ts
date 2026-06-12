@@ -1,19 +1,17 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
 import { ProjectService } from '../../services/project.service';
 import { Project } from '../../models/project.model';
-import { ProjectStatusPipe } from '../../pipes/project-status.pipe';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task.model';
-import { TaskStatusPipe } from '../../pipes/task-status.pipe';
 import { LucideArrowLeft, LucideEdit, LucideTrash2, LucidePlus, LucideSave } from '@lucide/angular';
 
 @Component({
   selector: 'app-project-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, ProjectStatusPipe, TaskStatusPipe, LucideArrowLeft, LucideEdit, LucideTrash2, LucidePlus, LucideSave],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, LucideArrowLeft, LucideEdit, LucideTrash2, LucidePlus, LucideSave],
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.css'
 })
@@ -125,8 +123,7 @@ export class ProjectDetailComponent implements OnInit {
     });
   }
 
-  cambiarEstadoTarea(t: Task, nuevoEstado: string, event: Event): void {
-    event.stopPropagation();
+  cambiarEstadoTarea(t: Task, nuevoEstado: string): void {
     if (!t.id || !t.projectId) return;
 
     const estadoAnterior = t.status;

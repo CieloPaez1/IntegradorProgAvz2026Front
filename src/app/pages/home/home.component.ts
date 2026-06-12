@@ -4,18 +4,17 @@ import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { ProjectService } from '../../services/project.service';
 import { TaskService } from '../../services/task.service';
 import { Project } from '../../models/project.model';
 import { Task } from '../../models/task.model';
-import { TaskStatusPipe } from '../../pipes/task-status.pipe';
-import { ProjectStatusPipe } from '../../pipes/project-status.pipe';
-import { LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideChevronDown, LucideCalendar } from '@lucide/angular';
+import { LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideCalendar } from '@lucide/angular';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, TaskStatusPipe, ProjectStatusPipe, LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideChevronDown, LucideCalendar],
+  imports: [CommonModule, RouterModule, FormsModule, LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideCalendar],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -42,7 +41,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild('projectChart') projectChartRef!: ElementRef<HTMLCanvasElement>;
   @ViewChild('taskChart') taskChartRef!: ElementRef<HTMLCanvasElement>;
 
-  private projectChartInst: Chart | null = null;
   private projectChartInst: Chart | null = null;
   private taskChartInst: Chart | null = null;
 
@@ -209,7 +207,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return total === 0 ? 0 : Math.round((value / total) * 100);
   }
 
-  updateProjectStatus(project: Project, nextStatus: string) {
+  updateProjectStatus(project: Project, nextStatus: 'PLANNED' | 'ACTIVE' | 'CLOSED') {
     if (!project.id) return;
     
     // Guardamos estado anterior para rollback
@@ -229,7 +227,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  updateTaskStatus(task: Task, nextStatus: string) {
+  updateTaskStatus(task: Task, nextStatus: 'TODO' | 'IN_PROGRESS' | 'DONE') {
     if (!task.id || !task.projectId) return;
 
     // Guardamos estado anterior para rollback

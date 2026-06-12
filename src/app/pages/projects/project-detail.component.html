@@ -119,7 +119,7 @@
                 <select class="status-select" 
                         [ngClass]="t.status.toLowerCase()" 
                         [ngModel]="t.status" 
-                        (ngModelChange)="cambiarEstadoTarea(t, $event, $event)" 
+                        (ngModelChange)="cambiarEstadoTarea(t, $event)" 
                         (click)="$event.stopPropagation()">
                   <option value="TODO">Por Hacer</option>
                   <option value="IN_PROGRESS">En Progreso</option>
