@@ -98,4 +98,25 @@ export class ProjectListComponent implements OnInit {
     }
   }
 
+  cambiarEstado(p: Project, nuevoEstado: string, event: Event): void {
+    event.stopPropagation();
+    if (!p.id) return;
+    
+    // Optimistic UI update or just wait for backend
+    const estadoAnterior = p.status;
+    p.status = nuevoEstado as any;
+
+    this.projectService.update(p.id, p).subscribe({
+      next: () => {
+        // Al actualizar, se podrían recargar los proyectos si es necesario, 
+        // pero la vista optimista ya actualizó la fila.
+      },
+      error: (err) => {
+        console.error('Error cambiando estado', err);
+        p.status = estadoAnterior; // rollback
+        alert('No se pudo cambiar el estado');
+      }
+    });
+  }
+
 }

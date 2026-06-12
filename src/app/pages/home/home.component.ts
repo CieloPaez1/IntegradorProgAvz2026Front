@@ -43,9 +43,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild('taskChart') taskChartRef!: ElementRef<HTMLCanvasElement>;
 
   private projectChartInst: Chart | null = null;
+  private projectChartInst: Chart | null = null;
   private taskChartInst: Chart | null = null;
-
-  activeDropdownId = signal<string | null>(null);
 
   constructor() {
     effect(() => {
@@ -210,23 +209,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return total === 0 ? 0 : Math.round((value / total) * 100);
   }
 
-  toggleDropdown(event: Event, id: string) {
-    event.stopPropagation();
-    if (this.activeDropdownId() === id) {
-      this.activeDropdownId.set(null);
-    } else {
-      this.activeDropdownId.set(id);
-    }
-  }
-
-  @HostListener('document:click')
-  closeDropdowns() {
-    this.activeDropdownId.set(null);
-  }
-
-  updateProjectStatus(project: Project, nextStatus: 'PLANNED' | 'ACTIVE' | 'CLOSED') {
+  updateProjectStatus(project: Project, nextStatus: string) {
     if (!project.id) return;
-    this.activeDropdownId.set(null);
     
     // Guardamos estado anterior para rollback
     const oldProjects = [...this.projects()];
@@ -245,9 +229,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  updateTaskStatus(task: Task, nextStatus: 'TODO' | 'IN_PROGRESS' | 'DONE') {
+  updateTaskStatus(task: Task, nextStatus: string) {
     if (!task.id || !task.projectId) return;
-    this.activeDropdownId.set(null);
 
     // Guardamos estado anterior para rollback
     const oldTasks = [...this.tasks()];

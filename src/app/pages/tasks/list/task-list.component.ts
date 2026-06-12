@@ -107,4 +107,23 @@ export class TaskListComponent implements OnInit {
       this.router.navigate(['/projects', t.projectId, 'tasks', 'edit', t.id]);
     }
   }
+
+  cambiarEstado(t: Task, nuevoEstado: string, event: Event): void {
+    event.stopPropagation();
+    if (!t.id || !t.projectId) return;
+
+    const estadoAnterior = t.status;
+    t.status = nuevoEstado as any;
+
+    this.taskService.update(t.projectId, t.id, t).subscribe({
+      next: () => {
+        // success
+      },
+      error: (err) => {
+        console.error('Error cambiando estado', err);
+        t.status = estadoAnterior;
+        alert('No se pudo cambiar el estado de la tarea');
+      }
+    });
+  }
 }

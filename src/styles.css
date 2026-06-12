@@ -453,6 +453,34 @@ html, body {
 .badge.progress, .badge.active { background: var(--badge-active-bg); color: var(--badge-active-text); }
 .badge.done, .badge.closed { background: var(--badge-closed-bg); color: var(--badge-closed-text); }
 
+/* --- STATUS SELECT COMPONENT --- */
+.status-select {
+  appearance: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-badge);
+  padding: 8px 32px 8px 16px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.status-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.status-select.todo, .status-select.planned { background-color: var(--badge-planned-bg); color: var(--badge-planned-text); }
+.status-select.progress, .status-select.active { background-color: var(--badge-active-bg); color: var(--badge-active-text); }
+.status-select.done, .status-select.closed { background-color: var(--badge-closed-bg); color: var(--badge-closed-text); }
+
 /* --- PREMIUM LIST COMPONENTS --- */
 .tasks-list {
   display: flex;

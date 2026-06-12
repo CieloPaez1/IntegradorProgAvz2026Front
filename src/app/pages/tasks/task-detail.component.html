@@ -4,12 +4,16 @@
       <p>DETALLE DE TAREA</p>
       <div style="display: flex; align-items: center; gap: 12px; margin-top: 8px;">
         <h1>{{ task()?.title }}</h1>
-        <span class="badge" 
-              [class.todo]="task()?.status === 'TODO'" 
-              [class.progress]="task()?.status === 'IN_PROGRESS'" 
-              [class.done]="task()?.status === 'DONE'">
-          {{ task()?.status | taskStatus }}
-        </span>
+        @if (task()) {
+          <select class="status-select" 
+                  [ngClass]="task()!.status.toLowerCase()" 
+                  [ngModel]="task()!.status" 
+                  (ngModelChange)="cambiarEstado($event)">
+            <option value="TODO">Por Hacer</option>
+            <option value="IN_PROGRESS">En Progreso</option>
+            <option value="DONE">Hecho</option>
+          </select>
+        }
       </div>
     </div>
     <div style="display: flex; gap: 12px;">

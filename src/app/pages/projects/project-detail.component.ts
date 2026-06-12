@@ -107,4 +107,38 @@ export class ProjectDetailComponent implements OnInit {
       });
     }
   }
+
+  cambiarEstadoProyecto(nuevoEstado: string): void {
+    const p = this.project();
+    if (!p || !p.id) return;
+    
+    const estadoAnterior = p.status;
+    p.status = nuevoEstado as any;
+
+    this.projectService.update(p.id, p).subscribe({
+      next: () => {},
+      error: (err) => {
+        console.error('Error', err);
+        p.status = estadoAnterior;
+        alert('No se pudo cambiar el estado del proyecto');
+      }
+    });
+  }
+
+  cambiarEstadoTarea(t: Task, nuevoEstado: string, event: Event): void {
+    event.stopPropagation();
+    if (!t.id || !t.projectId) return;
+
+    const estadoAnterior = t.status;
+    t.status = nuevoEstado as any;
+
+    this.taskService.update(t.projectId, t.id, t).subscribe({
+      next: () => {},
+      error: (err) => {
+        console.error('Error', err);
+        t.status = estadoAnterior;
+        alert('No se pudo cambiar el estado de la tarea');
+      }
+    });
+  }
 }
