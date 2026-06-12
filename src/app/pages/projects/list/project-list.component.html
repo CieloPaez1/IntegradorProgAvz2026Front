@@ -77,7 +77,12 @@
               
               <div style="flex: 1; text-align: right;">
                 @if (p.status === 'CLOSED') {
-                  <span class="badge closed">Completado</span>
+                  <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
+                    <span class="badge closed">Completado</span>
+                    <button class="btn-icon-small" (click)="reabrirProyecto(p)" title="Reabrir proyecto">
+                      <svg lucideRotateCcw style="width: 16px; height: 16px;"></svg>
+                    </button>
+                  </div>
                 } @else {
                   <select class="status-select" 
                           [ngClass]="p.status.toLowerCase()" 
@@ -92,10 +97,12 @@
               </div>
               
               <div style="display: flex; gap: 8px;">
-                <button type="button" class="btn-action edit" title="Modificar" [disabled]="p.status === 'CLOSED'" (click)="goToEdit(p, $event)">
-                  <svg lucideEdit style="width: 18px; height: 18px;"></svg>
-                </button>
-                <button type="button" class="btn-action delete" title="Eliminar" (click)="$event.stopPropagation(); eliminarProyecto(p)">
+                @if (p.status !== 'CLOSED') {
+                  <button class="btn-icon-small" [routerLink]="['/projects', 'edit', p.id]" title="Editar proyecto">
+                    <svg lucideEdit style="width: 18px; height: 18px;"></svg>
+                  </button>
+                }
+                <button class="btn-icon-small" (click)="$event.stopPropagation(); eliminarProyecto(p)" title="Eliminar proyecto">
                   <svg lucideTrash2 style="width: 18px; height: 18px;"></svg>
                 </button>
               </div>

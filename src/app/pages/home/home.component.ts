@@ -9,12 +9,12 @@ import { ProjectService } from '../../services/project.service';
 import { TaskService } from '../../services/task.service';
 import { Project } from '../../models/project.model';
 import { Task } from '../../models/task.model';
-import { LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideCalendar } from '@lucide/angular';
+import { LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideCalendar, LucideRotateCcw } from '@lucide/angular';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideCalendar],
+  imports: [CommonModule, RouterModule, FormsModule, LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideCalendar, LucideRotateCcw],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -210,6 +210,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
   updateProjectStatus(project: Project, nextStatus: 'PLANNED' | 'ACTIVE' | 'CLOSED') {
     if (!project.id) return;
     
+    if (nextStatus === 'CLOSED' && project.status !== 'CLOSED') {
+      const ok = window.confirm('¿Seguro que querés marcar este proyecto como Completado? Se bloqueará su edición.');
+      if (!ok) {
+        this.projects.update(ps => [...ps]);
+        return;
+      }
+    }
+
     // Guardamos estado anterior para rollback
     const oldProjects = [...this.projects()];
     const updatedProject = { ...project, status: nextStatus };
@@ -227,8 +235,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
+  reabrirProyecto(project: Project) {
+    if (confirm(`¿Estás seguro de que quieres reabrir el proyecto "${project.name}"?`)) {
+      this.updateProjectStatus(project, 'ACTIVE');
+    }
+  }
+
   updateTaskStatus(task: Task, nextStatus: 'TODO' | 'IN_PROGRESS' | 'DONE') {
     if (!task.id || !task.projectId) return;
+
+    if (nextStatus === 'DONE' && task.status !== 'DONE') {
+      const ok = window.confirm('¿Seguro que querés marcar esta tarea como Hecha? Se bloqueará su edición.');
+      if (!ok) {
+        this.tasks.update(ts => [...ts]);
+        return;
+      }
+    }
 
     // Guardamos estado anterior para rollback
     const oldTasks = [...this.tasks()];
@@ -245,5 +267,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
         setTimeout(() => this.updateError.set(null), 3000);
       }
     });
+  }
+
+  reabrirTarea(task: Task) {
+    if (confirm(`¿Estás seguro de que quieres reabrir la tarea "${task.title}"?`)) {
+      this.updateTaskStatus(task, 'IN_PROGRESS');
+    }
   }
 }

@@ -87,7 +87,12 @@
               
               <div style="flex: 1; text-align: right; padding-right: 24px;">
                 @if (t.status === 'DONE') {
-                  <span class="badge done">Hecha</span>
+                  <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
+                    <span class="badge done">Hecha</span>
+                    <button class="btn-icon-small" (click)="reabrirTarea(t)" title="Reabrir tarea">
+                      <svg lucideRotateCcw style="width: 16px; height: 16px;"></svg>
+                    </button>
+                  </div>
                 } @else {
                   <select class="status-select" 
                           [ngClass]="t.status.toLowerCase()" 
@@ -102,9 +107,11 @@
               </div>
               
               <div style="display: flex; gap: 8px; justify-content: flex-end;">
-                <button type="button" class="btn-action edit" title="Modificar" [disabled]="t.status === 'DONE'" (click)="goToEdit(t, $event)">
-                  <svg lucideEdit style="width: 18px; height: 18px;"></svg>
-                </button>
+                @if (t.status !== 'DONE') {
+                  <button type="button" class="btn-action edit" title="Modificar" (click)="goToEdit(t, $event)">
+                    <svg lucideEdit style="width: 18px; height: 18px;"></svg>
+                  </button>
+                }
                 <button type="button" class="btn-action delete" title="Eliminar" (click)="$event.stopPropagation(); eliminarTarea(t)">
                   <svg lucideTrash2 style="width: 18px; height: 18px;"></svg>
                 </button>

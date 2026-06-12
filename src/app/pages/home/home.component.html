@@ -108,8 +108,14 @@
                   <strong>{{ p.name }}</strong>
                   <span>{{ p.description || 'Sin descripción' }}</span>
                 </div>
+                <div class="task-status">
                 @if (p.status === 'CLOSED') {
-                  <span class="status-badge status-done">Terminado</span>
+                  <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
+                    <span class="status-badge status-done">Terminado</span>
+                    <button class="btn-icon-small" (click)="reabrirProyecto(p); $event.stopPropagation()" title="Reabrir proyecto">
+                      <svg lucideRotateCcw style="width: 16px; height: 16px;"></svg>
+                    </button>
+                  </div>
                 } @else {
                   <div class="custom-dropdown-container">
                     <select class="status-select" 
@@ -123,6 +129,7 @@
                     </select>
                   </div>
                 }
+                </div>
               </div>
             }
           </div>
@@ -180,8 +187,14 @@
                   <strong>{{ t.title }}</strong>
                   <span>{{ t.assignee || 'Sin asignar' }}</span>
                 </div>
+                <div class="task-status">
                 @if (t.status === 'DONE') {
-                  <span class="status-badge status-done">Hecha</span>
+                  <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
+                    <span class="status-badge status-done">Hecha</span>
+                    <button class="btn-icon-small" (click)="reabrirTarea(t); $event.stopPropagation()" title="Reabrir tarea">
+                      <svg lucideRotateCcw style="width: 16px; height: 16px;"></svg>
+                    </button>
+                  </div>
                 } @else {
                   <div class="custom-dropdown-container">
                     <select class="status-select" 
@@ -195,6 +208,7 @@
                     </select>
                   </div>
                 }
+                </div>
               </div>
             }
           </div>

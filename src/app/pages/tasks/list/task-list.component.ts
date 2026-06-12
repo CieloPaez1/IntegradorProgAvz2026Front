@@ -6,13 +6,13 @@ import { TaskService } from '../../../services/task.service';
 import { ProjectService } from '../../../services/project.service';
 import { Task } from '../../../models/task.model';
 import { Project } from '../../../models/project.model';
-import { LucideListTodo, LucideEdit, LucideTrash2, LucideSearch } from '@lucide/angular';
+import { LucideCheckSquare, LucideEdit, LucideTrash2, LucideSearch, LucidePlus, LucideRotateCcw } from '@lucide/angular';
 import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, LucideListTodo, LucideEdit, LucideTrash2, LucideSearch],
+  imports: [CommonModule, RouterModule, FormsModule, LucideCheckSquare, LucideEdit, LucideTrash2, LucideSearch, LucidePlus, LucideRotateCcw],
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css']
 })
@@ -89,6 +89,12 @@ export class TaskListComponent implements OnInit {
     return this.projects().find(p => p.id === projectId)?.name || 'Desconocido';
   }
 
+  reabrirTarea(t: Task): void {
+    if (confirm(`¿Estás seguro de que quieres reabrir la tarea "${t.title}"?`)) {
+      this.cambiarEstado(t, 'IN_PROGRESS');
+    }
+  }
+
   eliminarTarea(t: Task): void {
     if (!t.id || !t.projectId) return;
     if (confirm(`¿Estás seguro de que quieres eliminar la tarea "${t.title}"?`)) {
@@ -110,6 +116,14 @@ export class TaskListComponent implements OnInit {
 
   cambiarEstado(t: Task, nuevoEstado: string): void {
     if (!t.id || !t.projectId) return;
+
+    if (nuevoEstado === 'DONE' && t.status !== 'DONE') {
+      const ok = window.confirm('¿Seguro que querés marcar esta tarea como Hecha? Se bloqueará su edición.');
+      if (!ok) {
+        this.tasks.update(ts => [...ts]);
+        return;
+      }
+    }
 
     const estadoAnterior = t.status;
     t.status = nuevoEstado as any;
