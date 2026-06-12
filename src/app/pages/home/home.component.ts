@@ -169,6 +169,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
       let chartBorderRadius = 0;
       let chartSpacing = 0;
       let chartBorderWidth = 0;
+      let chartRotation = 0;
+      let chartCircumference = 360;
       const themeBg = getComputedStyle(document.documentElement).getPropertyValue('--bg-primary').trim() || '#000';
       
       switch(theme) {
@@ -201,9 +203,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
           chartBorderWidth = 4;
           break;
         case 'cute':
-          chartCutout = '65%';
-          chartBorderRadius = 20;
-          chartSpacing = 10;
+          chartCutout = '50%';
+          chartBorderRadius = 50;
+          chartSpacing = 8;
+          chartBorderWidth = 0;
+          chartRotation = -90;
+          chartCircumference = 180;
           break;
         default:
           chartCutout = '75%';
@@ -227,6 +232,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
           },
           options: {
             cutout: chartCutout,
+            rotation: chartRotation,
+            circumference: chartCircumference,
             responsive: true,
             maintainAspectRatio: false,
             plugins: { legend: { display: false }, tooltip: {
@@ -255,6 +262,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
           },
           options: {
             cutout: chartCutout,
+            rotation: chartRotation,
+            circumference: chartCircumference,
             responsive: true,
             maintainAspectRatio: false,
             plugins: { legend: { display: false }, tooltip: {
