@@ -6,8 +6,10 @@
   height: 100vh;
   z-index: -1;
   overflow: hidden;
-  background: var(--bg-primary);
-  transition: background 0.5s ease;
+  background-color: var(--bg-primary);
+  background-image: var(--theme-bg-pattern, none);
+  background-size: var(--theme-bg-size, auto);
+  transition: background-color 0.5s ease;
 }
 
 .mesh-blob {
@@ -15,6 +17,7 @@
   border-radius: 50%;
   filter: blur(100px);
   opacity: 0.6;
+  display: var(--theme-blob-display, block);
 }
 
 .blob-1 {

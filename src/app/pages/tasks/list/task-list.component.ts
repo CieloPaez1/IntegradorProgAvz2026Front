@@ -6,13 +6,13 @@ import { TaskService } from '../../../services/task.service';
 import { ProjectService } from '../../../services/project.service';
 import { Task } from '../../../models/task.model';
 import { Project } from '../../../models/project.model';
-import { LucideCheckSquare, LucideEdit, LucideTrash2, LucideSearch, LucidePlus, LucideRotateCcw } from '@lucide/angular';
+import { LucideCheckSquare, LucideEdit, LucideTrash2, LucideSearch, LucideRotateCcw } from '@lucide/angular';
 import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, LucideCheckSquare, LucideEdit, LucideTrash2, LucideSearch, LucidePlus, LucideRotateCcw],
+  imports: [CommonModule, RouterModule, FormsModule, LucideCheckSquare, LucideEdit, LucideTrash2, LucideSearch, LucideRotateCcw],
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css']
 })
