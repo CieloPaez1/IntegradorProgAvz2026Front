@@ -206,7 +206,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
           chartCutout = '65%';
           chartBorderRadius = 0;
           chartSpacing = 0;
-          chartBorderWidth = 0;
+          chartBorderWidth = 4;
           chartRotation = 0;
           chartCircumference = 360;
           break;
@@ -218,17 +218,41 @@ export class HomeComponent implements OnInit, AfterViewInit {
       const createGradient = (canvas: HTMLCanvasElement) => {
         const ctx = canvas.getContext('2d');
         if (!ctx) return bgColors;
-        const gradient = ctx.createLinearGradient(0, 0, canvas.offsetWidth || 200, 0);
-        gradient.addColorStop(0, getThemeColor('--danger-color'));
-        gradient.addColorStop(0.5, getThemeColor('--warning-color'));
-        gradient.addColorStop(1, getThemeColor('--success-color'));
-        return [gradient, gradient, gradient];
+        
+        const h = canvas.offsetHeight || 200;
+        
+        // Coral gradient
+        const g1 = ctx.createLinearGradient(0, 0, 0, h);
+        g1.addColorStop(0, getThemeColor('--danger-color'));
+        g1.addColorStop(1, '#ffe4e6'); // rosa clarito
+        
+        // Yellow gradient
+        const g2 = ctx.createLinearGradient(0, 0, 0, h);
+        g2.addColorStop(0, getThemeColor('--warning-color'));
+        g2.addColorStop(1, '#fef9c3'); // amarillo clarito
+        
+        // Mint gradient
+        const g3 = ctx.createLinearGradient(0, 0, 0, h);
+        g3.addColorStop(0, getThemeColor('--success-color'));
+        g3.addColorStop(1, '#d1fae5'); // menta clarito
+        
+        return [g2, g1, g3]; // Warning (Planificados), Danger (En proceso), Success (Terminados) -- Wait, the order is actually:
+        // labels: ['Planificados', 'En proceso', 'Terminados']
+        // Colors: bgColors is [warning, primary, success]. Actually, wait. bgColors defined as:
+        // [getThemeColor('--warning-color'), getThemeColor('--primary-color'), getThemeColor('--success-color')]
       };
 
       if (this.projectChartRef?.nativeElement) {
         let pBgColors = bgColors;
         if (theme === 'cute') {
-          pBgColors = createGradient(this.projectChartRef.nativeElement) || bgColors;
+          const ctx = this.projectChartRef.nativeElement.getContext('2d');
+          if (ctx) {
+            const h = this.projectChartRef.nativeElement.offsetHeight || 200;
+            const g1 = ctx.createLinearGradient(0, 0, 0, h); g1.addColorStop(0, getThemeColor('--warning-color')); g1.addColorStop(1, '#fef9c3');
+            const g2 = ctx.createLinearGradient(0, 0, 0, h); g2.addColorStop(0, getThemeColor('--primary-color')); g2.addColorStop(1, '#fbcfe8');
+            const g3 = ctx.createLinearGradient(0, 0, 0, h); g3.addColorStop(0, getThemeColor('--success-color')); g3.addColorStop(1, '#d1fae5');
+            pBgColors = [g1, g2, g3];
+          }
         }
 
         this.projectChartInst = new Chart(this.projectChartRef.nativeElement, {
@@ -263,7 +287,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
       if (this.taskChartRef?.nativeElement) {
         let tBgColors = bgColors;
         if (theme === 'cute') {
-          tBgColors = createGradient(this.taskChartRef.nativeElement) || bgColors;
+          const ctx = this.taskChartRef.nativeElement.getContext('2d');
+          if (ctx) {
+            const h = this.taskChartRef.nativeElement.offsetHeight || 200;
+            const g1 = ctx.createLinearGradient(0, 0, 0, h); g1.addColorStop(0, getThemeColor('--warning-color')); g1.addColorStop(1, '#fef9c3');
+            const g2 = ctx.createLinearGradient(0, 0, 0, h); g2.addColorStop(0, getThemeColor('--primary-color')); g2.addColorStop(1, '#fbcfe8');
+            const g3 = ctx.createLinearGradient(0, 0, 0, h); g3.addColorStop(0, getThemeColor('--success-color')); g3.addColorStop(1, '#d1fae5');
+            tBgColors = [g1, g2, g3];
+          }
         }
 
         this.taskChartInst = new Chart(this.taskChartRef.nativeElement, {
