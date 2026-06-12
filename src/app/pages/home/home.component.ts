@@ -165,50 +165,63 @@ export class HomeComponent implements OnInit, AfterViewInit {
       const bgColors = [getThemeColor('--warning-color'), getThemeColor('--primary-color'), getThemeColor('--success-color')];
       const theme = this.themeService.currentTheme();
     
-      let projectChartType: any = 'doughnut';
-      let taskChartType: any = 'doughnut';
+      let chartCutout = '75%';
+      let chartBorderRadius = 0;
+      let chartSpacing = 0;
+      let chartBorderWidth = 0;
+      const themeBg = getComputedStyle(document.documentElement).getPropertyValue('--bg-primary').trim() || '#000';
       
       switch(theme) {
         case 'minimal': 
-          projectChartType = 'pie'; 
-          taskChartType = 'pie'; 
+          chartCutout = '90%'; 
+          chartSpacing = 4;
           break;
         case 'cyberpunk': 
-          projectChartType = 'polarArea'; 
-          taskChartType = 'polarArea'; 
-          break;
-        case 'sunset': 
-          projectChartType = 'pie'; 
-          taskChartType = 'doughnut'; 
-          break;
-        case 'crimson': 
-          projectChartType = 'polarArea'; 
-          taskChartType = 'pie'; 
+          chartCutout = '70%'; 
+          chartSpacing = 10;
+          chartBorderWidth = 2;
           break;
         case 'ocean': 
-          projectChartType = 'doughnut'; 
-          taskChartType = 'pie'; 
+          chartCutout = '60%'; 
+          chartBorderRadius = 20;
+          chartSpacing = 6;
+          break;
+        case 'sunset': 
+          chartCutout = '50%'; 
+          chartBorderRadius = 0;
+          break;
+        case 'forest': 
+          chartCutout = '80%'; 
+          chartSpacing = 5;
+          chartBorderRadius = 10;
+          break;
+        case 'crimson': 
+          chartCutout = '85%'; 
+          chartSpacing = 2;
+          chartBorderWidth = 4;
           break;
         default:
-          projectChartType = 'doughnut';
-          taskChartType = 'doughnut';
+          chartCutout = '75%';
           break;
       }
 
       if (this.projectChartRef?.nativeElement) {
         this.projectChartInst = new Chart(this.projectChartRef.nativeElement, {
-          type: projectChartType,
+          type: 'doughnut',
           data: {
             labels: ['Planificados', 'En proceso', 'Terminados'],
             datasets: [{
               data: [this.proyectosPlanificados(), this.proyectosEnProceso(), this.proyectosTerminados()],
               backgroundColor: bgColors,
               hoverBackgroundColor: bgColors,
-              borderWidth: 0
+              borderWidth: chartBorderWidth,
+              borderColor: themeBg,
+              borderRadius: chartBorderRadius,
+              spacing: chartSpacing
             }]
           },
           options: {
-            cutout: '75%',
+            cutout: chartCutout,
             responsive: true,
             maintainAspectRatio: false,
             plugins: { legend: { display: false }, tooltip: {
@@ -222,18 +235,21 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
       if (this.taskChartRef?.nativeElement) {
         this.taskChartInst = new Chart(this.taskChartRef.nativeElement, {
-          type: taskChartType,
+          type: 'doughnut',
           data: {
             labels: ['Por hacer', 'En proceso', 'Hechas'],
             datasets: [{
               data: [this.tareasPendientes(), this.tareasEnProgreso(), this.tareasCompletadas()],
               backgroundColor: bgColors,
               hoverBackgroundColor: bgColors,
-              borderWidth: 0
+              borderWidth: chartBorderWidth,
+              borderColor: themeBg,
+              borderRadius: chartBorderRadius,
+              spacing: chartSpacing
             }]
           },
           options: {
-            cutout: '75%',
+            cutout: chartCutout,
             responsive: true,
             maintainAspectRatio: false,
             plugins: { legend: { display: false }, tooltip: {
