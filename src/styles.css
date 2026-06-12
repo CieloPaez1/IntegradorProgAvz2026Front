@@ -344,17 +344,17 @@
 }
 
 [data-theme="cute"] {
-  --bg-primary: #f8faff; /* Blanco azulado muy suave */
+  --bg-primary: #fff0f6; /* Blanco rosado suave */
   --bg-secondary: #f3f0ff; /* Lila súper claro */
   --card-bg: rgba(255, 255, 255, 0.85); 
-  --card-border: rgba(196, 181, 253, 0.5); /* Borde lila pastel */
+  --card-border: rgba(244, 114, 182, 0.4); /* Borde rosa pastel */
   --text-primary: #4c1d95; /* Violeta oscuro para legibilidad */
   --text-secondary: #7c3aed; /* Violeta medio */
-  --border-color: rgba(196, 181, 253, 0.3);
+  --border-color: rgba(196, 181, 253, 0.3); /* Borde secundario lila */
   
-  --primary-color: #c4b5fd; /* Lila/Violeta pastel (color principal) */
-  --primary-hover: #a78bfa;
-  --primary-glow: rgba(196, 181, 253, 0.6);
+  --primary-color: #f472b6; /* Rosa chicle pastel (color principal) */
+  --primary-hover: #ec4899;
+  --primary-glow: rgba(244, 114, 182, 0.6);
   
   --danger-color: #fca5a5; /* Rojo/Coral pastel */
   --success-color: #6ee7b7; /* Verde menta pastel */
