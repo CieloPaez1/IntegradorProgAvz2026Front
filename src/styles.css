@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Orbitron:wght@400;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@400;700;800&family=Oswald:wght@400;700&display=swap');
+
 :root {
   /* LIGHT THEME - Stripe/Framer Style */
   --bg-primary: #fcfcfd;
@@ -152,7 +154,7 @@
   --mesh-c3: rgba(255, 255, 0, 0.15);
 
   /* STRUCTURAL VARIABLES */
-  --font-main: 'Courier New', Courier, monospace;
+  --font-main: 'Orbitron', 'Courier New', Courier, monospace;
   --radius-card: 0px;
   --radius-btn: 0px;
   --radius-badge: 4px;
@@ -191,7 +193,7 @@
   --mesh-c3: #083344;
 
   /* STRUCTURAL VARIABLES */
-  --font-main: 'Trebuchet MS', 'Lucida Sans Unicode', sans-serif;
+  --font-main: 'Nunito', 'Trebuchet MS', 'Lucida Sans Unicode', sans-serif;
   --radius-card: 40px;
   --radius-btn: 999px;
   --radius-badge: 999px;
@@ -223,7 +225,7 @@
   --mesh-c3: #fecdd3;
 
   /* STRUCTURAL VARIABLES */
-  --font-main: 'Georgia', 'Times New Roman', serif;
+  --font-main: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
   --radius-card: 12px;
   --radius-btn: 8px;
   --radius-badge: 8px;
@@ -294,7 +296,7 @@
   --mesh-c3: #991b1b;
 
   /* STRUCTURAL VARIABLES */
-  --font-main: 'Inter', "Helvetica Neue", sans-serif;
+  --font-main: 'Oswald', 'Inter', "Helvetica Neue", sans-serif;
   --radius-card: 20px;
   --radius-btn: 12px;
   --radius-badge: 12px;
