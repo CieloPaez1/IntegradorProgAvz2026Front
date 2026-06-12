@@ -105,3 +105,33 @@
   display: flex;
   align-items: center;
 }
+
+/* --- PREMIUM FORM CONTROLS --- */
+.form-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.form-control, .form-select {
+  height: 48px;
+  border-radius: var(--radius-base);
+  border: 1px solid var(--border-color);
+  padding: 0 16px;
+  font-size: 1rem;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  transition: all 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px var(--primary-glow);
+  outline: none;
+}

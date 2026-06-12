@@ -69,9 +69,9 @@
     </div>
 
     @if (isAddingTask()) {
-      <div class="dashboard-card" style="margin-bottom: 24px; background: #f9fafb; border: 1px dashed #d1d5db;">
-        <h4>Agregar Tarea</h4>
-        <form [formGroup]="taskForm" (ngSubmit)="saveTask()" style="margin-top: 16px;">
+      <div class="dashboard-card" style="margin-bottom: 24px; padding: 32px;">
+        <h4 style="margin-top: 0; margin-bottom: 24px; color: var(--text-primary); font-weight: 800; font-size: 1.25rem;">Agregar Nueva Tarea</h4>
+        <form [formGroup]="taskForm" (ngSubmit)="saveTask()">
           <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px;">
             <div>
               <label class="form-label">Título</label>
