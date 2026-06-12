@@ -203,12 +203,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
           chartBorderWidth = 4;
           break;
         case 'cute':
-          chartCutout = '50%';
-          chartBorderRadius = 50;
+          chartCutout = '65%';
+          chartBorderRadius = 0;
           chartSpacing = 0;
           chartBorderWidth = 0;
-          chartRotation = -90;
-          chartCircumference = 180;
+          chartRotation = 0;
+          chartCircumference = 360;
           break;
         default:
           chartCutout = '75%';
