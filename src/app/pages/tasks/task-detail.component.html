@@ -45,7 +45,15 @@
     <div class="info-grid">
       <div class="info-block">
         <label>Proyecto Asignado</label>
-        <p>{{ task()?.projectName || 'Sin proyecto' }}</p>
+        <p>
+          @if (task()?.projectId) {
+            <a [routerLink]="['/projects', task()?.projectId]" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">
+              {{ projectName() }}
+            </a>
+          } @else {
+            {{ projectName() }}
+          }
+        </p>
       </div>
       <div class="info-block">
         <label>Responsable</label>

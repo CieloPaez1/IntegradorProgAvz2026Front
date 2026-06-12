@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task.model';
+import { ProjectService } from '../../services/project.service';
 import { LucideArrowLeft, LucideEdit, LucideTrash2, LucideRotateCcw } from '@lucide/angular';
 
 @Component({
@@ -17,9 +18,11 @@ export class TaskDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private taskService = inject(TaskService);
+  private projectService = inject(ProjectService);
   private fb = inject(FormBuilder);
   
   task = signal<Task | null>(null);
+  projectName = signal<string>('Cargando...');
   isLoading = signal(false);
 
   ngOnInit(): void {
@@ -28,6 +31,15 @@ export class TaskDetailComponent implements OnInit {
       this.taskService.getAll().subscribe(tasks => {
         const t = tasks.find(x => x.id === id);
         this.task.set(t || null);
+        
+        if (t && t.projectId) {
+          this.projectService.getAll().subscribe(projects => {
+            const p = projects.find(proj => proj.id === t.projectId);
+            this.projectName.set(p ? p.name : 'Sin proyecto');
+          });
+        } else {
+          this.projectName.set('Sin proyecto');
+        }
       });
     }
   }
