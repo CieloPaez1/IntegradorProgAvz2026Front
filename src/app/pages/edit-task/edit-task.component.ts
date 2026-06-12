@@ -32,7 +32,8 @@ export class EditTaskComponent implements OnInit {
       title: ['', [Validators.required, Validators.maxLength(100)]],
       estimateHours: [0, [Validators.required, Validators.min(1)]],
       assignee: ['', [Validators.maxLength(100)]],
-      status: ['TODO', [Validators.required]]
+      status: ['TODO', [Validators.required]],
+      dueDate: ['']
     });
   }
 
@@ -57,7 +58,8 @@ export class EditTaskComponent implements OnInit {
           title: task.title,
           estimateHours: task.estimateHours,
           assignee: task.assignee || '',
-          status: task.status
+          status: task.status,
+          dueDate: task.dueDate ? task.dueDate.split('T')[0] : ''
         });
         this.loading.set(false);
       },

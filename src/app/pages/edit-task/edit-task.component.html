@@ -72,13 +72,24 @@
           </div>
         </div>
 
-        <div class="mb-5">
-          <label class="form-label">Estado *</label>
-          <select formControlName="status" class="form-select">
-            <option value="TODO">Por Hacer</option>
-            <option value="IN_PROGRESS">En Progreso</option>
-            <option value="DONE">Hecho</option>
-          </select>
+        <div class="row">
+          <div class="col-md-6 mb-5">
+            <label class="form-label">Estado *</label>
+            <select formControlName="status" class="form-select">
+              <option value="TODO">Por Hacer</option>
+              <option value="IN_PROGRESS">En Progreso</option>
+              <option value="DONE">Hecho</option>
+            </select>
+          </div>
+          
+          <div class="col-md-6 mb-5">
+            <label class="form-label">Fecha de Vencimiento</label>
+            <input 
+              type="date" 
+              formControlName="dueDate" 
+              class="form-control"
+            >
+          </div>
         </div>
 
         <div class="d-flex justify-content-end gap-3 mt-4 pt-4" style="border-top: 1px solid #e5e7eb;">
