@@ -415,6 +415,64 @@ html, body {
   box-shadow: 0 12px 25px var(--primary-glow);
 }
 
+/* --- SMALL ICON BUTTONS (PREMIUM) --- */
+.btn-icon-small {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+}
+
+.btn-icon-small:hover {
+  background: var(--bg-primary);
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 20px var(--primary-glow);
+  z-index: 10;
+}
+
+.btn-icon-small:active {
+  transform: scale(0.95);
+}
+
+.btn-icon-small svg {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
+}
+
+/* Base icon colors to make them pop and look premium */
+.btn-icon-small .rotate-icon {
+  color: var(--primary-color);
+}
+.btn-icon-small .trash-icon {
+  color: var(--text-secondary);
+}
+
+/* Hover effects for specific actions */
+.btn-icon-small:hover .rotate-icon {
+  transform: rotate(-180deg);
+}
+
+.btn-icon-small:hover:has(.trash-icon) {
+  color: var(--danger-color);
+  border-color: var(--danger-color);
+  box-shadow: 0 8px 20px rgba(244, 63, 94, 0.2);
+}
+.btn-icon-small:hover .trash-icon {
+  color: var(--danger-color);
+}
+
+/* --- FORM CONTROLS --- */
 .btn-outline {
   display: inline-flex;
   align-items: center;
