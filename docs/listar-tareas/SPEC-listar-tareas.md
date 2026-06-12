@@ -1,7 +1,7 @@
 # Feature: Listar Tareas
 
 ## Descripción general
-El usuario puede visualizar todas las tareas registradas en el sistema a través de una tabla resumen. La tabla debe incluir información cruzada con el proyecto al que pertenece la tarea.
+El usuario puede visualizar todas las tareas registradas en el sistema a través de una tabla resumen. La tabla debe incluir información cruzada con el proyecto al que pertenece la tarea. El título principal de la pantalla debe ser "Lista de tareas". Además, permite eliminar tareas de forma interactiva y navegar hacia la edición.
 
 ## Endpoints involucrados
 - `GET /tasks`
@@ -14,10 +14,15 @@ El usuario puede visualizar todas las tareas registradas en el sistema a través
 - `GET /projects`
   - 200: Lista de proyectos (usada para resolver el nombre visual del proyecto).
   - 500 / 0: Error que impide resolver nombres, se silencia o muestra error general.
+- `DELETE /projects/{projectId}/tasks/{id}`
+  - 200: Tarea eliminada.
 
 ## Restricciones de negocio
-- Se deben mostrar los siguientes campos en la tabla: ID, Título, Nombre del Proyecto, Horas Estimadas, Asignado, y Estado.
+- El título principal de la pantalla debe ser "Lista de tareas".
+- Se deben mostrar los siguientes campos en la tabla: ID, Título, Nombre del Proyecto, Horas Estimadas, Asignado, Estado y Acciones.
 - El estado debe traducirse visualmente (TODO -> POR HACER, IN_PROGRESS -> EN PROGRESO, DONE -> HECHO).
+- El botón "Modificar" debe estar deshabilitado si la tarea está en estado HECHO.
+- El botón "Eliminar" debe solicitar una confirmación al usuario antes de borrar y debe eliminar la fila de la vista de forma reactiva.
 - Si no hay tareas en el sistema, se debe mostrar un mensaje amigable indicando que no hay tareas en lugar de una tabla vacía.
 - Si falla la conexión con el servidor, debe mostrar un cartel de error.
 

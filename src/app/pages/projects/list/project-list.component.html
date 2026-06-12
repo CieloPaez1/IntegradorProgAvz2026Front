@@ -3,11 +3,36 @@
   <div class="report-header">
     <div>
       <p>Gestión de Proyectos</p>
-      <h1>Lista de Proyectos</h1>
+      <h1>
+        @if (filter() === 'empty') {
+          Proyectos Vacíos
+        } @else {
+          Lista de Proyectos
+        }
+      </h1>
+      <p class="mb-0" style="color: var(--text-secondary); font-size: 1.1rem; margin-top: 4px;">
+        @if (filter() === 'empty') {
+          Proyectos que no tienen ninguna tarea planificada.
+        } @else {
+          Visualiza y administra todos tus proyectos.
+        }
+      </p>
     </div>
-    <a routerLink="/projects/create" class="btn-primary">
-      <svg lucidePlus></svg> Nuevo Proyecto
-    </a>
+    <div style="display: flex; gap: 16px; align-items: center;">
+      <select [(ngModel)]="statusFilter" style="padding: 10px 16px; border-radius: 12px; border: 1px solid var(--border-color); outline: none; font-size: 0.95rem; background: var(--input-bg); cursor: pointer; color: var(--text-primary);">
+        <option value="ALL">Todos los estados</option>
+        <option value="PLANNED">Planificado</option>
+        <option value="ACTIVE">Activo</option>
+        <option value="CLOSED">Cerrado</option>
+      </select>
+      <div class="search-bar" style="position: relative;">
+        <svg lucideSearch style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--text-secondary); pointer-events: none;"></svg>
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar proyecto..." style="padding: 10px 16px 10px 40px; border-radius: 12px; border: 1px solid var(--border-color); outline: none; width: 250px; font-size: 0.95rem; background: var(--input-bg); color: var(--text-primary); transition: all 0.2s;" onfocus="this.style.background='var(--bg-secondary)'; this.style.borderColor='var(--primary-color)'; this.style.boxShadow='0 0 0 4px var(--primary-glow)'" onblur="this.style.background='var(--input-bg)'; this.style.borderColor='var(--border-color)'; this.style.boxShadow='none'">
+      </div>
+      <a routerLink="/projects/create" class="btn-primary">
+        <svg lucidePlus></svg> Nuevo Proyecto
+      </a>
+    </div>
   </div>
 
   <div class="project-card" style="padding: 0; overflow: hidden;">
@@ -15,60 +40,56 @@
     @if (loading()) {
       <div class="empty-state">Cargando proyectos...</div>
     } @else if (error()) {
-      <div class="empty-state" style="color: #ef4444;">{{ error() }}</div>
+      <div class="empty-state" style="color: var(--danger-color);">{{ error() }}</div>
     } @else if (projects().length === 0) {
       <div class="empty-state">
-        <svg lucideFolderKanban style="width: 48px; height: 48px; color: #94a3b8; margin-bottom: 16px;"></svg>
+        <svg lucideFolderKanban style="width: 48px; height: 48px; color: var(--text-secondary); margin-bottom: 16px;"></svg>
         <p style="margin: 0;">No hay proyectos creados aún.</p>
-        <a routerLink="/projects/create" style="color: #6366f1; text-decoration: none; font-weight: 600; display: inline-block; margin-top: 8px;">
+        <a routerLink="/projects/create" style="color: var(--primary-color); text-decoration: none; font-weight: 600; display: inline-block; margin-top: 8px;">
           Crea tu primer proyecto
         </a>
       </div>
     } @else {
       <div class="table-responsive">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Fechas</th>
-              <th>Estado</th>
-              <th>Descripción</th>
-              <th style="text-align: right;">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (p of projects(); track p.id) {
-              <tr>
-                <td><span style="color: #94a3b8; font-family: monospace;">#{{ p.id }}</span></td>
-                <td style="color: #0f172a; font-weight: 700;">{{ p.name }}</td>
-                <td style="color: #64748b; font-size: 0.9rem;">
-                  <div><strong style="color: #475569;">I:</strong> {{ p.startDate }}</div>
-                  <div><strong style="color: #475569;">F:</strong> {{ p.endDate }}</div>
-                </td>
-                <td>
-                  <span class="badge" [class.planned]="p.status === 'PLANNED'" [class.active]="p.status === 'ACTIVE'" [class.closed]="p.status === 'CLOSED'">
-                    {{ p.status === 'PLANNED' ? 'Planificado' : p.status === 'ACTIVE' ? 'Activo' : 'Cerrado' }}
-                  </span>
-                </td>
-                <td style="color: #64748b; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                  {{ p.description || '-' }}
-                </td>
-                <td style="text-align: right;">
-                  <div style="display: inline-flex; gap: 8px;">
-                    <!-- Los enlaces y lógica real se implementarán en sus respectivas ramas (editar/eliminar) -->
-                    <button type="button" class="btn-action edit" title="Modificar (Próximamente)">
-                      <svg lucideEdit></svg>
-                    </button>
-                    <button type="button" class="btn-action delete" title="Eliminar (Próximamente)">
-                      <svg lucideTrash2></svg>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
+        <div class="tasks-list">
+          @for (p of filteredProjects(); track p.id) {
+            <div class="task-row" [routerLink]="['/projects', p.id]" style="cursor: pointer;">
+              
+              <div class="task-info" style="flex: 1.5; min-width: 0;">
+                <strong style="font-size: 1.1rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ p.name }}</strong>
+                <span style="font-size: 0.85rem; color: var(--text-secondary);">ID: #{{ p.id }}</span>
+              </div>
+
+              <div class="task-info" style="flex: 2; min-width: 0; padding-right: 16px;">
+                <strong style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase;">Descripción</strong>
+                <span style="font-size: 0.95rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;" [title]="p.description || 'Sin descripción'">{{ p.description || 'Sin descripción' }}</span>
+              </div>
+              
+              <div class="task-info" style="flex: 1;">
+                <strong style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase;">Inicio</strong>
+                <span style="font-weight: 500; font-size: 0.95rem;">{{ p.startDate | date:'shortDate' }}</span>
+              </div>
+
+              <div class="task-info" style="flex: 1;">
+                <strong style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase;">Fin</strong>
+                <span style="font-weight: 500; font-size: 0.95rem;">{{ p.endDate | date:'shortDate' }}</span>
+              </div>
+              
+              <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center; padding-right: 24px;">
+                <span class="badge" [class.planned]="p.status === 'PLANNED'" [class.active]="p.status === 'ACTIVE'" [class.closed]="p.status === 'CLOSED'">
+                  {{ p.status === 'PLANNED' ? 'Planificado' : p.status === 'ACTIVE' ? 'Activo' : 'Cerrado' }}
+                </span>
+              </div>
+              
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn-action delete" title="Eliminar" (click)="$event.stopPropagation(); eliminarProyecto(p)">
+                  <svg lucideTrash2 style="width: 18px; height: 18px;"></svg>
+                </button>
+              </div>
+              
+            </div>
+          }
+        </div>
       </div>
     }
   </div>

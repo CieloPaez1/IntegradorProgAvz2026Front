@@ -1,30 +1,60 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { TaskService } from '../../../services/task.service';
 import { ProjectService } from '../../../services/project.service';
 import { Task } from '../../../models/task.model';
 import { Project } from '../../../models/project.model';
-import { LucideListTodo, LucideEdit, LucideTrash2 } from '@lucide/angular';
+import { LucideListTodo, LucideEdit, LucideTrash2, LucideSearch } from '@lucide/angular';
 import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, LucideListTodo, LucideEdit, LucideTrash2],
+  imports: [CommonModule, RouterModule, FormsModule, LucideListTodo, LucideEdit, LucideTrash2, LucideSearch],
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css']
 })
 export class TaskListComponent implements OnInit {
   private taskService = inject(TaskService);
   private projectService = inject(ProjectService);
+  private route = inject(ActivatedRoute);
 
   tasks = signal<Task[]>([]);
   projects = signal<Project[]>([]);
   loading = signal<boolean>(true);
   error = signal<string | null>(null);
+  filter = signal<string | null>(null);
+  searchTerm = signal<string>('');
+  statusFilter = signal<string>('ALL');
+
+  filteredTasks = computed(() => {
+    const term = this.searchTerm().toLowerCase();
+    const status = this.statusFilter();
+    let result = this.tasks();
+
+    if (status !== 'ALL') {
+      result = result.filter(t => t.status === status);
+    }
+
+    if (term) {
+      result = result.filter(t => 
+        (t.title && t.title.toLowerCase().includes(term)) || 
+        (t.assignee && t.assignee.toLowerCase().includes(term)) ||
+        (this.getProjectName(t.projectId).toLowerCase().includes(term))
+      );
+    }
+
+    return result;
+  });
 
   ngOnInit(): void {
+    const routeFilter = this.route.snapshot.queryParamMap.get('filter');
+    this.filter.set(routeFilter);
+    if (routeFilter === 'todo') {
+      this.statusFilter.set('TODO');
+    }
     this.cargarDatos();
   }
 
@@ -33,12 +63,17 @@ export class TaskListComponent implements OnInit {
     this.error.set(null);
 
     forkJoin({
-      tasks: this.taskService.getAll(),
-      projects: this.projectService.getAll()
+      projects: this.projectService.getAll(),
+      tasks: this.taskService.getAll()
     }).subscribe({
-      next: (res) => {
-        this.tasks.set(res.tasks);
-        this.projects.set(res.projects);
+      next: (result) => {
+        this.projects.set(result.projects);
+        
+        let fetchedTasks = result.tasks.reverse();
+        if (this.filter() === 'unassigned') {
+          fetchedTasks = fetchedTasks.filter(t => !t.assignee || t.assignee.trim() === '');
+        }
+        this.tasks.set(fetchedTasks);
         this.loading.set(false);
       },
       error: (err: Error) => {
@@ -48,7 +83,20 @@ export class TaskListComponent implements OnInit {
     });
   }
 
-  getProjectName(projectId: number): string {
+  getProjectName(projectId: number | undefined): string {
+    if (!projectId) return 'Desconocido';
     return this.projects().find(p => p.id === projectId)?.name || 'Desconocido';
+  }
+
+  eliminarTarea(t: Task): void {
+    if (!t.id || !t.projectId) return;
+    if (confirm(`¿Estás seguro de que quieres eliminar la tarea "${t.title}"?`)) {
+      this.taskService.delete(t.projectId, t.id).subscribe({
+        next: () => {
+          this.tasks.update(ts => ts.filter(task => task.id !== t.id));
+        },
+        error: (err: Error) => alert('Error al eliminar la tarea: ' + err.message)
+      });
+    }
   }
 }

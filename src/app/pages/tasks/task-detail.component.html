@@ -1,4 +1,4 @@
-<div class="task-detail-page" *ngIf="task(); else loading">
+<div class="task-detail-page" *ngIf="task(); else loadingTemplate">
   <div class="page-header">
     <div>
       <p>DETALLE DE TAREA</p>
@@ -13,16 +13,14 @@
       </div>
     </div>
     <div style="display: flex; gap: 12px;">
-      <button class="btn-outline" routerLink="/home">
+      <button class="btn-outline" routerLink="/tasks/list">
         <svg lucideArrowLeft style="width: 18px; height: 18px;"></svg>
         Volver
       </button>
-      @if (task()?.status !== 'DONE') {
-        <button class="btn-primary" [routerLink]="['/tasks/edit', task()?.id]">
-          <svg lucideEdit style="width: 18px; height: 18px;"></svg>
-          Editar
-        </button>
-      }
+      <button class="btn-outline danger" (click)="deleteTask()" [disabled]="isLoading()">
+        <svg lucideTrash2 style="width: 18px; height: 18px;"></svg>
+        Eliminar
+      </button>
     </div>
   </div>
 
@@ -40,11 +38,15 @@
         <label>Horas Estimadas</label>
         <p>{{ task()?.estimateHours || 0 }} hs</p>
       </div>
+      <div class="info-block">
+        <label>Vencimiento</label>
+        <p>{{ task()?.dueDate ? (task()?.dueDate | date:'short') : 'Sin fecha' }}</p>
+      </div>
     </div>
   </div>
 </div>
 
-<ng-template #loading>
+<ng-template #loadingTemplate>
   <div class="loading-state">
     <p>Cargando detalle de la tarea...</p>
   </div>

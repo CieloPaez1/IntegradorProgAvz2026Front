@@ -56,11 +56,13 @@ export class TaskService {
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     let message = 'Error desconocido';
+    const serverMessage = typeof error.error === 'string' ? error.error : error.error?.message;
+    
     if (error.status === 0) message = 'No se pudo conectar al servidor.';
-    else if (error.status === 400) message = error.error?.message ?? 'Datos inválidos.';
+    else if (error.status === 400) message = serverMessage ?? 'Datos inválidos.';
     else if (error.status === 404) message = 'Proyecto/Tarea no encontrado.';
-    else if (error.status === 409) message = error.error?.message ?? 'Conflicto de negocio.';
-    else if (error.status === 500) message = error.error?.message ?? 'Error interno del servidor.';
+    else if (error.status === 409) message = serverMessage ?? 'Conflicto de negocio.';
+    else if (error.status === 500) message = serverMessage ?? 'Error interno del servidor.';
     
     return throwError(() => new Error(message));
   }

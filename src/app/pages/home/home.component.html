@@ -94,7 +94,10 @@
       </div>
 
       <div class="recent-list mt-4">
-        <div class="list-title">Últimos Proyectos</div>
+        <div class="list-title" style="display: flex; justify-content: space-between; align-items: center;">
+          <span>Últimos Proyectos</span>
+          <a routerLink="/projects" style="color: #2563eb; font-size: 0.9rem; text-decoration: none; font-weight: 600;">Ver todos</a>
+        </div>
         @if (recentProjects().length === 0) {
           <p class="empty-state">Todavía no hay proyectos.</p>
         } @else {
@@ -172,7 +175,10 @@
       </div>
 
       <div class="recent-list mt-4">
-        <div class="list-title">Últimas Tareas</div>
+        <div class="list-title" style="display: flex; justify-content: space-between; align-items: center;">
+          <span>Últimas Tareas</span>
+          <a routerLink="/tasks/list" style="color: #2563eb; font-size: 0.9rem; text-decoration: none; font-weight: 600;">Ver todas</a>
+        </div>
         @if (recentTasks().length === 0) {
           <p class="empty-state">Todavía no hay tareas.</p>
         } @else {

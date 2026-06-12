@@ -9,4 +9,5 @@ export interface Task {
   finishedAt?: string;
   createdAt?: string;
   updatedAt?: string;
+  dueDate?: string;
 }
