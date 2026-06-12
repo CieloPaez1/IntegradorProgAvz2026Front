@@ -1,6 +1,6 @@
 import { Component, inject, signal, computed, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ProjectService } from '../../../services/project.service';
 import { TaskService } from '../../../services/task.service';
@@ -21,6 +21,7 @@ export class ProjectListComponent implements OnInit {
   private projectService = inject(ProjectService);
   private taskService = inject(TaskService);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
   projects = signal<Project[]>([]);
   loading = signal<boolean>(true);
@@ -87,6 +88,13 @@ export class ProjectListComponent implements OnInit {
         },
         error: (err: Error) => alert('Error al eliminar el proyecto: ' + err.message)
       });
+    }
+  }
+
+  goToEdit(p: Project, event: Event): void {
+    event.stopPropagation();
+    if (p.id && p.status !== 'CLOSED') {
+      this.router.navigate(['/projects/edit', p.id]);
     }
   }
 

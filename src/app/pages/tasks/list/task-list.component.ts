@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TaskService } from '../../../services/task.service';
 import { ProjectService } from '../../../services/project.service';
@@ -20,6 +20,7 @@ export class TaskListComponent implements OnInit {
   private taskService = inject(TaskService);
   private projectService = inject(ProjectService);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
   tasks = signal<Task[]>([]);
   projects = signal<Project[]>([]);
@@ -97,6 +98,13 @@ export class TaskListComponent implements OnInit {
         },
         error: (err: Error) => alert('Error al eliminar la tarea: ' + err.message)
       });
+    }
+  }
+
+  goToEdit(t: Task, event: Event): void {
+    event.stopPropagation();
+    if (t.projectId && t.id && t.status !== 'DONE') {
+      this.router.navigate(['/projects', t.projectId, 'tasks', 'edit', t.id]);
     }
   }
 }
