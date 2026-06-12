@@ -80,7 +80,7 @@
                   <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
                     <span class="badge closed">Completado</span>
                     <button class="btn-icon-small" (click)="reabrirProyecto(p)" title="Reabrir proyecto">
-                      <svg lucideRotateCcw style="width: 16px; height: 16px;"></svg>
+                      <svg lucideRotateCcw class="rotate-icon" style="width: 16px; height: 16px;"></svg>
                     </button>
                   </div>
                 } @else {
@@ -103,7 +103,7 @@
                   </button>
                 }
                 <button class="btn-icon-small" (click)="$event.stopPropagation(); eliminarProyecto(p)" title="Eliminar proyecto">
-                  <svg lucideTrash2 style="width: 18px; height: 18px;"></svg>
+                  <svg lucideTrash2 class="trash-icon" style="width: 18px; height: 18px;"></svg>
                 </button>
               </div>
               
