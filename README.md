@@ -51,9 +51,14 @@ src/app/
 | Crear Proyecto | feature/crear-proyecto |
 | Eliminar Proyecto | feature/eliminar-proyecto |
 | Crear Tarea | feature/crear-tarea |
-| Filtrar Tareas | feature/filtrar-tareas |
 | Eliminar Tarea | feature/eliminar-tarea |
-| Rediseño Premium y Temas | develop |
+| Filtrar Tareas | feature/filtrar-tareas |
+| Editar Proyecto | feature/editar-proyecto |
+| Editar Tarea | feature/editar-tarea |
+| Dashboard Principal | feature/dashboard |
+| Búsqueda Global | feature/busqueda-global |
+| Sistema de Temas | feature/sistema-temas |
+| Layout General | feature/layout-general |
 
 ## Flujo de trabajo
 Cada feature se desarrolla en su propia rama siguiendo Spec Driven Development:
