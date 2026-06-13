@@ -25,6 +25,9 @@ El usuario puede visualizar todas las tareas registradas en el sistema a través
 - El botón "Eliminar" debe solicitar una confirmación al usuario antes de borrar y debe eliminar la fila de la vista de forma reactiva.
 - Si no hay tareas en el sistema, se debe mostrar un mensaje amigable indicando que no hay tareas en lugar de una tabla vacía.
 - Si falla la conexión con el servidor, debe mostrar un cartel de error.
+- Debe incluir un campo de texto en la vista para filtrar tareas de forma local y en tiempo real (por título o asignado).
+- Debe incluir un selector ('ALL', 'TODO', 'IN_PROGRESS', 'DONE') para filtrar tareas visualmente por estado sin recargar la página.
+- Debe leer el queryParam `?filter=` para inicializar el filtro de estado si viene pre-seleccionado desde otra vista (ej: Dashboard).
 
 ## Lineamientos técnicos
 - Standalone component con selector `app-task-list`

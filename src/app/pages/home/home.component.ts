@@ -4,18 +4,18 @@ import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { ProjectService } from '../../services/project.service';
 import { TaskService } from '../../services/task.service';
 import { Project } from '../../models/project.model';
 import { Task } from '../../models/task.model';
-import { TaskStatusPipe } from '../../pipes/task-status.pipe';
-import { ProjectStatusPipe } from '../../pipes/project-status.pipe';
-import { LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideChevronDown, LucideCalendar } from '@lucide/angular';
+import { ThemeService } from '../../services/theme.service';
+import { LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideCalendar, LucideRotateCcw } from '@lucide/angular';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, TaskStatusPipe, ProjectStatusPipe, LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideChevronDown, LucideCalendar],
+  imports: [CommonModule, RouterModule, FormsModule, LucideAlertTriangle, LucideBriefcase, LucidePieChart, LucidePlus, LucideCalendar, LucideRotateCcw],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -24,6 +24,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private projectService = inject(ProjectService);
   private taskService = inject(TaskService);
+  private themeService = inject(ThemeService);
 
   projects = signal<Project[]>([]);
   tasks = signal<Task[]>([]);
@@ -45,21 +46,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private projectChartInst: Chart | null = null;
   private taskChartInst: Chart | null = null;
 
-  activeDropdownId = signal<string | null>(null);
-
   constructor() {
     effect(() => {
-      const pData = [this.proyectosPlanificados(), this.proyectosEnProceso(), this.proyectosTerminados()];
-      const tData = [this.tareasPendientes(), this.tareasEnProgreso(), this.tareasCompletadas()];
+      // Registrar dependencias síncronamente para que el efecto se dispare
+      this.themeService.currentTheme();
+      this.proyectosPlanificados();
+      this.proyectosEnProceso();
+      this.proyectosTerminados();
+      this.tareasPendientes();
+      this.tareasEnProgreso();
+      this.tareasCompletadas();
       
-      if (this.projectChartInst) {
-        this.projectChartInst.data.datasets[0].data = pData;
-        this.projectChartInst.update();
-      }
-      if (this.taskChartInst) {
-        this.taskChartInst.data.datasets[0].data = tData;
-        this.taskChartInst.update();
-      }
+      this.initCharts();
     });
   }
 
@@ -71,7 +69,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
       next: (data) => {
         this.projects.set(data);
         projectsLoaded = true;
-        if (tasksLoaded) this.loading.set(false);
+        if (tasksLoaded) {
+          this.loading.set(false);
+          this.initCharts();
+        }
       },
       error: (err) => {
         this.error.set(err.message || 'Error al cargar proyectos');
@@ -84,7 +85,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
       next: (data) => {
         this.tasks.set(data);
         tasksLoaded = true;
-        if (projectsLoaded) this.loading.set(false);
+        if (projectsLoaded) {
+          this.loading.set(false);
+          this.initCharts();
+        }
       },
       error: (err) => {
         this.error.set(err.message || 'Error al cargar tareas');
@@ -149,25 +153,126 @@ export class HomeComponent implements OnInit, AfterViewInit {
   porcentajeTareasCompletadas = computed(() => this.percentage(this.tareasCompletadas(), this.totalTareas()));
 
   ngAfterViewInit() {
-    this.initCharts();
+    // Initialization is now handled after loading data completes to ensure canvas exists
   }
 
   private initCharts() {
     setTimeout(() => {
+      if (this.projectChartInst) this.projectChartInst.destroy();
+      if (this.taskChartInst) this.taskChartInst.destroy();
+
+      const getThemeColor = (varName: string) => getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || '#000';
+      let bgColors: any[] = [getThemeColor('--warning-color'), getThemeColor('--primary-color'), getThemeColor('--success-color')];
+      const theme = this.themeService.currentTheme();
+    
+      let chartCutout = '75%';
+      let chartBorderRadius = 0;
+      let chartSpacing = 0;
+      let chartBorderWidth = 0;
+      let chartRotation = 0;
+      let chartCircumference = 360;
+      const themeBg = getComputedStyle(document.documentElement).getPropertyValue('--bg-primary').trim() || '#000';
+      
+      switch(theme) {
+        case 'minimal': 
+          chartCutout = '90%'; 
+          chartSpacing = 4;
+          break;
+        case 'cyberpunk': 
+          chartCutout = '70%'; 
+          chartSpacing = 10;
+          chartBorderWidth = 2;
+          break;
+        case 'ocean': 
+          chartCutout = '60%'; 
+          chartBorderRadius = 20;
+          chartSpacing = 6;
+          break;
+        case 'sunset': 
+          chartCutout = '50%'; 
+          chartBorderRadius = 0;
+          break;
+        case 'forest': 
+          chartCutout = '80%'; 
+          chartSpacing = 5;
+          chartBorderRadius = 10;
+          break;
+        case 'crimson': 
+          chartCutout = '85%'; 
+          chartSpacing = 2;
+          chartBorderWidth = 4;
+          break;
+        case 'cute':
+          chartCutout = '65%';
+          chartBorderRadius = 0;
+          chartSpacing = 0;
+          chartBorderWidth = 4;
+          chartRotation = 0;
+          chartCircumference = 360;
+          break;
+        default:
+          chartCutout = '75%';
+          break;
+      }
+
+      const createGradient = (canvas: HTMLCanvasElement) => {
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return bgColors;
+        
+        const h = canvas.offsetHeight || 200;
+        
+        // Coral gradient
+        const g1 = ctx.createLinearGradient(0, 0, 0, h);
+        g1.addColorStop(0, getThemeColor('--danger-color'));
+        g1.addColorStop(1, '#ffe4e6'); // rosa clarito
+        
+        // Yellow gradient
+        const g2 = ctx.createLinearGradient(0, 0, 0, h);
+        g2.addColorStop(0, getThemeColor('--warning-color'));
+        g2.addColorStop(1, '#fef9c3'); // amarillo clarito
+        
+        // Mint gradient
+        const g3 = ctx.createLinearGradient(0, 0, 0, h);
+        g3.addColorStop(0, getThemeColor('--success-color'));
+        g3.addColorStop(1, '#d1fae5'); // menta clarito
+        
+        return [g2, g1, g3]; // Warning (Planificados), Danger (En proceso), Success (Terminados) -- Wait, the order is actually:
+        // labels: ['Planificados', 'En proceso', 'Terminados']
+        // Colors: bgColors is [warning, primary, success]. Actually, wait. bgColors defined as:
+        // [getThemeColor('--warning-color'), getThemeColor('--primary-color'), getThemeColor('--success-color')]
+      };
+
       if (this.projectChartRef?.nativeElement) {
+        let pBgColors = bgColors;
+        if (theme === 'cute') {
+          const ctx = this.projectChartRef.nativeElement.getContext('2d');
+          if (ctx) {
+            const h = this.projectChartRef.nativeElement.offsetHeight || 200;
+            const g1 = ctx.createLinearGradient(0, 0, 0, h); g1.addColorStop(0, getThemeColor('--warning-color')); g1.addColorStop(1, '#fef9c3');
+            const g2 = ctx.createLinearGradient(0, 0, 0, h); g2.addColorStop(0, getThemeColor('--primary-color')); g2.addColorStop(1, '#fbcfe8');
+            const g3 = ctx.createLinearGradient(0, 0, 0, h); g3.addColorStop(0, getThemeColor('--success-color')); g3.addColorStop(1, '#d1fae5');
+            pBgColors = [g1, g2, g3];
+          }
+        }
+
         this.projectChartInst = new Chart(this.projectChartRef.nativeElement, {
           type: 'doughnut',
           data: {
             labels: ['Planificados', 'En proceso', 'Terminados'],
             datasets: [{
               data: [this.proyectosPlanificados(), this.proyectosEnProceso(), this.proyectosTerminados()],
-              backgroundColor: ['#fef3c7', '#dbeafe', '#dcfce7'],
-              hoverBackgroundColor: ['#fde68a', '#bfdbfe', '#bbf7d0'],
-              borderWidth: 0
+              backgroundColor: pBgColors,
+              hoverBackgroundColor: pBgColors,
+              borderWidth: chartBorderWidth,
+              borderColor: themeBg,
+              borderRadius: chartBorderRadius,
+              spacing: chartSpacing
             }]
           },
           options: {
-            cutout: '75%',
+            cutout: chartCutout,
+            rotation: chartRotation,
+            circumference: chartCircumference,
             responsive: true,
             maintainAspectRatio: false,
             plugins: { legend: { display: false }, tooltip: {
@@ -180,19 +285,36 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
 
       if (this.taskChartRef?.nativeElement) {
+        let tBgColors = bgColors;
+        if (theme === 'cute') {
+          const ctx = this.taskChartRef.nativeElement.getContext('2d');
+          if (ctx) {
+            const h = this.taskChartRef.nativeElement.offsetHeight || 200;
+            const g1 = ctx.createLinearGradient(0, 0, 0, h); g1.addColorStop(0, getThemeColor('--warning-color')); g1.addColorStop(1, '#fef9c3');
+            const g2 = ctx.createLinearGradient(0, 0, 0, h); g2.addColorStop(0, getThemeColor('--primary-color')); g2.addColorStop(1, '#fbcfe8');
+            const g3 = ctx.createLinearGradient(0, 0, 0, h); g3.addColorStop(0, getThemeColor('--success-color')); g3.addColorStop(1, '#d1fae5');
+            tBgColors = [g1, g2, g3];
+          }
+        }
+
         this.taskChartInst = new Chart(this.taskChartRef.nativeElement, {
           type: 'doughnut',
           data: {
             labels: ['Por hacer', 'En proceso', 'Hechas'],
             datasets: [{
               data: [this.tareasPendientes(), this.tareasEnProgreso(), this.tareasCompletadas()],
-              backgroundColor: ['#fef3c7', '#dbeafe', '#dcfce7'],
-              hoverBackgroundColor: ['#fde68a', '#bfdbfe', '#bbf7d0'],
-              borderWidth: 0
+              backgroundColor: tBgColors,
+              hoverBackgroundColor: tBgColors,
+              borderWidth: chartBorderWidth,
+              borderColor: themeBg,
+              borderRadius: chartBorderRadius,
+              spacing: chartSpacing
             }]
           },
           options: {
-            cutout: '75%',
+            cutout: chartCutout,
+            rotation: chartRotation,
+            circumference: chartCircumference,
             responsive: true,
             maintainAspectRatio: false,
             plugins: { legend: { display: false }, tooltip: {
@@ -210,24 +332,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return total === 0 ? 0 : Math.round((value / total) * 100);
   }
 
-  toggleDropdown(event: Event, id: string) {
-    event.stopPropagation();
-    if (this.activeDropdownId() === id) {
-      this.activeDropdownId.set(null);
-    } else {
-      this.activeDropdownId.set(id);
-    }
-  }
-
-  @HostListener('document:click')
-  closeDropdowns() {
-    this.activeDropdownId.set(null);
-  }
-
   updateProjectStatus(project: Project, nextStatus: 'PLANNED' | 'ACTIVE' | 'CLOSED') {
     if (!project.id) return;
-    this.activeDropdownId.set(null);
     
+    if (nextStatus === 'CLOSED' && project.status !== 'CLOSED') {
+      const ok = window.confirm('¿Seguro que querés marcar este proyecto como Completado? Se bloqueará su edición.');
+      if (!ok) {
+        this.projects.update(ps => [...ps]);
+        return;
+      }
+    }
+
     // Guardamos estado anterior para rollback
     const oldProjects = [...this.projects()];
     const updatedProject = { ...project, status: nextStatus };
@@ -245,9 +360,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
+  reabrirProyecto(project: Project) {
+    if (confirm(`¿Estás seguro de que quieres reabrir el proyecto "${project.name}"?`)) {
+      this.updateProjectStatus(project, 'ACTIVE');
+    }
+  }
+
   updateTaskStatus(task: Task, nextStatus: 'TODO' | 'IN_PROGRESS' | 'DONE') {
     if (!task.id || !task.projectId) return;
-    this.activeDropdownId.set(null);
+
+    if (nextStatus === 'DONE' && task.status !== 'DONE') {
+      const ok = window.confirm('¿Seguro que querés marcar esta tarea como Hecha? Se bloqueará su edición.');
+      if (!ok) {
+        this.tasks.update(ts => [...ts]);
+        return;
+      }
+    }
 
     // Guardamos estado anterior para rollback
     const oldTasks = [...this.tasks()];
@@ -264,5 +392,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
         setTimeout(() => this.updateError.set(null), 3000);
       }
     });
+  }
+
+  reabrirTarea(task: Task) {
+    if (confirm(`¿Estás seguro de que quieres reabrir la tarea "${task.title}"?`)) {
+      this.updateTaskStatus(task, 'IN_PROGRESS');
+    }
   }
 }

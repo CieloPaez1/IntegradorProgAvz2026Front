@@ -1,4 +1,4 @@
-﻿import { Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { FilterTasksComponent } from './pages/filter-tasks/filter-tasks.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ReportsSummaryComponent } from './pages/reports/reports-summary.component';
@@ -8,9 +8,11 @@ import { ProjectListComponent } from './pages/projects/list/project-list.compone
 import { TaskDetailComponent } from './pages/tasks/task-detail.component';
 import { TaskListComponent } from './pages/tasks/list/task-list.component';
 import { CreateProjectComponent } from './pages/create-project/create-project.component';
+import { EditProjectComponent } from './pages/edit-project/edit-project.component';
 import { DeleteProjectComponent } from './pages/delete-project/delete-project.component';
 import { CreateTaskComponent } from './pages/create-task/create-task.component';
 import { DeleteTaskComponent } from './pages/delete-task/delete-task.component';
+import { EditTaskComponent } from './pages/edit-task/edit-task.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -19,11 +21,13 @@ export const routes: Routes = [
   { path: 'reports/project', component: ProjectReportComponent },
   { path: 'projects', component: ProjectListComponent },
   { path: 'projects/create', component: CreateProjectComponent },
+  { path: 'projects/edit/:id', component: EditProjectComponent },
   { path: 'projects/delete', component: DeleteProjectComponent },
   { path: 'projects/:id', component: ProjectDetailComponent },
   { path: 'tasks/list', component: TaskListComponent },
   { path: 'tasks/create', component: CreateTaskComponent },
   { path: 'tasks/delete', component: DeleteTaskComponent },
   { path: 'tasks/filter', component: FilterTasksComponent },
+  { path: 'projects/:projectId/tasks/edit/:taskId', component: EditTaskComponent },
   { path: 'tasks/:id', component: TaskDetailComponent }
 ];

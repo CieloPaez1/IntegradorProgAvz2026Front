@@ -85,15 +85,35 @@
                 <span style="font-size: 0.75rem; text-transform: uppercase;">Estimadas</span>
               </div>
               
-              <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
-                <span class="badge" [ngClass]="'status-' + t.status.toLowerCase()">
-                  {{ t.status === 'TODO' ? 'POR HACER' : t.status === 'IN_PROGRESS' ? 'EN PROGRESO' : 'HECHO' }}
-                </span>
+              <div style="flex: 1; text-align: right; padding-right: 24px;">
+                @if (t.status === 'DONE') {
+                  <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
+                    <span class="badge done">Hecha</span>
+                    <button class="btn-icon-small" (click)="reabrirTarea(t)" title="Reabrir tarea">
+                      <svg lucideRotateCcw class="rotate-icon" style="width: 16px; height: 16px;"></svg>
+                    </button>
+                  </div>
+                } @else {
+                  <select class="status-select" 
+                          [ngClass]="t.status.toLowerCase()" 
+                          [ngModel]="t.status" 
+                          (ngModelChange)="cambiarEstado(t, $event)" 
+                          (click)="$event.stopPropagation()">
+                    <option value="TODO">Por Hacer</option>
+                    <option value="IN_PROGRESS">En Progreso</option>
+                    <option value="DONE">Hecho</option>
+                  </select>
+                }
               </div>
               
               <div style="display: flex; gap: 8px; justify-content: flex-end;">
-                <button type="button" class="btn-action delete" title="Eliminar" (click)="$event.stopPropagation(); eliminarTarea(t)">
-                  <svg lucideTrash2 style="width: 18px; height: 18px;"></svg>
+                @if (t.status !== 'DONE') {
+                  <button type="button" class="btn-icon-small" title="Modificar" (click)="goToEdit(t, $event)">
+                    <svg lucideEdit style="width: 18px; height: 18px;"></svg>
+                  </button>
+                }
+                <button type="button" class="btn-icon-small" title="Eliminar" (click)="$event.stopPropagation(); eliminarTarea(t)">
+                  <svg lucideTrash2 class="trash-icon" style="width: 18px; height: 18px;"></svg>
                 </button>
               </div>
               

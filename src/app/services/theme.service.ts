@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 
-export type AppTheme = 'light' | 'dark' | 'minimal' | 'cyberpunk' | 'ocean' | 'sunset' | 'forest' | 'crimson';
+export type AppTheme = 'light' | 'dark' | 'minimal' | 'cyberpunk' | 'ocean' | 'sunset' | 'forest' | 'crimson' | 'cute';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,8 @@ export class ThemeService {
     { id: 'ocean', name: 'Océano', color: '#0f172a' },
     { id: 'sunset', name: 'Atardecer', color: '#fff1f2' },
     { id: 'forest', name: 'Bosque', color: '#f0fdf4' },
-    { id: 'crimson', name: 'Rojo y Negro', color: '#7f1d1d' }
+    { id: 'crimson', name: 'Rojo y Negro', color: '#7f1d1d' },
+    { id: 'cute', name: 'Cute Kawaii', color: '#fdf2f8' }
   ];
 
   constructor() {

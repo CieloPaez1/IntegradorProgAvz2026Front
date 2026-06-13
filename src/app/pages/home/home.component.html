@@ -103,35 +103,33 @@
         } @else {
           <div class="tasks-list">
             @for (p of recentProjects(); track p.id) {
-              <div class="task-row" [class.z-elevated]="activeDropdownId() === 'proj_' + p.id" [routerLink]="['/projects', p.id]" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+              <div class="task-row" [routerLink]="['/projects', p.id]" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                 <div class="task-info">
                   <strong>{{ p.name }}</strong>
                   <span>{{ p.description || 'Sin descripción' }}</span>
                 </div>
+                <div class="task-status">
                 @if (p.status === 'CLOSED') {
-                  <span class="status-badge status-done">Terminado</span>
+                  <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
+                    <span class="status-badge status-done">Terminado</span>
+                    <button class="btn-icon-small" (click)="reabrirProyecto(p); $event.stopPropagation()" title="Reabrir proyecto">
+                      <svg lucideRotateCcw class="rotate-icon" style="width: 16px; height: 16px;"></svg>
+                    </button>
+                  </div>
                 } @else {
                   <div class="custom-dropdown-container">
-                    <button 
-                      class="status-badge custom-dropdown-trigger" 
-                      [class.status-todo]="p.status === 'PLANNED'" 
-                      [class.status-progress]="p.status === 'ACTIVE'"
-                      (click)="toggleDropdown($event, 'proj_' + p.id)"
-                    >
-                      {{ p.status | projectStatus }}
-                      <svg lucideChevronDown class="dropdown-chevron"></svg>
-                    </button>
-
-                    @if (activeDropdownId() === 'proj_' + p.id) {
-                      <div class="custom-dropdown-menu">
-                        <button class="dropdown-option" (click)="updateProjectStatus(p, 'PLANNED')" [class.active]="p.status === 'PLANNED'">Planificado</button>
-                        <button class="dropdown-option" (click)="updateProjectStatus(p, 'ACTIVE')" [class.active]="p.status === 'ACTIVE'">En proceso</button>
-                        <div class="dropdown-divider"></div>
-                        <button class="dropdown-option done-option" (click)="updateProjectStatus(p, 'CLOSED')">Marcar Terminado</button>
-                      </div>
-                    }
+                    <select class="status-select" 
+                            [ngClass]="p.status.toLowerCase()" 
+                            [ngModel]="p.status" 
+                            (ngModelChange)="updateProjectStatus(p, $event)" 
+                            (click)="$event.stopPropagation()">
+                      <option value="PLANNED">Planificado</option>
+                      <option value="ACTIVE">En Progreso</option>
+                      <option value="CLOSED">Completado</option>
+                    </select>
                   </div>
                 }
+                </div>
               </div>
             }
           </div>
@@ -184,35 +182,33 @@
         } @else {
           <div class="tasks-list">
             @for (t of recentTasks(); track t.id) {
-              <div class="task-row" [class.z-elevated]="activeDropdownId() === 'task_' + t.id" [routerLink]="['/tasks', t.id]" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+              <div class="task-row" [routerLink]="['/tasks', t.id]" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                 <div class="task-info">
                   <strong>{{ t.title }}</strong>
                   <span>{{ t.assignee || 'Sin asignar' }}</span>
                 </div>
+                <div class="task-status">
                 @if (t.status === 'DONE') {
-                  <span class="status-badge status-done">Hecha</span>
+                  <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
+                    <span class="status-badge status-done">Hecha</span>
+                    <button class="btn-icon-small" (click)="reabrirTarea(t); $event.stopPropagation()" title="Reabrir tarea">
+                      <svg lucideRotateCcw class="rotate-icon" style="width: 16px; height: 16px;"></svg>
+                    </button>
+                  </div>
                 } @else {
                   <div class="custom-dropdown-container">
-                    <button 
-                      class="status-badge custom-dropdown-trigger" 
-                      [class.status-todo]="t.status === 'TODO'" 
-                      [class.status-progress]="t.status === 'IN_PROGRESS'"
-                      (click)="toggleDropdown($event, 'task_' + t.id)"
-                    >
-                      {{ t.status | taskStatus }}
-                      <svg lucideChevronDown class="dropdown-chevron"></svg>
-                    </button>
-
-                    @if (activeDropdownId() === 'task_' + t.id) {
-                      <div class="custom-dropdown-menu">
-                        <button class="dropdown-option" (click)="updateTaskStatus(t, 'TODO')" [class.active]="t.status === 'TODO'">Por hacer</button>
-                        <button class="dropdown-option" (click)="updateTaskStatus(t, 'IN_PROGRESS')" [class.active]="t.status === 'IN_PROGRESS'">En proceso</button>
-                        <div class="dropdown-divider"></div>
-                        <button class="dropdown-option done-option" (click)="updateTaskStatus(t, 'DONE')">Marcar Hecha</button>
-                      </div>
-                    }
+                    <select class="status-select" 
+                            [ngClass]="t.status.toLowerCase()" 
+                            [ngModel]="t.status" 
+                            (ngModelChange)="updateTaskStatus(t, $event)" 
+                            (click)="$event.stopPropagation()">
+                      <option value="TODO">Por Hacer</option>
+                      <option value="IN_PROGRESS">En Progreso</option>
+                      <option value="DONE">Hecho</option>
+                    </select>
                   </div>
                 }
+                </div>
               </div>
             }
           </div>

@@ -8,5 +8,6 @@ export interface Task {
   status: 'TODO' | 'IN_PROGRESS' | 'DONE';
   finishedAt?: string;
   createdAt?: string;
+  updatedAt?: string;
   dueDate?: string;
 }

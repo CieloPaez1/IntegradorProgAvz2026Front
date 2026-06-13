@@ -30,6 +30,12 @@ export class TaskService {
     );
   }
 
+  getById(projectId: number, taskId: number): Observable<Task> {
+    return this.http.get<Task>(`${this.apiUrl}/${projectId}/tasks/${taskId}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   create(projectId: number, task: Task): Observable<Task> {
     return this.http.post<Task>(`${this.apiUrl}/${projectId}/tasks`, task).pipe(
       catchError(this.handleError)

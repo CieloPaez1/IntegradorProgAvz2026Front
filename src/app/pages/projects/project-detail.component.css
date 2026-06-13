@@ -55,3 +55,83 @@
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* --- FLOATING LIST (Premium Nested Tasks) --- */
+.floating-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.floating-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  background: var(--card-bg);
+  backdrop-filter: var(--glass-backdrop);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+}
+
+.floating-row:hover {
+  transform: translateX(6px);
+  border-color: var(--primary-color);
+  box-shadow: 0 8px 20px var(--primary-glow);
+}
+
+.row-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.row-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.row-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.meta-badge {
+  display: flex;
+  align-items: center;
+}
+
+/* --- PREMIUM FORM CONTROLS --- */
+.form-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.form-control, .form-select {
+  height: 48px;
+  border-radius: var(--radius-base);
+  border: 1px solid var(--border-color);
+  padding: 0 16px;
+  font-size: 1rem;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  transition: all 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px var(--primary-glow);
+  outline: none;
+}
