@@ -31,7 +31,8 @@
         </div>
       }
 
-      <!-- El formulario se muestra incluso si hay error o éxito, excepto si falló al cargar inicialmente (se soluciona controlando form si quisieras, pero así está bien) -->
+      <!-- El formulario se muestra incluso si hay error o éxito, excepto si falló al cargar inicialmente -->
+      @if (!initialLoadFailed()) {
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-2">
         
         <div class="mb-4">
@@ -117,6 +118,7 @@
           </button>
         </div>
       </form>
+      }
     </div>
   }
 </div>

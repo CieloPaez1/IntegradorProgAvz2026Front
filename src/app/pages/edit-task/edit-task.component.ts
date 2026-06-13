@@ -26,6 +26,7 @@ export class EditTaskComponent implements OnInit {
   saving = signal<boolean>(false);
   error = signal<string | null>(null);
   success = signal<boolean>(false);
+  initialLoadFailed = signal<boolean>(false);
 
   constructor() {
     this.form = this.fb.group({
@@ -47,6 +48,7 @@ export class EditTaskComponent implements OnInit {
       this.cargarTarea(this.projectId, this.taskId);
     } else {
       this.error.set('No se proporcionaron IDs válidos en la ruta.');
+      this.initialLoadFailed.set(true);
       this.loading.set(false);
     }
   }
@@ -65,6 +67,7 @@ export class EditTaskComponent implements OnInit {
       },
       error: (err: Error) => {
         this.error.set(err.message);
+        this.initialLoadFailed.set(true);
         this.loading.set(false);
       }
     });

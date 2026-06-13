@@ -26,6 +26,7 @@ export class EditProjectComponent implements OnInit {
   saving = signal<boolean>(false);
   error = signal<string | null>(null);
   success = signal<boolean>(false);
+  initialLoadFailed = signal<boolean>(false);
 
   constructor() {
     this.form = this.fb.group({
@@ -43,12 +44,14 @@ export class EditProjectComponent implements OnInit {
       this.projectId = parseInt(idParam, 10);
       if (isNaN(this.projectId)) {
         this.error.set('El ID proporcionado no es numérico.');
+        this.initialLoadFailed.set(true);
         this.loading.set(false);
         return;
       }
       this.cargarProyecto(this.projectId);
     } else {
       this.error.set('No se proporcionó un ID de proyecto válido.');
+      this.initialLoadFailed.set(true);
       this.loading.set(false);
     }
   }
@@ -67,6 +70,7 @@ export class EditProjectComponent implements OnInit {
       },
       error: (err: Error) => {
         this.error.set(err.message);
+        this.initialLoadFailed.set(true);
         this.loading.set(false);
       }
     });

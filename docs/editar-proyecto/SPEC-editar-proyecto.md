@@ -43,6 +43,10 @@ El usuario puede modificar la información de un proyecto existente mediante un 
   cuando el backend devuelve status 200,
   entonces se muestra un mensaje de éxito y tras 2 segundos redirige a la lista de proyectos.
 
+- Dado que el usuario intenta guardar con un nombre de proyecto duplicado,
+  cuando el backend devuelve status 409,
+  entonces se muestra un mensaje indicando el conflicto ("Conflicto: nombre duplicado o regla de negocio.").
+
 - Dado que la conexión falla al intentar guardar,
   cuando se envía el formulario,
   entonces se muestra un cartel de error "No se pudo conectar al servidor."

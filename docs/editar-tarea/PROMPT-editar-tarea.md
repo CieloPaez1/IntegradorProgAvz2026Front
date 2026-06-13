@@ -9,9 +9,14 @@
 2. Crea el servicio `TaskService` e implementa los métodos `getById(projectId: number, taskId: number)` y `update(projectId: number, taskId: number, task: Task)`. Usa `HttpClient` y `environment.apiUrl`. IMPORTANTE: en el `handleError` no utilices `console.error`.
 3. Crea el componente standalone `EditTaskComponent` en `src/app/pages/edit-task/`.
 4. En el `ngOnInit`, usa `ActivatedRoute` para capturar `projectId` y `taskId` de la ruta.
-5. Llama a `TaskService.getById` para cargar los datos en un formulario reactivo (usando `patchValue`).
-6. El formulario debe tener: Title (required, max 100), EstimateHours (min 1, required), Assignee (max 100), y Status (required).
-7. Usa Signals para manejar los estados `loading` (para la carga inicial), `saving` (durante el PUT), `error` y `success`.
+5. Usa `FormBuilder` para crear un formulario reactivo con los siguientes campos y validaciones:
+   - `title`: requerido, max length 100.
+   - `estimateHours`: requerido, min 1.
+   - `assignee`: max length 100.
+   - `status`: requerido.
+   - `dueDate`: opcional (tipo fecha).
+6. Obtén los parámetros `projectId` y `taskId` de la ruta activa.
+7. Usa un método de `TaskService` (crealo si no existe: `getById(projectId, taskId)`) para poblar el formulario usando `patchValue`. Maneja el estado de carga (`loading`) y error usando Signals.
 8. En el HTML, mientras `loading` sea true, muestra un spinner centrado.
 9. El HTML debe contener campos estilizados con CSS custom para un diseño premium (bordes redondeados, focus con sombra).
 10. Muestra alertas condicionales para `error()` o `success()`. 

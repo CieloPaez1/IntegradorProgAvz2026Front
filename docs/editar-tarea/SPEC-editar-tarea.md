@@ -19,6 +19,7 @@ El usuario puede modificar la información de una tarea existente (por ejemplo, 
 - Las horas estimadas deben ser como mínimo 1.
 - El responsable (assignee) es opcional.
 - El estado (`status`) no puede estar vacío y debe ser TODO, IN_PROGRESS o DONE.
+- La fecha de vencimiento (dueDate) es un campo opcional para establecer una fecha límite.
 
 ## Lineamientos técnicos
 - Standalone component con selector `app-edit-task`
