@@ -1,0 +1,25 @@
+/* [IONIC] Estilos personalizados para la barra inferior de pestañas */
+ion-tab-bar {
+  --background: var(--card-bg, rgba(255, 255, 255, 0.85));
+  --border: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
+  backdrop-filter: var(--glass-backdrop, blur(16px));
+  -webkit-backdrop-filter: var(--glass-backdrop, blur(16px));
+  height: 62px;
+}
+
+ion-tab-button {
+  --color: var(--text-secondary, #6b7280);
+  --color-selected: var(--primary-color, #6366f1);
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+ion-tab-button ion-icon {
+  font-size: 22px;
+  margin-bottom: 2px;
+}
+
+ion-tab-button ion-label {
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}

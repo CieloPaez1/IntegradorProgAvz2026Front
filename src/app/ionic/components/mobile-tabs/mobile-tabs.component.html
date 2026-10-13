@@ -1,0 +1,36 @@
+<!-- =======================================================================
+     [IONIC - AVANZADA 3] ESTRUCTURA DE PESTAÑAS MÓVILES (ION-TABS)
+     - ion-tabs: Contenedor principal que administra la navegación móvil con tabs.
+     - ion-tab-bar slot="bottom": Fija la barra de navegación en el borde inferior
+       de la pantalla táctil para facilitar el alcance con el pulgar.
+     - ion-tab-button: Cada botón interactivo que conmuta de ruta hija.
+     ======================================================================= -->
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    
+    <!-- Pestaña 1: Dashboard Principal Móvil -->
+    <ion-tab-button tab="dashboard" href="/mobile/dashboard">
+      <ion-icon name="grid-outline"></ion-icon>
+      <ion-label>Inicio</ion-label>
+    </ion-tab-button>
+
+    <!-- Pestaña 2: Proyectos -->
+    <ion-tab-button tab="projects" href="/mobile/projects">
+      <ion-icon name="folder-outline"></ion-icon>
+      <ion-label>Proyectos</ion-label>
+    </ion-tab-button>
+
+    <!-- Pestaña 3: Tareas -->
+    <ion-tab-button tab="tasks" href="/mobile/tasks">
+      <ion-icon name="checkbox-outline"></ion-icon>
+      <ion-label>Tareas</ion-label>
+    </ion-tab-button>
+
+    <!-- Pestaña 4: Perfil y Sesión -->
+    <ion-tab-button tab="profile" href="/mobile/profile">
+      <ion-icon name="person-outline"></ion-icon>
+      <ion-label>Mi Perfil</ion-label>
+    </ion-tab-button>
+
+  </ion-tab-bar>
+</ion-tabs>

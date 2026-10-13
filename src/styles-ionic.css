@@ -1,0 +1,61 @@
+/* ==========================================================================
+   [IONIC FRAMEWORK - AVANZADA 3]
+   ESTILOS BASE PARA APLICACIÓN MÓVIL HÍBRIDA
+   ========================================================================== */
+
+/* 1. Core: Variables CSS esenciales del motor de Ionic (colores, fuentes, animaciones) */
+@import '@ionic/angular/css/core.css';
+
+/* 2. Basic CSS: Estructura y normalización para que los componentes se comporten como nativos */
+@import '@ionic/angular/css/normalize.css';
+@import '@ionic/angular/css/structure.css';
+@import '@ionic/angular/css/typography.css';
+
+/* 3. Utilidades opcionales para maquetado táctil y espaciados móviles */
+@import '@ionic/angular/css/padding.css';
+@import '@ionic/angular/css/float-elements.css';
+@import '@ionic/angular/css/text-alignment.css';
+@import '@ionic/angular/css/text-transformation.css';
+@import '@ionic/angular/css/flex-utils.css';
+@import '@ionic/angular/css/display.css';
+
+/* ==========================================================================
+   ADAPTACIONES DE TEMA PARA IONIC
+   Sincronización con las variables CSS del ThemeService existente
+   ========================================================================== */
+:root {
+  /* [IONIC] Mapeo de colores principales para que Ionic respete el tema actual */
+  --ion-color-primary: var(--primary-color, #6366f1);
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-shade: var(--primary-hover, #4f46e5);
+  --ion-color-primary-tint: var(--primary-glow, rgba(99, 102, 241, 0.25));
+
+  --ion-color-success: var(--success-color, #10b981);
+  --ion-color-warning: var(--warning-color, #f59e0b);
+  --ion-color-danger: var(--danger-color, #f43f5e);
+
+  --ion-background-color: transparent;
+  --ion-text-color: var(--text-primary, #09090b);
+
+  --ion-font-family: var(--font-main, 'Inter', sans-serif);
+}
+
+/* [IONIC] Configuración de tarjetas móviles */
+ion-card {
+  --background: var(--card-bg, rgba(255, 255, 255, 0.7));
+  border: 1px solid var(--card-border, rgba(255, 255, 255, 0.8));
+  border-radius: 20px;
+  box-shadow: var(--glass-shadow, 0 8px 32px rgba(0, 0, 0, 0.08));
+  backdrop-filter: var(--glass-backdrop, blur(12px));
+  -webkit-backdrop-filter: var(--glass-backdrop, blur(12px));
+  margin: 12px 16px;
+}
+
+/* [IONIC] Barra de pestañas inferior fija */
+ion-tab-bar {
+  --background: var(--card-bg, rgba(255, 255, 255, 0.85));
+  border-top: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
+  backdrop-filter: var(--glass-backdrop, blur(16px));
+  -webkit-backdrop-filter: var(--glass-backdrop, blur(16px));
+  height: 60px;
+}

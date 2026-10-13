@@ -85,3 +85,14 @@
   z-index: 1;
 }
 
+/* [IONIC - AVANZADA 3] Viewport móvil a pantalla completa */
+.ionic-mobile-container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+

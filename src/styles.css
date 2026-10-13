@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Orbitron:wght@400;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@400;700;800&family=Oswald:wght@400;700&family=Quicksand:wght@500;700;900&family=Fredoka:wght@400;500;600;700&display=swap');
 
+/* ==========================================================================
+   [AVANZADA 3] INTEGRACIÓN SEPARADA DE ESTILOS DE IONIC FRAMEWORK
+   ========================================================================== */
+@import './styles-ionic.css';
+
 :root {
   /* LIGHT THEME - Stripe/Framer Style */
   --bg-primary: #fcfcfd;

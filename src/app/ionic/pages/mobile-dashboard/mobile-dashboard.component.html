@@ -1,0 +1,160 @@
+<!-- =======================================================================
+     [IONIC - AVANZADA 3] ENCABEZADO MÓVIL NATIVO (ION-HEADER & ION-TOOLBAR)
+     - ion-header: Define el área de barra superior móvil con elevación y sombras.
+     - ion-toolbar: Contenedor flexible de títulos y botones de acción rápida.
+     - slot="end": Posiciona elementos en el extremo derecho de la barra.
+     ======================================================================= -->
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Gestor Móvil</ion-title>
+    
+    <ion-buttons slot="end">
+      <!-- Botón para alternar a la vista clásica de escritorio -->
+      <ion-button (click)="irAVersionEscritorio()" title="Ver versión web">
+        <ion-icon slot="icon-only" name="desktop-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<!-- =======================================================================
+     [IONIC - AVANZADA 3] CONTENIDO MÓVIL PRINCIPAL (ION-CONTENT)
+     - ion-content: Controla el viewport táctil, el scroll nativo de inercia
+       y el espacio seguro (Safe Area Insets) de dispositivos móviles.
+     ======================================================================= -->
+<ion-content [fullscreen]="true" class="mobile-viewport">
+
+  <!-- =====================================================================
+       [IONIC - GESTO TÁCTIL] PULL-TO-REFRESH (ION-REFRESHER)
+       Permite deslizar la pantalla hacia abajo con el dedo para recargar los
+       datos del backend en tiempo real, disparando el evento (ionRefresh).
+       ===================================================================== -->
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="refresh-outline"
+      pullingText="Deslizá para actualizar..."
+      refreshingSpinner="crescent"
+      refreshingText="Obteniendo proyectos y tareas...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <!-- Saludo al usuario autenticado con chip de rol -->
+  <div class="user-greeting">
+    <div>
+      <span class="greeting-subtitle">Hola de nuevo,</span>
+      <h2>{{ authService.currentUser()?.name || 'Usuario' }}</h2>
+    </div>
+    <ion-chip color="primary">
+      <ion-icon name="sparkles-outline"></ion-icon>
+      <ion-label>{{ authService.currentUser()?.role || 'Admin' }}</ion-label>
+    </ion-chip>
+  </div>
+
+  @if (loading()) {
+    <div class="mobile-loading-box">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <p>Cargando métricas móviles...</p>
+    </div>
+  } @else {
+
+    <!-- =====================================================================
+         [IONIC] TARJETA DE PROGRESO GLOBAL (ION-CARD)
+         Componente que agrupa contenido visual con elevación y bordes redondeados.
+         ===================================================================== -->
+    <ion-card class="summary-card">
+      <ion-card-header>
+        <div class="card-header-row">
+          <div>
+            <ion-card-subtitle>Resumen General</ion-card-subtitle>
+            <ion-card-title>Progreso de Tareas</ion-card-title>
+          </div>
+          <div class="progress-pill">
+            {{ completionPercentage() }}%
+          </div>
+        </div>
+      </ion-card-header>
+
+      <ion-card-content>
+        <!-- Barra de progreso visual adaptada para mobile -->
+        <div class="mobile-progress-track">
+          <div class="mobile-progress-bar" [style.width.%]="completionPercentage()"></div>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-item">
+            <span class="metric-number">{{ totalProjects() }}</span>
+            <span class="metric-label">Proyectos</span>
+          </div>
+          <div class="metric-divider"></div>
+          <div class="metric-item">
+            <span class="metric-number">{{ totalTasks() }}</span>
+            <span class="metric-label">Tareas Totales</span>
+          </div>
+          <div class="metric-divider"></div>
+          <div class="metric-item">
+            <span class="metric-number text-success">{{ completedTasks() }}</span>
+            <span class="metric-label">Completadas</span>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- =====================================================================
+         [IONIC] LISTA MÓVIL DE TAREAS PENDIENTES (ION-LIST & ION-ITEM)
+         ion-list e ion-item estructuran filas táctiles con espaciados nativos.
+         ===================================================================== -->
+    <div class="section-title-row">
+      <h3>Tareas Pendientes</h3>
+      <span class="badge-count">{{ pendingTasks().length }}</span>
+    </div>
+
+    @if (pendingTasks().length === 0) {
+      <div class="empty-state-box">
+        <ion-icon name="checkmark-circle-outline" class="empty-icon"></ion-icon>
+        <p>¡No tenés tareas pendientes!</p>
+      </div>
+    } @else {
+      <ion-list [inset]="true" class="mobile-task-list">
+        @for (t of pendingTasks(); track t.id) {
+          <ion-item lines="full" class="task-item">
+            <ion-icon name="time-outline" slot="start" color="warning"></ion-icon>
+            <ion-label>
+              <h2>{{ t.title }}</h2>
+              <p>{{ t.assignee ? 'Asignado a: ' + t.assignee : 'Sin asignar' }}</p>
+            </ion-label>
+            <ion-button
+              slot="end"
+              fill="clear"
+              color="success"
+              (click)="marcarComoHecha(t, $event)"
+              title="Marcar como hecha">
+              <ion-icon slot="icon-only" name="checkmark-circle-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+        }
+      </ion-list>
+    }
+
+  }
+
+  <!-- =======================================================================
+       [IONIC - BOTÓN FLOTANTE] FLOATING ACTION BUTTON (ION-FAB)
+       Elemento móvil clásico para disparar accesos rápidos flotando sobre la UI.
+       - vertical="bottom" / horizontal="end": Fijo en la esquina inferior derecha.
+       - slot="fixed": Permanece fijo en pantalla sin desplazarse con el scroll.
+       ======================================================================= -->
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="mobile-fab">
+    <ion-fab-button color="primary">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button routerLink="/projects/create" color="light" title="Nuevo Proyecto">
+        <ion-icon name="briefcase-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button routerLink="/tasks/create" color="light" title="Nueva Tarea">
+        <ion-icon name="checkbox-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+</ion-content>

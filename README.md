@@ -60,6 +60,7 @@ src/app/
 | Sistema de Temas | feature/sistema-temas |
 | Layout General | feature/layout-general |
 | Autenticación (Login, Registro, JWT) | feature/auth-login |
+| Integración Ionic Framework (Mobile UI) | feature/ionic-integration |
 
 
 ## Flujo de trabajo

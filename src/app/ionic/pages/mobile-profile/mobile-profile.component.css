@@ -1,0 +1,65 @@
+.mobile-viewport {
+  --background: transparent;
+}
+
+.profile-container {
+  padding: 8px 0 80px 0;
+}
+
+.user-card, .settings-card {
+  margin: 12px 16px;
+  border-radius: 24px;
+}
+
+.avatar-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  color: #ffffff;
+  font-size: 2rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px auto;
+  box-shadow: 0 8px 24px var(--primary-glow);
+}
+
+.user-card ion-card-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.user-card ion-card-subtitle {
+  font-size: 0.9rem;
+  color: var(--primary-color);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.transparent-list {
+  background: transparent;
+}
+
+.transparent-list ion-item {
+  --background: transparent;
+  --color: var(--text-primary);
+}
+
+.settings-card ion-item {
+  --background: transparent;
+  --color: var(--text-primary);
+}
+
+.logout-box {
+  padding: 20px 16px;
+}
+
+.logout-btn {
+  font-weight: 800;
+  --border-radius: 16px;
+  height: 48px;
+}

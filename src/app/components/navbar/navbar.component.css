@@ -282,6 +282,27 @@
   gap: 16px;
 }
 
+.mobile-mode-btn {
+  background: var(--primary-glow);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mobile-mode-btn:hover {
+  transform: scale(1.1);
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 14px var(--primary-glow);
+}
+
+
 .theme-toggle {
   background: transparent;
   border: 1px solid var(--border-color);

@@ -16,6 +16,8 @@ import { EditTaskComponent } from './pages/edit-task/edit-task.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { authGuard, guestGuard } from './guards/auth.guard';
+// [IONIC - AVANZADA 3] Importación de rutas de la experiencia móvil
+import { ionicRoutes } from './ionic/ionic.routes';
 
 export const routes: Routes = [
   // Rutas públicas de autenticación
@@ -35,9 +37,15 @@ export const routes: Routes = [
   { path: 'tasks/list', component: TaskListComponent, canActivate: [authGuard] },
   { path: 'tasks/create', component: CreateTaskComponent, canActivate: [authGuard] },
   { path: 'tasks/delete', component: DeleteTaskComponent, canActivate: [authGuard] },
-  { path: 'tasks/filter', component: FilterTasksComponent, canActivate: [authGuard] },
   { path: 'projects/:projectId/tasks/edit/:taskId', component: EditTaskComponent, canActivate: [authGuard] },
   { path: 'tasks/:id', component: TaskDetailComponent, canActivate: [authGuard] },
+
+  // =========================================================================
+  // [IONIC - AVANZADA 3] Rutas separadas para la experiencia móvil con Ionic
+  // =========================================================================
+  ...ionicRoutes,
+
   { path: '**', redirectTo: 'home' }
 ];
+
 

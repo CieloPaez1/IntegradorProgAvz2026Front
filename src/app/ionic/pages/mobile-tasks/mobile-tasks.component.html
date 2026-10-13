@@ -1,0 +1,89 @@
+<!-- [IONIC] Encabezado con ion-segment para filtrado táctil por estado -->
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Tareas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/tasks/create" color="primary">
+        <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!-- =======================================================================
+       [IONIC - SEGMENTO MÓVIL] ION-SEGMENT
+       Permite seleccionar filtros tocando botones deslizables horizontales.
+       ======================================================================= -->
+  <ion-toolbar>
+    <ion-segment [value]="statusFilter()" (ionChange)="onFilterChange($event)">
+      <ion-segment-button value="ALL">
+        <ion-label>Todas</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="TODO">
+        <ion-label>Pendientes</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="IN_PROGRESS">
+        <ion-label>En Curso</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="DONE">
+        <ion-label>Hechas</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="mobile-viewport">
+  <ion-refresher slot="fixed" (ionRefresh)="cargarTareas($event)">
+    <ion-refresher-content pullingText="Deslizá para actualizar..."></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="tasks-container">
+    @if (filteredTasks().length === 0) {
+      <div class="empty-box">
+        <ion-icon name="checkbox-outline" class="empty-icon"></ion-icon>
+        <p>No hay tareas en esta categoría.</p>
+      </div>
+    } @else {
+      <!-- [IONIC] ion-list con bordes inset para diseño redondeado de iOS/Android -->
+      <ion-list [inset]="true" class="tasks-card-list">
+        @for (t of filteredTasks(); track t.id) {
+          <ion-item lines="full" class="task-row">
+            <!-- Icono botón interactivo para alternar completada/pendiente -->
+            <ion-button
+              slot="start"
+              fill="clear"
+              [color]="t.status === 'DONE' ? 'success' : 'medium'"
+              (click)="toggleCompletada(t)">
+              <ion-icon
+                slot="icon-only"
+                [name]="t.status === 'DONE' ? 'checkmark-circle' : 'ellipse-outline'">
+              </ion-icon>
+            </ion-button>
+
+            <ion-label [class.task-done]="t.status === 'DONE'">
+              <h2>{{ t.title }}</h2>
+              <p>
+                {{ t.estimateHours }} hs · {{ t.assignee || 'Sin asignar' }}
+              </p>
+            </ion-label>
+
+            <!-- Badge de estado -->
+            <ion-badge
+              slot="end"
+              [color]="t.status === 'DONE' ? 'success' : (t.status === 'IN_PROGRESS' ? 'primary' : 'warning')">
+              {{ t.status === 'DONE' ? 'Hecha' : (t.status === 'IN_PROGRESS' ? 'En Curso' : 'Pendiente') }}
+            </ion-badge>
+
+            <ion-button
+              slot="end"
+              fill="clear"
+              color="danger"
+              size="small"
+              (click)="eliminarTarea(t, $event)">
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+        }
+      </ion-list>
+    }
+  </div>
+</ion-content>

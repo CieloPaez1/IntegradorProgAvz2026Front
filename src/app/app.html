@@ -5,15 +5,23 @@
 </div>
 
 @if (authService.isAuthenticated()) {
-  <div class="app-layout" [class.sidebar-collapsed]="layoutService.collapsed()">
-    <app-sidebar></app-sidebar>
-    <div class="app-content">
-      <app-navbar></app-navbar>
-      <div class="app-main">
-        <router-outlet></router-outlet>
+  @if (isMobileView()) {
+    <!-- [IONIC - AVANZADA 3] Contenedor de pantalla completa para componentes móviles nativos -->
+    <main class="ionic-mobile-container">
+      <router-outlet></router-outlet>
+    </main>
+  } @else {
+    <!-- Layout clásico de escritorio (Avanzada 2) -->
+    <div class="app-layout" [class.sidebar-collapsed]="layoutService.collapsed()">
+      <app-sidebar></app-sidebar>
+      <div class="app-content">
+        <app-navbar></app-navbar>
+        <div class="app-main">
+          <router-outlet></router-outlet>
+        </div>
       </div>
     </div>
-  </div>
+  }
 } @else {
   <main class="auth-layout">
     <router-outlet></router-outlet>
