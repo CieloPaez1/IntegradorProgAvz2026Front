@@ -4,8 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Subject, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
-import { LucideSearch, LucideX, LucideUser, LucideSettings, LucideLogOut, LucidePalette, LucideCheck } from '@lucide/angular';
+import { LucideSearch, LucideX, LucideLogOut, LucidePalette, LucideCheck } from '@lucide/angular';
 import { ThemeService, AppTheme } from '../../services/theme.service';
+import { AuthService } from '../../services/auth.service';
 import { SearchService } from '../../services/search.service';
 import { Task } from '../../models/task.model';
 import { Project } from '../../models/project.model';
@@ -15,13 +16,18 @@ import { ProjectStatusPipe } from '../../pipes/project-status.pipe';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, LucideSearch, LucideX, LucideUser, LucideSettings, LucideLogOut, LucidePalette, LucideCheck, TaskStatusPipe, ProjectStatusPipe],
+  imports: [CommonModule, FormsModule, RouterModule, LucideSearch, LucideX, LucideLogOut, LucidePalette, LucideCheck, TaskStatusPipe, ProjectStatusPipe],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   public readonly themeService = inject(ThemeService);
-  
+  public readonly authService = inject(AuthService);
+
+  get currentUser() {
+    return this.authService.currentUser();
+  }
+
   searchQuery = '';
   results: { projects: Project[]; tasks: Task[] } = { projects: [], tasks: [] };
   showDropdown = false;
@@ -32,6 +38,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   private searchSubject = new Subject<string>();
   private destroyed$ = new Subject<void>();
+
 
   get hasResults(): boolean {
     return this.results.projects.length > 0 || this.results.tasks.length > 0;
@@ -129,6 +136,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.themeService.setTheme(themeId as AppTheme);
     this.showThemeMenu = false;
   }
+
+  onLogout(): void {
+    this.showUserMenu = false;
+    this.authService.logout();
+  }
+
 
   statusClass(status: string): string {
     const map: Record<string, string> = {

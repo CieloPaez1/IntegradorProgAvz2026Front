@@ -13,21 +13,31 @@ import { DeleteProjectComponent } from './pages/delete-project/delete-project.co
 import { CreateTaskComponent } from './pages/create-task/create-task.component';
 import { DeleteTaskComponent } from './pages/delete-task/delete-task.component';
 import { EditTaskComponent } from './pages/edit-task/edit-task.component';
+import { LoginComponent } from './pages/auth/login/login.component';
+import { RegisterComponent } from './pages/auth/register/register.component';
+import { authGuard, guestGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
+  // Rutas públicas de autenticación
+  { path: 'login', component: LoginComponent, canActivate: [guestGuard] },
+  { path: 'register', component: RegisterComponent, canActivate: [guestGuard] },
+
+  // Rutas privadas protegidas por AuthGuard
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'reports', component: ReportsSummaryComponent },
-  { path: 'reports/project', component: ProjectReportComponent },
-  { path: 'projects', component: ProjectListComponent },
-  { path: 'projects/create', component: CreateProjectComponent },
-  { path: 'projects/edit/:id', component: EditProjectComponent },
-  { path: 'projects/delete', component: DeleteProjectComponent },
-  { path: 'projects/:id', component: ProjectDetailComponent },
-  { path: 'tasks/list', component: TaskListComponent },
-  { path: 'tasks/create', component: CreateTaskComponent },
-  { path: 'tasks/delete', component: DeleteTaskComponent },
-  { path: 'tasks/filter', component: FilterTasksComponent },
-  { path: 'projects/:projectId/tasks/edit/:taskId', component: EditTaskComponent },
-  { path: 'tasks/:id', component: TaskDetailComponent }
+  { path: 'home', component: HomeComponent, canActivate: [authGuard] },
+  { path: 'reports', component: ReportsSummaryComponent, canActivate: [authGuard] },
+  { path: 'reports/project', component: ProjectReportComponent, canActivate: [authGuard] },
+  { path: 'projects', component: ProjectListComponent, canActivate: [authGuard] },
+  { path: 'projects/create', component: CreateProjectComponent, canActivate: [authGuard] },
+  { path: 'projects/edit/:id', component: EditProjectComponent, canActivate: [authGuard] },
+  { path: 'projects/delete', component: DeleteProjectComponent, canActivate: [authGuard] },
+  { path: 'projects/:id', component: ProjectDetailComponent, canActivate: [authGuard] },
+  { path: 'tasks/list', component: TaskListComponent, canActivate: [authGuard] },
+  { path: 'tasks/create', component: CreateTaskComponent, canActivate: [authGuard] },
+  { path: 'tasks/delete', component: DeleteTaskComponent, canActivate: [authGuard] },
+  { path: 'tasks/filter', component: FilterTasksComponent, canActivate: [authGuard] },
+  { path: 'projects/:projectId/tasks/edit/:taskId', component: EditTaskComponent, canActivate: [authGuard] },
+  { path: 'tasks/:id', component: TaskDetailComponent, canActivate: [authGuard] },
+  { path: '**', redirectTo: 'home' }
 ];
+

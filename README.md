@@ -59,6 +59,8 @@ src/app/
 | Búsqueda Global | feature/busqueda-global |
 | Sistema de Temas | feature/sistema-temas |
 | Layout General | feature/layout-general |
+| Autenticación (Login, Registro, JWT) | feature/auth-login |
+
 
 ## Flujo de trabajo
 Cada feature se desarrolla en su propia rama siguiendo Spec Driven Development:

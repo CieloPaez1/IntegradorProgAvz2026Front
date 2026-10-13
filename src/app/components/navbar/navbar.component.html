@@ -113,24 +113,19 @@
 
     <div class="user-menu-container">
       <button class="navbar-user" (click)="toggleUserMenu($event)">
-        <div class="user-avatar">U</div>
+        <div class="user-avatar">{{ (currentUser?.name?.charAt(0) || 'U') | uppercase }}</div>
         <div class="user-info">
-          <div class="user-name">Usuario</div>
-          <div class="user-role">Administrador</div>
+          <div class="user-name">{{ currentUser?.name || 'Usuario' }}</div>
+          <div class="user-role">{{ currentUser?.role || 'Administrador' }}</div>
         </div>
       </button>
 
       <div class="user-dropdown" *ngIf="showUserMenu">
-        <a class="user-dropdown-item" href="#">
-          <svg lucideUser></svg>
-          Mi Perfil
-        </a>
-        <a class="user-dropdown-item" href="#">
-          <svg lucideSettings></svg>
-          Configuración
-        </a>
-        <hr class="dropdown-divider">
-        <button class="user-dropdown-item danger">
+        <div class="user-dropdown-header px-3 py-2 border-bottom" style="font-size: 0.85rem; color: var(--text-secondary);">
+          <small>{{ currentUser?.email }}</small>
+        </div>
+        <hr class="dropdown-divider my-1">
+        <button class="user-dropdown-item danger" (click)="onLogout()">
           <svg lucideLogOut></svg>
           Cerrar Sesión
         </button>
