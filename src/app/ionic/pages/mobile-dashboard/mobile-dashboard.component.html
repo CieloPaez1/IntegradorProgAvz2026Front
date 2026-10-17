@@ -1,15 +1,16 @@
 <!-- =======================================================================
-     [IONIC - AVANZADA 3] ENCABEZADO MÓVIL NATIVO (ION-HEADER & ION-TOOLBAR)
-     - ion-header: Define el área de barra superior móvil con elevación y sombras.
-     - ion-toolbar: Contenedor flexible de títulos y botones de acción rápida.
-     - slot="end": Posiciona elementos en el extremo derecho de la barra.
+     [IONIC 9 - CLASES 1 A 6] ENCABEZADO MÓVIL CON MENÚ HAMBURGUESA
      ======================================================================= -->
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Gestor Móvil</ion-title>
-    
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <!-- [CLASE 3] Botón hamburguesa que despliega el ion-menu lateral -->
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+    <ion-title>TaskGo · Inicio</ion-title>
+
     <ion-buttons slot="end">
-      <!-- Botón para alternar a la vista clásica de escritorio -->
       <ion-button (click)="irAVersionEscritorio()" title="Ver versión web">
         <ion-icon slot="icon-only" name="desktop-outline"></ion-icon>
       </ion-button>
@@ -17,28 +18,27 @@
   </ion-toolbar>
 </ion-header>
 
-<!-- =======================================================================
-     [IONIC - AVANZADA 3] CONTENIDO MÓVIL PRINCIPAL (ION-CONTENT)
-     - ion-content: Controla el viewport táctil, el scroll nativo de inercia
-       y el espacio seguro (Safe Area Insets) de dispositivos móviles.
-     ======================================================================= -->
 <ion-content [fullscreen]="true" class="mobile-viewport">
 
-  <!-- =====================================================================
-       [IONIC - GESTO TÁCTIL] PULL-TO-REFRESH (ION-REFRESHER)
-       Permite deslizar la pantalla hacia abajo con el dedo para recargar los
-       datos del backend en tiempo real, disparando el evento (ionRefresh).
-       ===================================================================== -->
+  <!-- [IONIC] Gesto táctil Pull-To-Refresh -->
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content
       pullingIcon="refresh-outline"
       pullingText="Deslizá para actualizar..."
       refreshingSpinner="crescent"
-      refreshingText="Obteniendo proyectos y tareas...">
+      refreshingText="Sincronizando con API y Preferences...">
     </ion-refresher-content>
   </ion-refresher>
 
-  <!-- Saludo al usuario autenticado con chip de rol -->
+  <!-- [CLASE 5 y 6] Aviso de Modo Offline / Error con ion-text -->
+  @if (error()) {
+    <div class="offline-alert">
+      <ion-icon name="cloud-offline-outline" color="warning"></ion-icon>
+      <ion-text color="danger">{{ error() }}</ion-text>
+    </div>
+  }
+
+  <!-- Saludo al usuario autenticado -->
   <div class="user-greeting">
     <div>
       <span class="greeting-subtitle">Hola de nuevo,</span>
@@ -57,10 +57,7 @@
     </div>
   } @else {
 
-    <!-- =====================================================================
-         [IONIC] TARJETA DE PROGRESO GLOBAL (ION-CARD)
-         Componente que agrupa contenido visual con elevación y bordes redondeados.
-         ===================================================================== -->
+    <!-- [CLASE 2] Tarjeta de progreso global (ion-card) -->
     <ion-card class="summary-card">
       <ion-card-header>
         <div class="card-header-row">
@@ -75,7 +72,6 @@
       </ion-card-header>
 
       <ion-card-content>
-        <!-- Barra de progreso visual adaptada para mobile -->
         <div class="mobile-progress-track">
           <div class="mobile-progress-bar" [style.width.%]="completionPercentage()"></div>
         </div>
@@ -99,10 +95,7 @@
       </ion-card-content>
     </ion-card>
 
-    <!-- =====================================================================
-         [IONIC] LISTA MÓVIL DE TAREAS PENDIENTES (ION-LIST & ION-ITEM)
-         ion-list e ion-item estructuran filas táctiles con espaciados nativos.
-         ===================================================================== -->
+    <!-- [CLASE 2] Lista móvil de tareas pendientes con sintaxis moderna @for -->
     <div class="section-title-row">
       <h3>Tareas Pendientes</h3>
       <span class="badge-count">{{ pendingTasks().length }}</span>
@@ -137,12 +130,7 @@
 
   }
 
-  <!-- =======================================================================
-       [IONIC - BOTÓN FLOTANTE] FLOATING ACTION BUTTON (ION-FAB)
-       Elemento móvil clásico para disparar accesos rápidos flotando sobre la UI.
-       - vertical="bottom" / horizontal="end": Fijo en la esquina inferior derecha.
-       - slot="fixed": Permanece fijo en pantalla sin desplazarse con el scroll.
-       ======================================================================= -->
+  <!-- [CLASE 2 - PATRÓN FAB] Botón flotante para crear tarea o proyecto -->
   <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="mobile-fab">
     <ion-fab-button color="primary">
       <ion-icon name="add-outline"></ion-icon>
@@ -151,7 +139,7 @@
       <ion-fab-button routerLink="/projects/create" color="light" title="Nuevo Proyecto">
         <ion-icon name="briefcase-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button routerLink="/tasks/create" color="light" title="Nueva Tarea">
+      <ion-fab-button routerLink="/mobile/task-form" color="light" title="Nueva Tarea (Ionic Form)">
         <ion-icon name="checkbox-outline"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>

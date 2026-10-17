@@ -1,5 +1,8 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title>Mi Perfil</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -37,16 +40,27 @@
       </ion-card-content>
     </ion-card>
 
-    <!-- Selector de Tema visual para móvil -->
+    <!-- Selector de Tema visual y Modo Oscuro de Ionic (Clase 2) -->
     <ion-card class="settings-card">
       <ion-card-header>
-        <ion-card-subtitle>Personalización Visual</ion-card-subtitle>
-        <ion-card-title>Apariencia</ion-card-title>
+        <ion-card-subtitle>Personalización Visual (Clase 2)</ion-card-subtitle>
+        <ion-card-title>Apariencia y Theming</ion-card-title>
       </ion-card-header>
       <ion-card-content>
+        <!-- [CLASE 2 - EJERCICIO 10] ion-toggle para alternar el modo oscuro manual (body.dark) -->
+        <ion-item lines="full">
+          <ion-icon name="moon-outline" slot="start" color="warning"></ion-icon>
+          <ion-label>Modo Oscuro Ionic (body.dark)</ion-label>
+          <ion-toggle
+            slot="end"
+            [checked]="isDarkMode()"
+            (ionChange)="toggleDarkMode($event)">
+          </ion-toggle>
+        </ion-item>
+
         <ion-item lines="none">
-          <ion-icon name="color-palette-outline" slot="start" color="warning"></ion-icon>
-          <ion-label>Tema de Colores</ion-label>
+          <ion-icon name="color-palette-outline" slot="start" color="primary"></ion-icon>
+          <ion-label>Paleta de Tema</ion-label>
           <ion-select
             [value]="themeService.currentTheme()"
             interface="action-sheet"

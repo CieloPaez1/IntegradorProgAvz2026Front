@@ -1,27 +1,51 @@
 import { Routes } from '@angular/router';
-import { MobileTabsComponent } from './components/mobile-tabs/mobile-tabs.component';
-import { MobileDashboardComponent } from './pages/mobile-dashboard/mobile-dashboard.component';
-import { MobileProjectsComponent } from './pages/mobile-projects/mobile-projects.component';
-import { MobileTasksComponent } from './pages/mobile-tasks/mobile-tasks.component';
-import { MobileProfileComponent } from './pages/mobile-profile/mobile-profile.component';
 import { authGuard } from '../guards/auth.guard';
 
 // =============================================================================
-// [IONIC - AVANZADA 3] RUTAS SEPARADAS DE LA APLICACIÓN MÓVIL
-// Define la jerarquía de rutas para los componentes móviles de Ionic,
-// protegidas por authGuard y encapsuladas bajo el contenedor MobileTabsComponent.
+// [IONIC 9 - CLASE 3: LAZY LOADING CON loadComponent Y RUTAS HIJAS]
+// Marco Teórico de Cátedra:
+// - En Angular Standalone, las rutas se definen con `loadComponent: () => import(...)`
+//   en lugar del viejo `loadChildren` + NgModule. El import() dinámico le indica
+//   al empaquetador que separe cada pantalla en un chunk independiente que se
+//   descarga recién cuando el usuario navega hacia esa pestaña.
+// - Rutas padre e hijas: La ruta padre ('mobile') carga el "cascarón"
+//   (MobileTabsComponent con el menú lateral e ion-tabs) y cada ruta hija
+//   carga el contenido de su pestaña correspondiente.
+// - pathMatch: 'full' en la redirección vacía evita redirecciones infinitas.
 // =============================================================================
 export const ionicRoutes: Routes = [
   {
     path: 'mobile',
-    component: MobileTabsComponent,
     canActivate: [authGuard],
+    loadComponent: () =>
+      import('./components/mobile-tabs/mobile-tabs.component').then(m => m.MobileTabsComponent),
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: MobileDashboardComponent },
-      { path: 'projects', component: MobileProjectsComponent },
-      { path: 'tasks', component: MobileTasksComponent },
-      { path: 'profile', component: MobileProfileComponent }
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./pages/mobile-dashboard/mobile-dashboard.component').then(m => m.MobileDashboardComponent)
+      },
+      {
+        path: 'projects',
+        loadComponent: () =>
+          import('./pages/mobile-projects/mobile-projects.component').then(m => m.MobileProjectsComponent)
+      },
+      {
+        path: 'tasks',
+        loadComponent: () =>
+          import('./pages/mobile-tasks/mobile-tasks.component').then(m => m.MobileTasksComponent)
+      },
+      {
+        path: 'task-form',
+        loadComponent: () =>
+          import('./pages/mobile-task-form/mobile-task-form.component').then(m => m.MobileTaskFormComponent)
+      },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('./pages/mobile-profile/mobile-profile.component').then(m => m.MobileProfileComponent)
+      },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }
 ];

@@ -1,18 +1,27 @@
-<!-- [IONIC] Encabezado con ion-segment para filtrado táctil por estado -->
+<!-- =======================================================================
+     [IONIC 9 - CLASES 2, 3, 5 Y 6: PANTALLA DE TAREAS MÓVIL]
+     - ion-menu-button (Clase 3): Abre el menú lateral deslizable.
+     - ion-segment (Clase 2): Filtro táctil por estado.
+     - ion-spinner & ion-text color="danger" (Clase 5): Estados de carga y error.
+     - ion-checkbox + ion-badge (Clase 2): Controles de lista de tareas.
+     - ion-fab + ion-fab-button (Clase 2): Acción principal "Nueva Tarea" al
+       alcance del pulgar abajo a la derecha.
+     ======================================================================= -->
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Tareas</ion-title>
+  <ion-toolbar color="primary">
+    <!-- [CLASE 3] Botón hamburguesa que abre el ion-menu automáticamente -->
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Mis Tareas</ion-title>
     <ion-buttons slot="end">
-      <ion-button routerLink="/tasks/create" color="primary">
+      <ion-button routerLink="/mobile/task-form">
         <ion-icon slot="icon-only" name="add-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 
-  <!-- =======================================================================
-       [IONIC - SEGMENTO MÓVIL] ION-SEGMENT
-       Permite seleccionar filtros tocando botones deslizables horizontales.
-       ======================================================================= -->
+  <!-- Segmento deslizable para filtrar tareas -->
   <ion-toolbar>
     <ion-segment [value]="statusFilter()" (ionChange)="onFilterChange($event)">
       <ion-segment-button value="ALL">
@@ -36,54 +45,74 @@
     <ion-refresher-content pullingText="Deslizá para actualizar..."></ion-refresher-content>
   </ion-refresher>
 
-  <div class="tasks-container">
-    @if (filteredTasks().length === 0) {
-      <div class="empty-box">
-        <ion-icon name="checkbox-outline" class="empty-icon"></ion-icon>
-        <p>No hay tareas en esta categoría.</p>
-      </div>
-    } @else {
-      <!-- [IONIC] ion-list con bordes inset para diseño redondeado de iOS/Android -->
-      <ion-list [inset]="true" class="tasks-card-list">
-        @for (t of filteredTasks(); track t.id) {
-          <ion-item lines="full" class="task-row">
-            <!-- Icono botón interactivo para alternar completada/pendiente -->
-            <ion-button
-              slot="start"
-              fill="clear"
-              [color]="t.status === 'DONE' ? 'success' : 'medium'"
-              (click)="toggleCompletada(t)">
-              <ion-icon
-                slot="icon-only"
-                [name]="t.status === 'DONE' ? 'checkmark-circle' : 'ellipse-outline'">
-              </ion-icon>
-            </ion-button>
+  <!-- [CLASE 5 y 6] Estado de Error / Aviso de Caché Offline -->
+  @if (error()) {
+    <div class="offline-banner">
+      <ion-icon name="cloud-offline-outline" color="warning"></ion-icon>
+      <ion-text color="danger">{{ error() }}</ion-text>
+    </div>
+  }
 
-            <ion-label [class.task-done]="t.status === 'DONE'">
-              <h2>{{ t.title }}</h2>
-              <p>
-                {{ t.estimateHours }} hs · {{ t.assignee || 'Sin asignar' }}
-              </p>
-            </ion-label>
+  <!-- [CLASE 5] Estado de Carga con ion-spinner -->
+  @if (loading()) {
+    <div class="loading-center">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <p>Cargando tareas...</p>
+    </div>
+  } @else {
+    <div class="tasks-container">
+      @if (filteredTasks().length === 0) {
+        <div class="empty-box">
+          <ion-icon name="checkbox-outline" class="empty-icon"></ion-icon>
+          <p>No hay tareas en esta categoría.</p>
+        </div>
+      } @else {
+        <!-- [CLASE 2 - SINTAXIS MODERNA ANGULAR 18-22] Uso de @for con track -->
+        <ion-list [inset]="true" class="tasks-card-list">
+          @for (t of filteredTasks(); track t.id) {
+            <ion-item lines="full" class="task-row">
+              <!-- [CLASE 2 - EJERCICIO 8] ion-checkbox en slot="start" -->
+              <ion-checkbox
+                slot="start"
+                [checked]="t.status === 'DONE'"
+                (ionChange)="toggleCompletada(t)">
+              </ion-checkbox>
 
-            <!-- Badge de estado -->
-            <ion-badge
-              slot="end"
-              [color]="t.status === 'DONE' ? 'success' : (t.status === 'IN_PROGRESS' ? 'primary' : 'warning')">
-              {{ t.status === 'DONE' ? 'Hecha' : (t.status === 'IN_PROGRESS' ? 'En Curso' : 'Pendiente') }}
-            </ion-badge>
+              <ion-label [class.task-done]="t.status === 'DONE'">
+                <h2>{{ t.title }}</h2>
+                <p>{{ t.estimateHours }} hs · {{ t.assignee || 'Sin asignar' }}</p>
+              </ion-label>
 
-            <ion-button
-              slot="end"
-              fill="clear"
-              color="danger"
-              size="small"
-              (click)="eliminarTarea(t, $event)">
-              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-            </ion-button>
-          </ion-item>
-        }
-      </ion-list>
-    }
-  </div>
+              <!-- [CLASE 2 - EJERCICIO 8] ion-badge en slot="end" según estado -->
+              <ion-badge
+                slot="end"
+                [color]="t.status === 'DONE' ? 'success' : (t.status === 'IN_PROGRESS' ? 'primary' : 'warning')">
+                {{ t.status === 'DONE' ? 'Hecha' : (t.status === 'IN_PROGRESS' ? 'En Curso' : 'Pendiente') }}
+              </ion-badge>
+
+              <ion-button
+                slot="end"
+                fill="clear"
+                color="danger"
+                size="small"
+                (click)="eliminarTarea(t, $event)">
+                <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+              </ion-button>
+            </ion-item>
+          }
+        </ion-list>
+      }
+    </div>
+  }
+
+  <!-- =====================================================================
+       [CLASE 2 - PATRÓN FAB] FLOATING ACTION BUTTON (ION-FAB)
+       Convención de UX móvil: botón principal (+) abajo a la derecha al
+       alcance del pulgar para navegar al formulario reactivo de Nueva Tarea.
+       ===================================================================== -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="tasks-fab">
+    <ion-fab-button routerLink="/mobile/task-form" color="primary">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

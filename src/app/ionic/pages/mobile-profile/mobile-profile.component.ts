@@ -1,13 +1,15 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal } from '@angular/core';
+import { UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-// [IONIC - AVANZADA 3] Componentes de Ionic para pantalla de perfil móvil
+// [IONIC 9 - CLASES 2 y 3] Componentes de Ionic para pantalla de perfil móvil
 import {
   IonHeader,
   IonToolbar,
   IonTitle,
   IonContent,
+  IonButtons,
+  IonMenuButton,
   IonCard,
   IonCardHeader,
   IonCardTitle,
@@ -19,7 +21,8 @@ import {
   IonLabel,
   IonButton,
   IonSelect,
-  IonSelectOption
+  IonSelectOption,
+  IonToggle
 } from '@ionic/angular';
 
 import { addIcons } from 'ionicons';
@@ -29,7 +32,8 @@ import {
   shieldCheckmarkOutline,
   colorPaletteOutline,
   logOutOutline,
-  sparklesOutline
+  sparklesOutline,
+  moonOutline
 } from 'ionicons/icons';
 
 import { AuthService } from '../../../services/auth.service';
@@ -39,13 +43,14 @@ import { ThemeService, AppTheme } from '../../../services/theme.service';
   selector: 'app-mobile-profile',
   standalone: true,
   imports: [
-    CommonModule,
+    UpperCasePipe,
     FormsModule,
-    // [IONIC] Componentes registrados
     IonHeader,
     IonToolbar,
     IonTitle,
     IonContent,
+    IonButtons,
+    IonMenuButton,
     IonCard,
     IonCardHeader,
     IonCardTitle,
@@ -57,7 +62,8 @@ import { ThemeService, AppTheme } from '../../../services/theme.service';
     IonLabel,
     IonButton,
     IonSelect,
-    IonSelectOption
+    IonSelectOption,
+    IonToggle
   ],
   templateUrl: './mobile-profile.component.html',
   styleUrls: ['./mobile-profile.component.css']
@@ -65,6 +71,8 @@ import { ThemeService, AppTheme } from '../../../services/theme.service';
 export class MobileProfileComponent {
   readonly authService = inject(AuthService);
   readonly themeService = inject(ThemeService);
+
+  isDarkMode = signal<boolean>(document.body.classList.contains('dark'));
 
   themes: { id: AppTheme; name: string }[] = [
     { id: 'light', name: 'Luz Minimal' },
@@ -85,8 +93,16 @@ export class MobileProfileComponent {
       shieldCheckmarkOutline,
       colorPaletteOutline,
       logOutOutline,
-      sparklesOutline
+      sparklesOutline,
+      moonOutline
     });
+  }
+
+  // [CLASE 2 - EJERCICIO 10] Agregar un ion-toggle para alternar el modo oscuro
+  toggleDarkMode(event: CustomEvent): void {
+    const checked = (event as any).detail.checked;
+    document.body.classList.toggle('dark', checked);
+    this.isDarkMode.set(checked);
   }
 
   onThemeChange(event: any): void {

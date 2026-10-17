@@ -1,17 +1,20 @@
 /* ==========================================================================
-   [IONIC FRAMEWORK - AVANZADA 3]
-   ESTILOS BASE PARA APLICACIÓN MÓVIL HÍBRIDA
+   [IONIC 9 - CLASE 2: THEMING Y WEB COMPONENTS CON SHADOW DOM]
+   Los componentes de Ionic (ion-button, ion-card, ion-item) son Web Components
+   estándar del navegador con Shadow DOM (encapsulan su HTML y CSS interno).
+   Por eso se personalizan mediante CSS Custom Properties (--ion-*) y no
+   mediante selectores CSS globales comunes.
    ========================================================================== */
 
-/* 1. Core: Variables CSS esenciales del motor de Ionic (colores, fuentes, animaciones) */
+/* 1. Core: Variables CSS esenciales del motor de Ionic */
 @import '@ionic/angular/css/core.css';
 
-/* 2. Basic CSS: Estructura y normalización para que los componentes se comporten como nativos */
+/* 2. Basic CSS: Normalización y estructura para el contenedor móvil */
 @import '@ionic/angular/css/normalize.css';
 @import '@ionic/angular/css/structure.css';
 @import '@ionic/angular/css/typography.css';
 
-/* 3. Utilidades opcionales para maquetado táctil y espaciados móviles */
+/* 3. Utilidades opcionales de Ionic (ion-padding, ion-margin-top, etc.) */
 @import '@ionic/angular/css/padding.css';
 @import '@ionic/angular/css/float-elements.css';
 @import '@ionic/angular/css/text-alignment.css';
@@ -20,29 +23,55 @@
 @import '@ionic/angular/css/display.css';
 
 /* ==========================================================================
-   ADAPTACIONES DE TEMA PARA IONIC
-   Sincronización con las variables CSS del ThemeService existente
+   [CLASE 2] PALETA DE COLORES PERSONALIZADA Y SUS 4 VARIANTES OBLIGATORIAS
+   Cada color en Ionic necesita sus cuatro "parientes":
+   - -rgb: Usado por Ionic para transparencias y ondas (ripple effect).
+   - -contrast: Color del texto/ícono sobre el botón.
+   - -shade: Variación más oscura para estados :active (presionado).
+   - -tint: Variación más clara para estados :hover.
    ========================================================================== */
 :root {
-  /* [IONIC] Mapeo de colores principales para que Ionic respete el tema actual */
-  --ion-color-primary: var(--primary-color, #6366f1);
+  --ion-color-primary: var(--primary-color, #4c6ef5);
+  --ion-color-primary-rgb: 76, 110, 245;
   --ion-color-primary-contrast: #ffffff;
-  --ion-color-primary-shade: var(--primary-hover, #4f46e5);
-  --ion-color-primary-tint: var(--primary-glow, rgba(99, 102, 241, 0.25));
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: var(--primary-hover, #4361d6);
+  --ion-color-primary-tint: #667ff7;
 
   --ion-color-success: var(--success-color, #10b981);
+  --ion-color-success-rgb: 16, 185, 129;
   --ion-color-warning: var(--warning-color, #f59e0b);
+  --ion-color-warning-rgb: 245, 158, 11;
   --ion-color-danger: var(--danger-color, #f43f5e);
-
-  --ion-background-color: transparent;
-  --ion-text-color: var(--text-primary, #09090b);
+  --ion-color-danger-rgb: 244, 63, 94;
 
   --ion-font-family: var(--font-main, 'Inter', sans-serif);
 }
 
-/* [IONIC] Configuración de tarjetas móviles */
+/* ==========================================================================
+   [CLASE 2 - EJERCICIO 9 y 10] MODO OSCURO MANUAL (body.dark)
+   Activado mediante el control <ion-toggle> ejecutando:
+   document.body.classList.toggle('dark', event.detail.checked)
+   ========================================================================== */
+body.dark {
+  --ion-background-color: #121212;
+  --ion-background-color-rgb: 18, 18, 18;
+  --ion-text-color: #f4f4f4;
+  --ion-text-color-rgb: 244, 244, 244;
+  --ion-card-background: #1e1e1e;
+  --ion-item-background: #1e1e1e;
+  --ion-toolbar-background: #18181b;
+  --ion-tab-bar-background: #18181b;
+  --bg-primary: #121212;
+  --bg-secondary: #1e1e1e;
+  --card-bg: rgba(30, 30, 30, 0.9);
+  --text-primary: #f4f4f4;
+  --text-secondary: #a1a1aa;
+}
+
+/* [IONIC] Estética de tarjetas móviles */
 ion-card {
-  --background: var(--card-bg, rgba(255, 255, 255, 0.7));
+  --background: var(--card-bg, rgba(255, 255, 255, 0.78));
   border: 1px solid var(--card-border, rgba(255, 255, 255, 0.8));
   border-radius: 20px;
   box-shadow: var(--glass-shadow, 0 8px 32px rgba(0, 0, 0, 0.08));
@@ -53,7 +82,7 @@ ion-card {
 
 /* [IONIC] Barra de pestañas inferior fija */
 ion-tab-bar {
-  --background: var(--card-bg, rgba(255, 255, 255, 0.85));
+  --background: var(--card-bg, rgba(255, 255, 255, 0.9));
   border-top: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
   backdrop-filter: var(--glass-backdrop, blur(16px));
   -webkit-backdrop-filter: var(--glass-backdrop, blur(16px));

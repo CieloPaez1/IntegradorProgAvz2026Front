@@ -6,10 +6,14 @@
 
 @if (authService.isAuthenticated()) {
   @if (isMobileView()) {
-    <!-- [IONIC - AVANZADA 3] Contenedor de pantalla completa para componentes móviles nativos -->
-    <main class="ionic-mobile-container">
-      <router-outlet></router-outlet>
-    </main>
+    <!-- =====================================================================
+         [IONIC 9 - CLASE 3] CONTENEDOR RAÍZ <ion-app> Y <ion-router-outlet>
+         IonRouterOutlet envuelve al Router de Angular para administrar la pila
+         de navegación móvil (navigation stack) y las transiciones nativas.
+         ===================================================================== -->
+    <ion-app class="ionic-mobile-container">
+      <ion-router-outlet></ion-router-outlet>
+    </ion-app>
   } @else {
     <!-- Layout clásico de escritorio (Avanzada 2) -->
     <div class="app-layout" [class.sidebar-collapsed]="layoutService.collapsed()">

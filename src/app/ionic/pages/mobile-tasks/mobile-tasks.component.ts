@@ -1,8 +1,18 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
+import { catchError, finalize, of } from 'rxjs';
 
-// [IONIC - AVANZADA 3] Componentes de Ionic para listado y segmentos de tareas
+// =============================================================================
+// [IONIC 9 - CLASES 2, 3, 5 Y 6: LISTADO DE TAREAS, FAB, RXJS Y CACHÉ OFFLINE]
+// Marco Teórico de Cátedra:
+// - Clase 2: Importación selectiva de IonCheckbox, IonBadge, IonFab, IonFabButton.
+// - Clase 3: IonMenuButton en slot="start" del toolbar para desplegar el ion-menu.
+// - Clase 5: Ciclo de vida de petición con 3 estados de UI (tasks, loading, error)
+//   y operadores RxJS catchError + finalize (finalize apaga siempre el loading).
+// - Clase 6: Estrategia Network-First con @capacitor/preferences y @capacitor/network:
+//   intenta cargar desde la API REST y persiste en disco con saveTasks(); si no hay
+//   red o falla el servidor, recupera la última caché guardada con loadTasks().
+// =============================================================================
 import {
   IonHeader,
   IonToolbar,
@@ -13,35 +23,39 @@ import {
   IonLabel,
   IonList,
   IonItem,
+  IonCheckbox,
   IonIcon,
   IonButton,
   IonButtons,
+  IonMenuButton,
   IonBadge,
+  IonFab,
+  IonFabButton,
+  IonSpinner,
+  IonText,
   IonRefresher,
   IonRefresherContent
 } from '@ionic/angular';
 
 import { addIcons } from 'ionicons';
 import {
+  add,
   addOutline,
-  checkmarkCircle,
-  ellipseOutline,
-  timeOutline,
   trashOutline,
-  createOutline,
-  checkboxOutline
+  checkboxOutline,
+  cloudOfflineOutline
 } from 'ionicons/icons';
 
 import { TaskService } from '../../../services/task.service';
+import { IonicStorageService } from '../../services/ionic-storage.service';
 import { Task } from '../../../models/task.model';
 
 @Component({
   selector: 'app-mobile-tasks',
   standalone: true,
   imports: [
-    CommonModule,
     RouterModule,
-    // [IONIC] Componentes registrados
+    // [CLASE 2, 3 y 5] Componentes standalone de Ionic
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -51,10 +65,16 @@ import { Task } from '../../../models/task.model';
     IonLabel,
     IonList,
     IonItem,
+    IonCheckbox,
     IonIcon,
     IonButton,
     IonButtons,
+    IonMenuButton,
     IonBadge,
+    IonFab,
+    IonFabButton,
+    IonSpinner,
+    IonText,
     IonRefresher,
     IonRefresherContent
   ],
@@ -63,11 +83,14 @@ import { Task } from '../../../models/task.model';
 })
 export class MobileTasksComponent implements OnInit {
   private taskService = inject(TaskService);
+  readonly storage = inject(IonicStorageService);
   private router = inject(Router);
 
+  // [CLASE 5] Los 3 estados de la UI modelados con Signals
   tasks = signal<Task[]>([]);
-  statusFilter = signal<string>('ALL');
   loading = signal<boolean>(true);
+  error = signal<string | null>(null);
+  statusFilter = signal<string>('ALL');
 
   // [SIGNALS] Filtrado reactivo conectado al ion-segment móvil
   filteredTasks = computed(() => {
@@ -77,14 +100,13 @@ export class MobileTasksComponent implements OnInit {
   });
 
   constructor() {
+    // [CLASE 2] Registro selectivo de íconos con addIcons (tree-shaking)
     addIcons({
+      add,
       addOutline,
-      checkmarkCircle,
-      ellipseOutline,
-      timeOutline,
       trashOutline,
-      createOutline,
-      checkboxOutline
+      checkboxOutline,
+      cloudOfflineOutline
     });
   }
 
@@ -92,21 +114,46 @@ export class MobileTasksComponent implements OnInit {
     this.cargarTareas();
   }
 
-  cargarTareas(event?: any): void {
-    this.taskService.getAll().subscribe({
-      next: (data) => {
-        this.tasks.set(data);
-        this.loading.set(false);
-        if (event) event.target.complete();
-      },
-      error: () => {
-        this.loading.set(false);
-        if (event) event.target.complete();
-      }
-    });
+  // ===========================================================================
+  // [CLASES 5 Y 6 - EJERCICIO 17 Y 20] COMBINAR SERVICIO REMOTO Y CACHÉ LOCAL
+  // ===========================================================================
+  async cargarTareas(event?: any): Promise<void> {
+    if (!event) {
+      this.loading.set(true);
+    }
+    this.error.set(null);
+
+    if (await this.storage.isOnline()) {
+      this.taskService.getAll().pipe(
+        catchError(() => {
+          this.error.set('Modo Offline: Mostrando últimas tareas guardadas en el dispositivo.');
+          return of(null);
+        }),
+        finalize(() => {
+          this.loading.set(false);
+          if (event) event.target.complete();
+        })
+      ).subscribe(async (remoteTasks) => {
+        if (remoteTasks !== null) {
+          this.tasks.set(remoteTasks);
+          // [CLASE 6] Guardamos en @capacitor/preferences para uso offline
+          await this.storage.saveTasks(remoteTasks);
+        } else {
+          // [CLASE 6] Fallback offline: cargamos desde @capacitor/preferences
+          const cached = await this.storage.loadTasks();
+          this.tasks.set(cached);
+        }
+      });
+    } else {
+      // Sin conexión detectada por @capacitor/network
+      this.error.set('Sin conexión a internet: mostrando tareas desde @capacitor/preferences.');
+      const cached = await this.storage.loadTasks();
+      this.tasks.set(cached);
+      this.loading.set(false);
+      if (event) event.target.complete();
+    }
   }
 
-  // [IONIC] Manejador de evento al cambiar de pestaña en ion-segment
   onFilterChange(event: any): void {
     this.statusFilter.set(event.detail.value);
   }
@@ -118,8 +165,14 @@ export class MobileTasksComponent implements OnInit {
     const copia = { ...t, status: nuevoEstado as any };
 
     this.taskService.update(t.projectId, t.id, copia).subscribe({
-      next: () => {
+      next: async () => {
         this.tasks.update(ts => ts.map(item => item.id === t.id ? copia : item));
+        await this.storage.saveTasks(this.tasks());
+      },
+      error: async () => {
+        // Actualización optimista en caché local si está offline
+        this.tasks.update(ts => ts.map(item => item.id === t.id ? copia : item));
+        await this.storage.saveTasks(this.tasks());
       }
     });
   }
@@ -129,8 +182,9 @@ export class MobileTasksComponent implements OnInit {
     if (!t.id || !t.projectId) return;
     if (confirm(`¿Eliminar la tarea "${t.title}"?`)) {
       this.taskService.delete(t.projectId, t.id).subscribe({
-        next: () => {
+        next: async () => {
           this.tasks.update(ts => ts.filter(item => item.id !== t.id));
+          await this.storage.saveTasks(this.tasks());
         }
       });
     }

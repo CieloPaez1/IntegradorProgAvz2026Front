@@ -1,15 +1,17 @@
-<!-- [IONIC] Encabezado móvil con barra de búsqueda nativa -->
+<!-- [IONIC 9 - CLASES 2, 3, 5 Y 6] Encabezado móvil con menú y barra de búsqueda -->
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title>Proyectos</ion-title>
     <ion-buttons slot="end">
-      <ion-button routerLink="/projects/create" color="primary">
+      <ion-button routerLink="/projects/create">
         <ion-icon slot="icon-only" name="add-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
-    <!-- [IONIC] ion-searchbar para filtrado instantáneo táctil -->
     <ion-searchbar
       placeholder="Buscar proyecto..."
       (ionInput)="onSearch($event)"
@@ -19,48 +21,62 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="mobile-viewport">
-  <!-- [IONIC] Gesto táctil Pull-To-Refresh -->
   <ion-refresher slot="fixed" (ionRefresh)="cargarProyectos($event)">
     <ion-refresher-content pullingText="Deslizá para actualizar..."></ion-refresher-content>
   </ion-refresher>
 
-  <div class="projects-list">
-    @if (filteredProjects().length === 0) {
-      <div class="empty-box">
-        <ion-icon name="folder-open-outline" class="empty-icon"></ion-icon>
-        <p>No se encontraron proyectos.</p>
-      </div>
-    } @else {
-      @for (p of filteredProjects(); track p.id) {
-        <!-- [IONIC] ion-card para representar cada proyecto -->
-        <ion-card class="project-mobile-card">
-          <ion-card-header>
-            <div class="card-top-row">
-              <ion-card-title>{{ p.name }}</ion-card-title>
-              <ion-badge [color]="p.status === 'ACTIVE' ? 'success' : (p.status === 'PLANNED' ? 'warning' : 'medium')">
-                {{ p.status === 'ACTIVE' ? 'En Progreso' : (p.status === 'PLANNED' ? 'Planificado' : 'Completado') }}
-              </ion-badge>
-            </div>
-            <ion-card-subtitle *ngIf="p.description">{{ p.description }}</ion-card-subtitle>
-          </ion-card-header>
+  @if (error()) {
+    <div class="offline-alert">
+      <ion-icon name="cloud-offline-outline" color="warning"></ion-icon>
+      <ion-text color="danger">{{ error() }}</ion-text>
+    </div>
+  }
 
-          <ion-card-content>
-            <div class="card-footer-row">
-              <span class="date-text">
-                Inicio: {{ p.startDate ? (p.startDate.split('T')[0]) : 'Sin fecha' }}
-              </span>
-              <div class="action-buttons">
-                <ion-button fill="clear" size="small" [routerLink]="['/projects/edit', p.id]" color="primary">
-                  <ion-icon slot="icon-only" name="create-outline"></ion-icon>
-                </ion-button>
-                <ion-button fill="clear" size="small" (click)="eliminarProyecto(p, $event)" color="danger">
-                  <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-                </ion-button>
+  @if (loading()) {
+    <div class="empty-box">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <p>Cargando proyectos...</p>
+    </div>
+  } @else {
+    <div class="projects-list">
+      @if (filteredProjects().length === 0) {
+        <div class="empty-box">
+          <ion-icon name="folder-open-outline" class="empty-icon"></ion-icon>
+          <p>No se encontraron proyectos.</p>
+        </div>
+      } @else {
+        @for (p of filteredProjects(); track p.id) {
+          <ion-card class="project-mobile-card">
+            <ion-card-header>
+              <div class="card-top-row">
+                <ion-card-title>{{ p.name }}</ion-card-title>
+                <ion-badge [color]="p.status === 'ACTIVE' ? 'success' : (p.status === 'PLANNED' ? 'warning' : 'medium')">
+                  {{ p.status === 'ACTIVE' ? 'En Progreso' : (p.status === 'PLANNED' ? 'Planificado' : 'Completado') }}
+                </ion-badge>
               </div>
-            </div>
-          </ion-card-content>
-        </ion-card>
+              @if (p.description) {
+                <ion-card-subtitle>{{ p.description }}</ion-card-subtitle>
+              }
+            </ion-card-header>
+
+            <ion-card-content>
+              <div class="card-footer-row">
+                <span class="date-text">
+                  Inicio: {{ p.startDate ? (p.startDate.split('T')[0]) : 'Sin fecha' }}
+                </span>
+                <div class="action-buttons">
+                  <ion-button fill="clear" size="small" [routerLink]="['/projects/edit', p.id]" color="primary">
+                    <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+                  </ion-button>
+                  <ion-button fill="clear" size="small" (click)="eliminarProyecto(p, $event)" color="danger">
+                    <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                  </ion-button>
+                </div>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        }
       }
-    }
-  </div>
+    </div>
+  }
 </ion-content>

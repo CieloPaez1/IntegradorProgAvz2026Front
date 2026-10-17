@@ -1,43 +1,44 @@
-# Feature: Integración de Ionic Framework (Avanzada 3 - Mobile UI)
+# Feature: Integración de Ionic 9 + Angular Standalone + Capacitor 8 (Clases 1 a 6)
 
 ## Descripción general
-Esta feature incorpora **Ionic Framework** (`@ionic/angular`) al proyecto Angular 21 existente para dotar a la aplicación de capacidades móviles híbridas (Cross-Platform / PWA). Toda la implementación de Ionic se desarrolla de forma modular y separada en la carpeta `src/app/ionic/`, manteniendo la compatibilidad con los servicios y modelos existentes de Avanzada 2 y 3, pero ofreciendo una experiencia nativa de celular con navegación por Tabs, barras de herramientas móviles, gestos táctiles (Pull-to-Refresh) y botones flotantes (FAB).
+Esta feature transforma la aplicación en una **App Móvil Híbrida** siguiendo los lineamientos del curso *"Ionic 9 + Angular (Standalone) — Capacitor 8"*. Toda la implementación móvil está aislada en `src/app/ionic/`, `src/styles-ionic.css` y `capacitor.config.ts` para diferenciarse claramente de la base web previa y mantener comentarios didácticos (`// [IONIC 9 - CLASE X]`) en cada archivo.
 
-## Componentes y Librerías involucradas
-- `@ionic/angular/standalone`: Componentes móviles en modo Standalone sin dependencias de módulos.
-- `ionicons`: Iconografía nativa estándar de aplicaciones móviles.
-- `provideIonicAngular()`: Proveedor de inicialización en `app.config.ts`.
-- `styles-ionic.css`: Estilos base de estructura, temas y utilidades de Ionic aislados en su propio archivo.
+## Arquitectura de las Tres Capas (Clase 1)
+1. **Capa 1 — Código Web (`src/app/ionic/`):** Componentes Angular Standalone importando selectivamente desde `@ionic/angular`.
+2. **Capa 2 — Configuración del Puente Nativo (`capacitor.config.ts`):** Define `appId`, `appName` y `webDir` para empaquetar el WebView.
+3. **Capa 3 — Proyectos Nativos (`android/` / `ios/`):** Generables mediante Capacitor CLI (`npx cap add android`).
 
-## Restricciones y Decisiones de Diseño
-- **Aislamiento y separación:** Toda la capa visual de Ionic se ubica en la carpeta dedicada `src/app/ionic/` para no alterar ni romper los componentes web previos de escritorio.
-- **Didáctica y comentarios:** Cada archivo generado debe incluir comentarios detallados de código (`// [IONIC]`) explicando el propósito técnico de cada etiqueta y directiva.
-- **Consumo de servicios compartidos:** Los componentes móviles consumen los mismos servicios (`AuthService`, `ProjectService`, `TaskService`), garantizando la reutilización de la lógica de negocio y el token JWT.
-- **Gestos y patrones móviles:**
-  - Barra de pestañas inferior (`ion-tabs`, `ion-tab-bar`) para navegación con una sola mano.
-  - Pull-to-refresh (`ion-refresher`): Gesto de deslizar hacia abajo para recargar datos en tiempo real.
-  - Floating Action Button (`ion-fab`): Botón circular flotante para acciones rápidas (crear proyecto o tarea).
-  - Tarjetas móviles (`ion-card`, `ion-card-header`, `ion-card-content`): Presentación visual optimizada para pantallas pequeñas.
-
-## Lineamientos técnicos
-- Angular 21 Standalone Components importando componentes específicos de `@ionic/angular/standalone` (`IonContent`, `IonHeader`, `IonToolbar`, `IonTitle`, `IonCard`, `IonRefresher`, `IonRefresherContent`, etc.).
-- Modo de renderizado configurable (`md` para Material Design / Android o `ios` para Apple).
-- Rutas móviles dedicadas en `src/app/ionic/ionic.routes.ts`.
+## Conceptos de Cátedra Implementados (Clases 1 a 6)
+- **Clase 1 (Fundamentos):** Separación de responsabilidades (*"Ionic es la cara, Capacitor es el puente"*), arquitectura de 3 capas y componentes standalone.
+- **Clase 2 (UI, Web Components y Theming):**
+  - Importación selectiva (*tree-shaking*) de `IonHeader`, `IonToolbar`, `IonList`, `IonItem`, `IonCheckbox`, `IonBadge`, `IonFab`, `IonFabButton`, e íconos con `addIcons()`.
+  - Variables CSS con sus 4 parientes obligatorios (`--ion-color-primary`, `-rgb`, `-contrast`, `-shade`, `-tint`) y modo oscuro manual (`body.dark`) activado con `<ion-toggle>` (`toggleDarkMode`).
+  - Sintaxis moderna de Angular 18–22 (`@if`, `@for (...; track ...)`).
+- **Clase 3 (Navegación Móvil):**
+  - Rutas standalone con **Lazy Loading** usando `loadComponent: () => import(...).then(...)` en `src/app/ionic/ionic.routes.ts`.
+  - Combinación de los 3 patrones de navegación: `ion-tabs` (pestañas inferiores), `ion-menu` + `ion-split-pane` + `MenuController` (menú lateral responsive) e `IonRouterOutlet` + `IonicRouteStrategy`.
+- **Clase 4 (Formularios Reactivos con Controles de Ionic):**
+  - `MobileTaskFormComponent` (`/mobile/task-form`) con `ReactiveFormsModule`, `FormBuilder`, `Validators`, getters tipados (`get title()`), `markAllAsTouched()` y controles `ControlValueAccessor` nativos (`ion-input`, `ion-select`, `ion-datetime presentation="date"`, `ion-toggle`, `ion-note color="danger"`).
+- **Clase 5 (Servicios, HttpClient y Estados de UI):**
+  - Registro de `{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }` en `app.config.ts`.
+  - Manejo de los 3 estados de petición con Signals (`tasks`, `loading`, `error`), operadores RxJS `catchError` + `finalize` y feedback visual con `<ion-spinner>` e `<ion-text color="danger">`.
+- **Clase 6 (Persistencia Local y Estrategia Offline con Capacitor):**
+  - `IonicStorageService` (`src/app/ionic/services/ionic-storage.service.ts`) integrando `@capacitor/preferences` (`Preferences.set` / `Preferences.get` con `JSON.stringify` / `JSON.parse`) y `@capacitor/network` (`Network.getStatus()`).
+  - Estrategia **Network-First con Fallback Offline**: intenta consultar la API REST y guarda copia en disco; si falla la red o está sin conexión, recupera las últimas tareas y proyectos desde `Preferences`.
 
 ## Criterios de aceptación
-- **Dado** que un usuario accede a la vista móvil,
-  **cuando** navega a la sección de Ionic,
-  **entonces** ve una interfaz con encabezado nativo (`ion-header`), tarjetas redondeadas (`ion-card`) y barra de navegación inferior (`ion-tab-bar`).
+- **Dado** que el usuario navega a `/mobile`,
+  **cuando** se carga el layout móvil con `loadComponent`,
+  **entonces** visualiza las pestañas inferiores (`ion-tabs`), el botón hamburguesa (`ion-menu-button`) y el menú lateral (`ion-menu` + `ion-split-pane`).
 
-- **Dado** que el usuario se encuentra en el listado móvil y desliza la pantalla hacia abajo,
-  **cuando** se activa el evento `ionRefresh`,
-  **entonces** se vuelven a solicitar los proyectos y tareas a la API y el indicador spinner móvil se apaga al completarse.
+- **Dado** que el usuario activa el `ion-toggle` de Modo Oscuro en el menú lateral o en Perfil,
+  **cuando** se dispara `toggleDarkMode`,
+  **entonces** se alterna la clase `body.dark` aplicando las variables oscuras de Ionic.
 
-- **Dado** que el usuario hace clic en el botón flotante (`ion-fab`),
-  **cuando** presiona el icono de acción rápida,
-  **entonces** se despliega el menú contextual de creación móvil.
+- **Dado** que el usuario toca el botón flotante `+` (`ion-fab-button`) en la pantalla de Tareas,
+  **cuando** accede a `/mobile/task-form` e intenta enviar el formulario con el título vacío,
+  **entonces** `markAllAsTouched()` activa el `<ion-note color="danger">` accesible debajo del `<ion-input>`.
 
-## Agente IA
-Antigravity potenciado por Gemini 3.8 Flash (High) — prompts documentados en PROMPT-ionic-integration.md
-
-> *Nota: Este documento de especificación y su respectivo código fueron generados íntegramente por **Antigravity** (Asistente de IA).*
+- **Dado** que el servidor backend está apagado o no hay conexión de red (`@capacitor/network`),
+  **cuando** el usuario abre o refresca el listado móvil de tareas o proyectos,
+  **entonces** `catchError` + `IonicStorageService` cargan automáticamente los últimos datos persistidos en `@capacitor/preferences` y `finalize` apaga el `ion-spinner`.
