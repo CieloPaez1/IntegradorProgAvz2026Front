@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "ionic": "ng serve --port 8100",
+    "back": "java -jar ../backend/Adapter/target/adapter-1.0.0.jar",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
