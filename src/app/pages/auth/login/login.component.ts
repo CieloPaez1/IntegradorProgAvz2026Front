@@ -56,7 +56,7 @@ export class LoginComponent {
     });
   }
 
-  onSubmit(): void {
+  onSubmit(targetRoute = '/home'): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -68,7 +68,7 @@ export class LoginComponent {
     this.authService.login(this.form.value).subscribe({
       next: () => {
         this.loading.set(false);
-        this.router.navigate(['/home']);
+        this.router.navigate([targetRoute]);
       },
       error: (err: Error) => {
         this.loading.set(false);

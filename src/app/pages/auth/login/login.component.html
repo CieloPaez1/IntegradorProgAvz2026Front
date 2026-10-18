@@ -78,9 +78,18 @@
         <span class="spinner"></span>
         <span>Iniciando sesión...</span>
       } @else {
-        <span>Ingresar al Sistema</span>
+        <span>Ingresar a Versión Web</span>
         <svg lucideArrowRight class="btn-icon"></svg>
       }
+    </button>
+
+    <button
+      type="button"
+      class="btn-mobile-entry"
+      [disabled]="form.invalid || loading()"
+      (click)="onSubmit('/mobile/dashboard')"
+    >
+      <span>📱 Ingresar a Modo Móvil (Ionic 9)</span>
     </button>
   </form>
 

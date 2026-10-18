@@ -1,0 +1,7 @@
+{
+  "name": "TaskGo - Gestor de Proyectos",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
