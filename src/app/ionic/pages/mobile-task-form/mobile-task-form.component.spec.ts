@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
@@ -21,6 +22,14 @@ describe('MobileTaskFormComponent (Clase 12 - Validación de Formulario Reactivo
   let httpMock: HttpTestingController;
 
   beforeEach(async () => {
+    if (typeof ( globalThis as any ).IntersectionObserver === 'undefined') {
+      ( globalThis as any ).IntersectionObserver = class {
+        observe() {}
+        unobserve() {}
+        disconnect() {}
+      };
+    }
+
     await TestBed.configureTestingModule({
       imports: [MobileTaskFormComponent],
       providers: [
