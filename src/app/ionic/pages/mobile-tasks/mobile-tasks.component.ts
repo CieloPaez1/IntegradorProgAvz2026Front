@@ -1,19 +1,30 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { catchError, finalize, of } from 'rxjs';
 
 // =============================================================================
-// [IONIC 9 - CLASES 2, 3, 5 Y 6: LISTADO DE TAREAS, FAB, RXJS Y CACHÉ OFFLINE]
+// [IONIC 9 - CLASES 2, 3, 5, 6, 9 Y 10: LISTADO DE TAREAS E INTERACCIONES AVANZADAS]
 // Marco Teórico de Cátedra:
 // - Clase 2: Importación selectiva de IonCheckbox, IonBadge, IonFab, IonFabButton.
 // - Clase 3: IonMenuButton en slot="start" del toolbar para desplegar el ion-menu.
 // - Clase 5: Ciclo de vida de petición con 3 estados de UI (tasks, loading, error)
-//   y operadores RxJS catchError + finalize (finalize apaga siempre el loading).
-// - Clase 6: Estrategia Network-First con @capacitor/preferences y @capacitor/network:
-//   intenta cargar desde la API REST y persiste en disco con saveTasks(); si no hay
-//   red o falla el servidor, recupera la última caché guardada con loadTasks().
+//   y operadores RxJS catchError + finalize.
+// - Clase 6: Estrategia Network-First con @capacitor/preferences y @capacitor/network.
+// - Clase 9 (Desafío Opcional): Al marcar una tarea como completada ('DONE'),
+//   cancelamos su notificación local programada con LocalNotifications.cancel().
+// - Clase 10 (Gestos, Refresher, Modal y Animations API):
+//   * ion-item-sliding envuelve cada ion-item y expone ion-item-options al deslizar.
+//   * ion-refresher dispara doRefresh($event) y exige llamar a
+//     (event.target as HTMLIonRefresherElement).complete() para apagar el spinner.
+//   * AlertController pide confirmación bloqueante (role: 'destructive') antes de borrar.
+//   * ModalController + createAnimation() abre el detalle de la tarea animando
+//     transform y opacity a 60fps en el compositor del navegador a través de
+//     baseEl.shadowRoot (ion-backdrop y .modal-wrapper).
 // =============================================================================
 import {
+  AlertController,
+  ModalController,
+  createAnimation,
   IonHeader,
   IonToolbar,
   IonTitle,
@@ -23,6 +34,9 @@ import {
   IonLabel,
   IonList,
   IonItem,
+  IonItemSliding,
+  IonItemOptions,
+  IonItemOption,
   IonCheckbox,
   IonIcon,
   IonButton,
@@ -37,25 +51,31 @@ import {
   IonRefresherContent
 } from '@ionic/angular';
 
+import { LocalNotifications } from '@capacitor/local-notifications';
+
 import { addIcons } from 'ionicons';
 import {
   add,
   addOutline,
   trashOutline,
+  checkmarkOutline,
   checkboxOutline,
-  cloudOfflineOutline
+  cloudOfflineOutline,
+  cameraOutline,
+  locationOutline
 } from 'ionicons/icons';
 
 import { TaskService } from '../../../services/task.service';
 import { IonicStorageService } from '../../services/ionic-storage.service';
 import { Task } from '../../../models/task.model';
+import { MobileTaskDetailModalComponent } from '../../components/mobile-task-detail-modal/mobile-task-detail-modal.component';
 
 @Component({
   selector: 'app-mobile-tasks',
   standalone: true,
   imports: [
     RouterModule,
-    // [CLASE 2, 3 y 5] Componentes standalone de Ionic
+    // [CLASE 2, 3, 5 y 10] Componentes standalone de Ionic
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -65,6 +85,9 @@ import { Task } from '../../../models/task.model';
     IonLabel,
     IonList,
     IonItem,
+    IonItemSliding,
+    IonItemOptions,
+    IonItemOption,
     IonCheckbox,
     IonIcon,
     IonButton,
@@ -84,7 +107,8 @@ import { Task } from '../../../models/task.model';
 export class MobileTasksComponent implements OnInit {
   private taskService = inject(TaskService);
   readonly storage = inject(IonicStorageService);
-  private router = inject(Router);
+  private alertCtrl = inject(AlertController);
+  private modalCtrl = inject(ModalController);
 
   // [CLASE 5] Los 3 estados de la UI modelados con Signals
   tasks = signal<Task[]>([]);
@@ -105,13 +129,24 @@ export class MobileTasksComponent implements OnInit {
       add,
       addOutline,
       trashOutline,
+      checkmarkOutline,
       checkboxOutline,
-      cloudOfflineOutline
+      cloudOfflineOutline,
+      cameraOutline,
+      locationOutline
     });
   }
 
   ngOnInit(): void {
     this.cargarTareas();
+  }
+
+  // ===========================================================================
+  // [CLASE 10 - EJERCICIO GUIADO] PULL-TO-REFRESH CON ION-REFRESHER
+  // Es obligatorio invocar complete() en el HTMLIonRefresherElement al terminar.
+  // ===========================================================================
+  doRefresh(event: CustomEvent): void {
+    this.cargarTareas(event);
   }
 
   // ===========================================================================
@@ -123,6 +158,8 @@ export class MobileTasksComponent implements OnInit {
     }
     this.error.set(null);
 
+    const cachedLocal = await this.storage.loadTasks();
+
     if (await this.storage.isOnline()) {
       this.taskService.getAll().pipe(
         catchError(() => {
@@ -131,26 +168,32 @@ export class MobileTasksComponent implements OnInit {
         }),
         finalize(() => {
           this.loading.set(false);
-          if (event) event.target.complete();
+          if (event) {
+            (event.target as HTMLIonRefresherElement).complete();
+          }
         })
       ).subscribe(async (remoteTasks) => {
         if (remoteTasks !== null) {
-          this.tasks.set(remoteTasks);
-          // [CLASE 6] Guardamos en @capacitor/preferences para uso offline
-          await this.storage.saveTasks(remoteTasks);
+          // Preservamos metadatos nativos locales (photo, lat, lng) si existen en caché
+          const merged = remoteTasks.map(rt => {
+            const prev = cachedLocal.find(c => c.id === rt.id || c.title === rt.title);
+            return prev
+              ? { ...rt, photo: rt.photo ?? prev.photo, photoPreview: rt.photoPreview ?? prev.photoPreview, lat: rt.lat ?? prev.lat, lng: rt.lng ?? prev.lng }
+              : rt;
+          });
+          this.tasks.set(merged);
+          await this.storage.saveTasks(merged);
         } else {
-          // [CLASE 6] Fallback offline: cargamos desde @capacitor/preferences
-          const cached = await this.storage.loadTasks();
-          this.tasks.set(cached);
+          this.tasks.set(cachedLocal);
         }
       });
     } else {
-      // Sin conexión detectada por @capacitor/network
       this.error.set('Sin conexión a internet: mostrando tareas desde @capacitor/preferences.');
-      const cached = await this.storage.loadTasks();
-      this.tasks.set(cached);
+      this.tasks.set(cachedLocal);
       this.loading.set(false);
-      if (event) event.target.complete();
+      if (event) {
+        (event.target as HTMLIonRefresherElement).complete();
+      }
     }
   }
 
@@ -158,11 +201,66 @@ export class MobileTasksComponent implements OnInit {
     this.statusFilter.set(event.detail.value);
   }
 
-  toggleCompletada(t: Task): void {
+  // ===========================================================================
+  // [CLASE 10 - EJERCICIO GUIADO] MODAL DE DETALLE CON ANIMATIONS API (SHADOW DOM)
+  // Animación acelerada por hardware (transform y opacity a 60fps) sobre
+  // ion-backdrop y .modal-wrapper dentro del baseEl.shadowRoot.
+  // ===========================================================================
+  async abrirDetalle(task: Task): Promise<void> {
+    const enterAnimation = (baseEl: HTMLElement) => {
+      const root = baseEl.shadowRoot!;
+      const backdropEl = root.querySelector('ion-backdrop');
+      const wrapperEl = root.querySelector('.modal-wrapper');
+
+      const parentAnim = createAnimation()
+        .addElement(baseEl)
+        .easing('ease-out')
+        .duration(300);
+
+      if (backdropEl && wrapperEl) {
+        const backdrop = createAnimation()
+          .addElement(backdropEl)
+          .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');
+
+        const wrapper = createAnimation()
+          .addElement(wrapperEl)
+          .keyframes([
+            { offset: 0, opacity: '0', transform: 'translateY(100%)' },
+            { offset: 1, opacity: '1', transform: 'translateY(0)' }
+          ]);
+
+        parentAnim.addAnimation([backdrop, wrapper]);
+      }
+
+      return parentAnim;
+    };
+
+    const modal = await this.modalCtrl.create({
+      component: MobileTaskDetailModalComponent,
+      componentProps: { task },
+      enterAnimation
+    });
+    await modal.present();
+  }
+
+  // ===========================================================================
+  // [CLASE 9 (DESAFÍO OPCIONAL) Y CLASE 10] COMPLETAR TAREA + CANCELAR NOTIFICACIÓN
+  // ===========================================================================
+  async toggleCompletada(t: Task, event?: Event): Promise<void> {
+    if (event) event.stopPropagation();
     if (!t.id || !t.projectId) return;
 
     const nuevoEstado = t.status === 'DONE' ? 'TODO' : 'DONE';
-    const copia = { ...t, status: nuevoEstado as any };
+    const copia: Task = { ...t, status: nuevoEstado };
+
+    // [CLASE 9 - DESAFÍO OPCIONAL] Si se marca como completada, cancelamos su notificación local
+    if (nuevoEstado === 'DONE' && t.id) {
+      try {
+        await LocalNotifications.cancel({ notifications: [{ id: t.id }] });
+      } catch {
+        // Ignorar si se ejecuta en navegador sin soporte nativo
+      }
+    }
 
     this.taskService.update(t.projectId, t.id, copia).subscribe({
       next: async () => {
@@ -170,23 +268,45 @@ export class MobileTasksComponent implements OnInit {
         await this.storage.saveTasks(this.tasks());
       },
       error: async () => {
-        // Actualización optimista en caché local si está offline
         this.tasks.update(ts => ts.map(item => item.id === t.id ? copia : item));
         await this.storage.saveTasks(this.tasks());
       }
     });
   }
 
-  eliminarTarea(t: Task, event: Event): void {
-    event.stopPropagation();
+  // ===========================================================================
+  // [CLASE 10 - PRÁCTICA GUIADA EXTRA] SWIPE CON CONFIRMACIÓN (ALERTCONTROLLER)
+  // ===========================================================================
+  async eliminarTarea(t: Task, event?: Event): Promise<void> {
+    if (event) event.stopPropagation();
     if (!t.id || !t.projectId) return;
-    if (confirm(`¿Eliminar la tarea "${t.title}"?`)) {
-      this.taskService.delete(t.projectId, t.id).subscribe({
-        next: async () => {
-          this.tasks.update(ts => ts.filter(item => item.id !== t.id));
-          await this.storage.saveTasks(this.tasks());
+
+    const alert = await this.alertCtrl.create({
+      header: '¿Eliminar tarea?',
+      message: t.title,
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        {
+          text: 'Eliminar',
+          role: 'destructive',
+          handler: () => this.confirmarEliminar(t)
         }
-      });
-    }
+      ]
+    });
+    await alert.present();
+  }
+
+  private confirmarEliminar(t: Task): void {
+    if (!t.id || !t.projectId) return;
+    this.taskService.delete(t.projectId, t.id).subscribe({
+      next: async () => {
+        this.tasks.update(ts => ts.filter(item => item.id !== t.id));
+        await this.storage.saveTasks(this.tasks());
+      },
+      error: async () => {
+        this.tasks.update(ts => ts.filter(item => item.id !== t.id));
+        await this.storage.saveTasks(this.tasks());
+      }
+    });
   }
 }

@@ -1,8 +1,11 @@
 <!-- =======================================================================
-     [IONIC 9 - CLASE 4: FORMULARIO REACTIVO CON VALIDACIÓN Y CONTROLES IONIC]
-     - ion-input, ion-select, ion-datetime e ion-toggle se conectan con
-       [formControlName] gracias a ControlValueAccessor.
-     - ion-note color="danger" muestra errores accesibles cuando touched && invalid.
+     [IONIC 9 - CLASES 4, 8 Y 9: FORMULARIO REACTIVO + PLUGINS NATIVOS]
+     - Clase 4: ion-input, ion-select, ion-datetime e ion-toggle con
+       [formControlName] + ion-note color="danger" cuando touched && invalid.
+     - Clase 8: Captura de foto con @capacitor/camera + guardado en
+       Directory.Data (@capacitor/filesystem) + Capacitor.convertFileSrc().
+     - Clase 9: Geolocalización con @capacitor/geolocation + programación de
+       notificación local con @capacitor/local-notifications.
      ======================================================================= -->
 <ion-header [translucent]="true">
   <ion-toolbar color="primary">
@@ -76,9 +79,9 @@
       </ion-select>
     </ion-item>
 
-    <!-- Campo 5: Fecha de Vencimiento con ion-datetime (Clase 4) -->
+    <!-- Campo 5: Fecha de Vencimiento con ion-datetime (Clase 4 y Clase 9) -->
     <ion-item class="form-item datetime-item">
-      <ion-label position="stacked">Fecha de Vencimiento</ion-label>
+      <ion-label position="stacked">Fecha de Vencimiento (programa Notificación Local)</ion-label>
       <ion-datetime
         formControlName="dueDate"
         presentation="date">
@@ -90,6 +93,51 @@
       <ion-label>Marcar como completada</ion-label>
       <ion-toggle formControlName="done" slot="end" color="success"></ion-toggle>
     </ion-item>
+
+    <!-- =====================================================================
+         [CLASE 8 Y CLASE 9] ACCIONES NATIVAS DE CAPACITOR (CÁMARA Y GPS)
+         ===================================================================== -->
+    <div class="native-plugins-box">
+      <div class="native-buttons-row">
+        <!-- [CLASE 8] Botón para tomar foto o elegir de galería -->
+        <ion-button
+          type="button"
+          fill="outline"
+          color="secondary"
+          class="native-btn"
+          (click)="elegirOrigenFoto()">
+          <ion-icon name="camera-outline" slot="start"></ion-icon>
+          Tomar / Elegir Foto
+        </ion-button>
+
+        <!-- [CLASE 9] Botón para capturar coordenadas GPS -->
+        <ion-button
+          type="button"
+          fill="outline"
+          color="tertiary"
+          class="native-btn"
+          (click)="guardarUbicacion()">
+          <ion-icon name="location-outline" slot="start"></ion-icon>
+          Registrar GPS
+        </ion-button>
+      </div>
+
+      <!-- [CLASE 8] Vista previa de la foto renderizada con Capacitor.convertFileSrc() -->
+      @if (photoUrl()) {
+        <div class="photo-preview-card">
+          <img [src]="photoUrl()" alt="Adjunto de la tarea" class="task-photo-img" />
+          <span class="photo-meta">Archivo en Directory.Data: {{ form.value.photo }}</span>
+        </div>
+      }
+
+      <!-- [CLASE 9] Chip con las coordenadas obtenidas del GPS -->
+      @if (locationStatus()) {
+        <ion-chip color="tertiary" class="gps-chip">
+          <ion-icon name="location-outline"></ion-icon>
+          <ion-label>{{ locationStatus() }}</ion-label>
+        </ion-chip>
+      }
+    </div>
 
     <!-- Botón de envío expand="block" -->
     <ion-button

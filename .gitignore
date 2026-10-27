@@ -1,7 +1,11 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
-# Compiled output
+# Compiled output & Capacitor native folders (Requisito TP Final)
 /dist
+/www
+/android
+/ios
+/.angular
 /tmp
 /out-tsc
 /bazel-out
@@ -38,6 +42,8 @@ yarn-error.log
 testem.log
 /typings
 __screenshots__/
+*.keystore
+*.jks
 
 # System files
 .DS_Store
