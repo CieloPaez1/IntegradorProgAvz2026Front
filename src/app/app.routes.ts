@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { FilterTasksComponent } from './pages/filter-tasks/filter-tasks.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ReportsSummaryComponent } from './pages/reports/reports-summary.component';
 import { ProjectReportComponent } from './pages/reports/project-report.component';
@@ -24,8 +23,15 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [guestGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [guestGuard] },
 
-  // Rutas privadas protegidas por AuthGuard
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  // Redirección principal hacia la experiencia móvil Ionic 9
+  { path: '', redirectTo: 'mobile/dashboard', pathMatch: 'full' },
+
+  // =========================================================================
+  // [IONIC - AVANZADA 3] Rutas para la experiencia móvil con Ionic 9
+  // =========================================================================
+  ...ionicRoutes,
+
+  // Rutas de escritorio (Avanzada 2)
   { path: 'home', component: HomeComponent, canActivate: [authGuard] },
   { path: 'reports', component: ReportsSummaryComponent, canActivate: [authGuard] },
   { path: 'reports/project', component: ProjectReportComponent, canActivate: [authGuard] },
@@ -40,12 +46,5 @@ export const routes: Routes = [
   { path: 'projects/:projectId/tasks/edit/:taskId', component: EditTaskComponent, canActivate: [authGuard] },
   { path: 'tasks/:id', component: TaskDetailComponent, canActivate: [authGuard] },
 
-  // =========================================================================
-  // [IONIC - AVANZADA 3] Rutas separadas para la experiencia móvil con Ionic
-  // =========================================================================
-  ...ionicRoutes,
-
-  { path: '**', redirectTo: 'home' }
+  { path: '**', redirectTo: 'mobile/dashboard' }
 ];
-
-

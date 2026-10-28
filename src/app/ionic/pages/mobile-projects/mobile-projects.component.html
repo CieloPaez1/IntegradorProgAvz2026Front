@@ -1,4 +1,4 @@
-<!-- [IONIC 9 - CLASES 2, 3, 5 Y 6] Encabezado móvil con menú y barra de búsqueda -->
+<!-- [IONIC 9 - CLASES 2, 3, 5, 6 Y 10] Listado de Proyectos 100% Móvil -->
 <ion-header [translucent]="true">
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
@@ -6,7 +6,7 @@
     </ion-buttons>
     <ion-title>Proyectos</ion-title>
     <ion-buttons slot="end">
-      <ion-button routerLink="/projects/create">
+      <ion-button routerLink="/mobile/project-form" title="Nuevo Proyecto">
         <ion-icon slot="icon-only" name="add-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -46,7 +46,7 @@
         </div>
       } @else {
         @for (p of filteredProjects(); track p.id) {
-          <ion-card class="project-mobile-card">
+          <ion-card class="project-mobile-card" button="true" (click)="abrirProyecto(p)">
             <ion-card-header>
               <div class="card-top-row">
                 <ion-card-title>{{ p.name }}</ion-card-title>
@@ -65,7 +65,7 @@
                   Inicio: {{ p.startDate ? (p.startDate.split('T')[0]) : 'Sin fecha' }}
                 </span>
                 <div class="action-buttons">
-                  <ion-button fill="clear" size="small" [routerLink]="['/projects/edit', p.id]" color="primary">
+                  <ion-button fill="clear" size="small" (click)="editarProyecto(p, $event)" color="primary">
                     <ion-icon slot="icon-only" name="create-outline"></ion-icon>
                   </ion-button>
                   <ion-button fill="clear" size="small" (click)="eliminarProyecto(p, $event)" color="danger">
@@ -79,4 +79,11 @@
       }
     </div>
   }
+
+  <!-- Botón flotante para crear un nuevo proyecto en móvil -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button routerLink="/mobile/project-form" color="primary">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   ModalController,
   IonHeader,
@@ -22,6 +23,7 @@ import { Filesystem, Directory } from '@capacitor/filesystem';
 import { addIcons } from 'ionicons';
 import {
   closeOutline,
+  createOutline,
   timeOutline,
   personOutline,
   calendarOutline,
@@ -31,17 +33,6 @@ import {
 } from 'ionicons/icons';
 import { Task } from '../../../models/task.model';
 
-// =============================================================================
-// [IONIC 9 - CLASES 8, 9 Y 10: MODAL DE DETALLE CON FOTO NATIVA Y MAPA]
-// Marco Teórico de Cátedra:
-// - Clase 8 (Práctica guiada extra): Al abrir el detalle de la tarea,
-//   `cargarFoto(task)` toma el nombre de archivo (`task.photo`) y reconstruye
-//   su URI desde `Directory.Data` con `Filesystem.getUri()` + `Capacitor.convertFileSrc()`.
-// - Clase 9 (Práctica guiada extra): `abrirEnMapas(task)` abre las coordenadas
-//   GPS (`lat`, `lng`) en Google Maps nativo usando `window.open(url, '_system')`.
-// - Clase 10 (Patrón Controller en Overlays): El componente modal se cierra
-//   invocando `inject(ModalController).dismiss()`.
-// =============================================================================
 @Component({
   selector: 'app-mobile-task-detail-modal',
   standalone: true,
@@ -150,6 +141,13 @@ import { Task } from '../../../models/task.model';
           </ion-card-content>
         </ion-card>
 
+        @if (task.id && task.projectId) {
+          <ion-button expand="block" fill="outline" color="primary" (click)="editarTarea()">
+            <ion-icon name="create-outline" slot="start"></ion-icon>
+            Editar Tarea en Móvil
+          </ion-button>
+        }
+
         <ion-button expand="block" color="primary" (click)="cerrar()">
           Cerrar Detalle
         </ion-button>
@@ -159,6 +157,7 @@ import { Task } from '../../../models/task.model';
 })
 export class MobileTaskDetailModalComponent implements OnInit {
   private modalCtrl = inject(ModalController);
+  private router = inject(Router);
 
   @Input() task!: Task;
   photoUrl = signal<string | null>(null);
@@ -166,6 +165,7 @@ export class MobileTaskDetailModalComponent implements OnInit {
   constructor() {
     addIcons({
       closeOutline,
+      createOutline,
       timeOutline,
       personOutline,
       calendarOutline,
@@ -181,9 +181,6 @@ export class MobileTaskDetailModalComponent implements OnInit {
     }
   }
 
-  // ===========================================================================
-  // [CLASE 8 - PRÁCTICA GUIADA EXTRA] RECONSTRUIR URL DESDE DIRECTORY.DATA
-  // ===========================================================================
   async cargarFoto(task: Task): Promise<void> {
     if (task.photoPreview) {
       this.photoUrl.set(task.photoPreview);
@@ -197,19 +194,22 @@ export class MobileTaskDetailModalComponent implements OnInit {
       });
       this.photoUrl.set(Capacitor.convertFileSrc(uri.uri));
     } catch {
-      // Si el archivo no existe en este entorno, se omite sin romper la vista
+      // Archivo no disponible en este entorno
     }
   }
 
-  // ===========================================================================
-  // [CLASE 9 - PRÁCTICA GUIADA EXTRA] ABRIR UBICACIÓN EN GOOGLE MAPS NATIVO
-  // ===========================================================================
   abrirEnMapas(task: Task): void {
     const url = `https://www.google.com/maps?q=${task.lat},${task.lng}`;
     window.open(url, '_system');
   }
 
-  // [CLASE 10] Cerrar overlay mediante ModalController.dismiss()
+  editarTarea(): void {
+    this.modalCtrl.dismiss();
+    if (this.task.projectId && this.task.id) {
+      this.router.navigate(['/mobile/task-form', this.task.projectId, this.task.id]);
+    }
+  }
+
   cerrar(): void {
     this.modalCtrl.dismiss();
   }

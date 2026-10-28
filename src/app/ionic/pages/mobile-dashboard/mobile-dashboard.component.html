@@ -9,12 +9,6 @@
     </ion-buttons>
 
     <ion-title>TaskGo · Inicio</ion-title>
-
-    <ion-buttons slot="end">
-      <ion-button (click)="irAVersionEscritorio()" title="Ver versión web">
-        <ion-icon slot="icon-only" name="desktop-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -95,6 +89,26 @@
       </ion-card-content>
     </ion-card>
 
+    <!-- Acceso directo móvil a los Proyectos creados -->
+    @if (projects().length > 0) {
+      <div class="section-title-row">
+        <h3>Mis Proyectos</h3>
+        <span class="badge-count">{{ projects().length }}</span>
+      </div>
+
+      <ion-list [inset]="true" class="mobile-task-list">
+        @for (p of projects().slice(0, 4); track p.id) {
+          <ion-item lines="full" button="true" [routerLink]="['/mobile/projects', p.id]" class="task-item">
+            <ion-icon name="briefcase-outline" slot="start" color="primary"></ion-icon>
+            <ion-label>
+              <h2>{{ p.name }}</h2>
+              <p>{{ p.description || 'Tocá para ver sus tareas en modo móvil' }}</p>
+            </ion-label>
+          </ion-item>
+        }
+      </ion-list>
+    }
+
     <!-- [CLASE 2] Lista móvil de tareas pendientes con sintaxis moderna @for -->
     <div class="section-title-row">
       <h3>Tareas Pendientes</h3>
@@ -130,16 +144,16 @@
 
   }
 
-  <!-- [CLASE 2 - PATRÓN FAB] Botón flotante para crear tarea o proyecto -->
+  <!-- [CLASE 2 - PATRÓN FAB] Botón flotante para crear tarea o proyecto 100% en Ionic -->
   <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="mobile-fab">
     <ion-fab-button color="primary">
       <ion-icon name="add-outline"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button routerLink="/projects/create" color="light" title="Nuevo Proyecto">
+      <ion-fab-button routerLink="/mobile/project-form" color="light" title="Nuevo Proyecto (Ionic)">
         <ion-icon name="briefcase-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button routerLink="/mobile/task-form" color="light" title="Nueva Tarea (Ionic Form)">
+      <ion-fab-button routerLink="/mobile/task-form" color="light" title="Nueva Tarea (Ionic)">
         <ion-icon name="checkbox-outline"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>

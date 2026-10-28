@@ -1,28 +1,11 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 // =============================================================================
-// [IONIC 9 - CLASES 4, 8 Y 9: FORMULARIOS REACTIVOS + PLUGINS NATIVOS CAPACITOR]
-// Marco Teórico de Cátedra:
-// - Clase 4 (Formularios Reactivos): Controles Ionic con ControlValueAccessor,
-//   getters tipados, <ion-note color="danger"> al estar touched && invalid, y
-//   markAllAsTouched() al enviar.
-// - Clase 8 (Cámara y Sistema de Archivos):
-//   * Camera.getPhoto() cruza el puente de Capacitor hacia Kotlin/Swift y
-//     devuelve una Promesa con la imagen en Base64.
-//   * Filesystem.writeFile() persiste el binario en Directory.Data (privado y
-//     persistente de la app; a diferencia de Directory.Cache que el SO borra).
-//   * Capacitor.convertFileSrc() traduce la URI file:// nativa a una URL segura
-//     que el WebView puede renderizar en un <img>.
-//   * Separar binario de metadatos: en el objeto Task guardamos solo el nombre
-//     de archivo (`task-<timestamp>.jpeg`), no el Base64 completo.
-// - Clase 9 (Geolocalización y Notificaciones Locales):
-//   * Ciclo de vida de un permiso sensible: consultar/pedir con
-//     requestPermissions() antes de usar el recurso y degradar con elegancia
-//     si el usuario rechaza el permiso.
-//   * LocalNotifications.schedule() programa avisos en el propio dispositivo
-//     (sin servidor push FCM/APNs) usando un id numérico único.
+// [IONIC 9 - CLASES 4, 8 Y 9: FORMULARIO REACTIVO + PLUGINS NATIVOS CAPACITOR]
+// Soporta tanto Crear Tarea (/mobile/task-form o /mobile/task-form?projectId=X)
+// como Editar Tarea (/mobile/task-form/:projectId/:taskId) sin salir de Ionic.
 // =============================================================================
 import {
   ActionSheetController,
@@ -75,7 +58,6 @@ import { Task } from '../../../models/task.model';
   imports: [
     ReactiveFormsModule,
     RouterModule,
-    // [CLASE 4] Importación selectiva (tree-shaking) de controles de formulario Ionic
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -104,20 +86,19 @@ export class MobileTaskFormComponent implements OnInit {
   private projectService = inject(ProjectService);
   private storageService = inject(IonicStorageService);
   private actionSheetCtrl = inject(ActionSheetController);
+  private route = inject(ActivatedRoute);
   private router = inject(Router);
 
   projects = signal<Project[]>([]);
   saving = signal<boolean>(false);
+  editTaskId = signal<number | null>(null);
+  returnProjectId = signal<number | null>(null);
 
   // [CLASE 8] URL segura para previsualizar la foto en <img>
   photoUrl = signal<string | null>(null);
   // [CLASE 9] Estado informativo de ubicación y notificación
   locationStatus = signal<string | null>(null);
 
-  // ===========================================================================
-  // [CLASE 4, 8 Y 9] DEFINICIÓN DEL FORMULARIO REACTIVO TIPADO
-  // Incluye metadatos de foto (Clase 8) y coordenadas lat/lng (Clase 9)
-  // ===========================================================================
   form = this.fb.group({
     title: ['', [Validators.required, Validators.minLength(3)]],
     projectId: [1, [Validators.required]],
@@ -144,10 +125,42 @@ export class MobileTaskFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const paramProjectId = this.route.snapshot.paramMap.get('projectId');
+    const paramTaskId = this.route.snapshot.paramMap.get('taskId');
+    const queryProjectId = this.route.snapshot.queryParamMap.get('projectId');
+
+    const preselectedProjectId = paramProjectId
+      ? Number(paramProjectId)
+      : (queryProjectId ? Number(queryProjectId) : null);
+
+    if (preselectedProjectId) {
+      this.returnProjectId.set(preselectedProjectId);
+      this.form.patchValue({ projectId: preselectedProjectId });
+    }
+
+    if (paramProjectId && paramTaskId) {
+      const pId = Number(paramProjectId);
+      const tId = Number(paramTaskId);
+      this.editTaskId.set(tId);
+      this.taskService.getById(pId, tId).subscribe({
+        next: (t) => {
+          this.form.patchValue({
+            title: t.title,
+            projectId: pId,
+            assignee: t.assignee || '',
+            estimateHours: t.estimateHours || 1,
+            dueDate: t.dueDate || new Date().toISOString(),
+            priority: t.priority || 'media',
+            done: t.status === 'DONE'
+          });
+        }
+      });
+    }
+
     this.projectService.getAll().subscribe({
       next: (projs) => {
         this.projects.set(projs);
-        if (projs.length > 0 && projs[0].id) {
+        if (!preselectedProjectId && projs.length > 0 && projs[0].id) {
           this.form.patchValue({ projectId: projs[0].id });
         }
       },
@@ -158,7 +171,6 @@ export class MobileTaskFormComponent implements OnInit {
     });
   }
 
-  // [CLASE 4] Getters tipados para acceder a los controles desde el template HTML
   get title() {
     return this.form.controls.title;
   }
@@ -167,9 +179,6 @@ export class MobileTaskFormComponent implements OnInit {
     return this.form.controls.estimateHours;
   }
 
-  // ===========================================================================
-  // [CLASE 8 - DESAFÍO OPCIONAL] ELEGIR ENTRE CÁMARA Y GALERÍA CON ACTION SHEET
-  // ===========================================================================
   async elegirOrigenFoto(): Promise<void> {
     const sheet = await this.actionSheetCtrl.create({
       header: 'Adjuntar foto a la tarea',
@@ -198,13 +207,6 @@ export class MobileTaskFormComponent implements OnInit {
     await sheet.present();
   }
 
-  // ===========================================================================
-  // [CLASE 8 - EJERCICIO GUIADO] CAPTURAR FOTO Y GUARDAR EN DIRECTORY.DATA
-  // - Camera.getPhoto() obtiene la imagen en Base64.
-  // - Filesystem.writeFile() persiste el binario en Directory.Data (persistente).
-  // - Capacitor.convertFileSrc() convierte la ruta nativa para el WebView.
-  // - En el formulario guardamos solo `fileName` (separar binario de metadatos).
-  // ===========================================================================
   async takePhoto(source: CameraSource = CameraSource.Camera): Promise<void> {
     try {
       const photo = await Camera.getPhoto({
@@ -227,23 +229,18 @@ export class MobileTaskFormComponent implements OnInit {
         directory: Directory.Data
       });
 
-      // En dispositivo nativo usamos convertFileSrc; en navegador mostramos el dataUrl
       if (Capacitor.isNativePlatform()) {
         this.photoUrl.set(Capacitor.convertFileSrc(savedFile.uri));
       } else {
         this.photoUrl.set(`data:image/jpeg;base64,${photo.base64String}`);
       }
 
-      // Guardamos únicamente el nombre de archivo en los metadatos de la tarea
       this.form.patchValue({ photo: fileName });
     } catch {
-      // Si el usuario cancela la cámara o rechaza el permiso, degradamos sin romper la app
+      // Cancelado por el usuario
     }
   }
 
-  // ===========================================================================
-  // [CLASE 9 - EJERCICIO GUIADO] GUARDAR UBICACIÓN GPS CON PERMISOS EXPLÍCITOS
-  // ===========================================================================
   async guardarUbicacion(): Promise<void> {
     try {
       if (Capacitor.isNativePlatform()) {
@@ -264,18 +261,12 @@ export class MobileTaskFormComponent implements OnInit {
     }
   }
 
-  // ===========================================================================
-  // [CLASE 9 - EJERCICIO GUIADO] PROGRAMAR NOTIFICACIÓN LOCAL DE VENCIMIENTO
-  // - En Android 13+ (API 33) POST_NOTIFICATIONS requiere permiso en runtime.
-  // - Cada notificación lleva un id numérico único para poder cancelarla luego.
-  // ===========================================================================
   async programarNotificacion(task: Task): Promise<void> {
     try {
       const perm = await LocalNotifications.requestPermissions();
       if (perm.display !== 'granted') return;
 
       const rawDate = task.dueDate ? new Date(task.dueDate).getTime() : Date.now() + 60_000;
-      // Si la fecha elegida ya pasó hoy, programamos a 1 minuto en el futuro para demostración en clase
       const targetTime = rawDate > Date.now() ? new Date(rawDate) : new Date(Date.now() + 60_000);
 
       await LocalNotifications.schedule({
@@ -289,11 +280,10 @@ export class MobileTaskFormComponent implements OnInit {
         ]
       });
     } catch {
-      // En navegador web sin soporte nativo de LocalNotifications ignoramos silenciosamente
+      // Sin soporte nativo en navegador web
     }
   }
 
-  // [CLASE 4, 8 Y 9] Envío con validación, markAllAsTouched() y programación de notificación
   submit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -319,7 +309,16 @@ export class MobileTaskFormComponent implements OnInit {
       projectId
     };
 
-    this.taskService.create(projectId, nuevaTarea).subscribe({
+    const targetRoute = this.returnProjectId()
+      ? [`/mobile/projects/${this.returnProjectId()}`]
+      : ['/mobile/tasks'];
+
+    const taskId = this.editTaskId();
+    const request$ = taskId
+      ? this.taskService.update(projectId, taskId, nuevaTarea)
+      : this.taskService.create(projectId, nuevaTarea);
+
+    request$.subscribe({
       next: async (creada) => {
         const tareaFinal: Task = {
           ...nuevaTarea,
@@ -329,27 +328,26 @@ export class MobileTaskFormComponent implements OnInit {
           lat: nuevaTarea.lat,
           lng: nuevaTarea.lng
         };
-        // Persistimos también los metadatos nativos en caché local
         const actuales = await this.storageService.loadTasks();
-        actuales.unshift(tareaFinal);
-        await this.storageService.saveTasks(actuales);
+        const filtradas = actuales.filter(t => t.id !== tareaFinal.id);
+        filtradas.unshift(tareaFinal);
+        await this.storageService.saveTasks(filtradas);
 
-        // [CLASE 9] Programamos la notificación local inmediatamente tras crear la tarea
         await this.programarNotificacion(tareaFinal);
 
         this.saving.set(false);
-        this.router.navigate(['/mobile/tasks']);
+        this.router.navigate(targetRoute);
       },
       error: async () => {
-        // Fallback offline: guardamos también en la caché local de Preferences
-        const tareaOffline: Task = { ...nuevaTarea, id: Math.floor(Date.now() % 1000000) };
+        const tareaOffline: Task = { ...nuevaTarea, id: taskId ?? Math.floor(Date.now() % 1000000) };
         const actuales = await this.storageService.loadTasks();
-        actuales.unshift(tareaOffline);
-        await this.storageService.saveTasks(actuales);
+        const filtradas = actuales.filter(t => t.id !== tareaOffline.id);
+        filtradas.unshift(tareaOffline);
+        await this.storageService.saveTasks(filtradas);
         await this.programarNotificacion(tareaOffline);
 
         this.saving.set(false);
-        this.router.navigate(['/mobile/tasks']);
+        this.router.navigate(targetRoute);
       }
     });
   }

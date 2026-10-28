@@ -2,10 +2,10 @@
   <div class="auth-header">
     <div class="brand-badge">
       <svg lucideSparkles class="sparkle-icon"></svg>
-      <span>GestorProyectos v3</span>
+      <span>GestorProyectos · Ionic 9</span>
     </div>
     <h1>Bienvenido de nuevo</h1>
-    <p class="subtitle">Ingresá tus credenciales para acceder al sistema</p>
+    <p class="subtitle">Ingresá tus credenciales para acceder a la app</p>
   </div>
 
   @if (error()) {
@@ -15,7 +15,7 @@
     </div>
   }
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="auth-form">
+  <form [formGroup]="form" (ngSubmit)="onSubmit('/mobile/dashboard')" class="auth-form">
     <div class="form-group">
       <label for="email">Correo Electrónico</label>
       <div class="input-wrapper" [class.has-error]="form.get('email')?.invalid && form.get('email')?.touched">
@@ -78,24 +78,15 @@
         <span class="spinner"></span>
         <span>Iniciando sesión...</span>
       } @else {
-        <span>Ingresar a Versión Web</span>
+        <span>Ingresar a la App</span>
         <svg lucideArrowRight class="btn-icon"></svg>
       }
-    </button>
-
-    <button
-      type="button"
-      class="btn-mobile-entry"
-      [disabled]="form.invalid || loading()"
-      (click)="onSubmit('/mobile/dashboard')"
-    >
-      <span>📱 Ingresar a Modo Móvil (Ionic 9)</span>
     </button>
   </form>
 
   <div class="demo-box">
     <div class="demo-info">
-      <strong>Credenciales Demo:</strong>
+      <strong>Credenciales Iniciales:</strong>
       <code>admin&#64;proyectos.com</code> / <code>admin123</code>
     </div>
     <button type="button" class="btn-autofill" (click)="fillDemoCredentials()">

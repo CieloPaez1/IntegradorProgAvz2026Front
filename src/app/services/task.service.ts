@@ -20,6 +20,12 @@ export class TaskService {
     );
   }
 
+  getByProject(projectId: number): Observable<Task[]> {
+    return this.http.get<Task[]>(`${this.apiUrl}/${projectId}/tasks`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   filter(minEstimate?: number, assignee?: string): Observable<Task[]> {
     let params = new HttpParams();
     if (minEstimate != null) params = params.set('minEstimate', minEstimate.toString());
@@ -47,7 +53,7 @@ export class TaskService {
       catchError(this.handleError)
     );
   }
-  
+
   delete(projectId: number, taskId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${projectId}/tasks/${taskId}`).pipe(
       catchError(this.handleError)
@@ -57,13 +63,13 @@ export class TaskService {
   private handleError(error: HttpErrorResponse): Observable<never> {
     let message = 'Error desconocido';
     const serverMessage = typeof error.error === 'string' ? error.error : error.error?.message;
-    
+
     if (error.status === 0) message = 'No se pudo conectar al servidor.';
     else if (error.status === 400) message = serverMessage ?? 'Datos inválidos.';
     else if (error.status === 404) message = 'Proyecto/Tarea no encontrado.';
     else if (error.status === 409) message = serverMessage ?? 'Conflicto de negocio.';
     else if (error.status === 500) message = serverMessage ?? 'Error interno del servidor.';
-    
+
     return throwError(() => new Error(message));
   }
 }

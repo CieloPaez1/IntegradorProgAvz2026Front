@@ -56,7 +56,7 @@ export class LoginComponent {
     });
   }
 
-  onSubmit(targetRoute = '/home'): void {
+  onSubmit(targetRoute = '/mobile/dashboard'): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;

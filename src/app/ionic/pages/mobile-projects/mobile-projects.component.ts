@@ -3,9 +3,10 @@ import { RouterModule, Router } from '@angular/router';
 import { catchError, finalize, of } from 'rxjs';
 
 // =============================================================================
-// [IONIC 9 - CLASES 2, 3, 5 Y 6] LISTADO DE PROYECTOS CON SEARCHBAR Y CACHÉ
+// [IONIC 9 - CLASES 2, 3, 5, 6 Y 10] LISTADO DE PROYECTOS 100% MÓVIL
 // =============================================================================
 import {
+  AlertController,
   IonHeader,
   IonToolbar,
   IonTitle,
@@ -24,16 +25,19 @@ import {
   IonButtons,
   IonMenuButton,
   IonSpinner,
-  IonText
+  IonText,
+  IonFab,
+  IonFabButton
 } from '@ionic/angular';
 
 import { addIcons } from 'ionicons';
 import {
+  add,
   addOutline,
   trashOutline,
   createOutline,
   folderOpenOutline,
-  desktopOutline,
+  chevronForwardOutline,
   cloudOfflineOutline
 } from 'ionicons/icons';
 
@@ -64,7 +68,9 @@ import { Project } from '../../../models/project.model';
     IonButtons,
     IonMenuButton,
     IonSpinner,
-    IonText
+    IonText,
+    IonFab,
+    IonFabButton
   ],
   templateUrl: './mobile-projects.component.html',
   styleUrls: ['./mobile-projects.component.css']
@@ -73,6 +79,7 @@ export class MobileProjectsComponent implements OnInit {
   private projectService = inject(ProjectService);
   readonly storage = inject(IonicStorageService);
   private router = inject(Router);
+  private alertCtrl = inject(AlertController);
 
   // [CLASE 5] Los 3 estados de la UI modelados con Signals
   projects = signal<Project[]>([]);
@@ -91,11 +98,12 @@ export class MobileProjectsComponent implements OnInit {
 
   constructor() {
     addIcons({
+      add,
       addOutline,
       trashOutline,
       createOutline,
       folderOpenOutline,
-      desktopOutline,
+      chevronForwardOutline,
       cloudOfflineOutline
     });
   }
@@ -141,20 +149,49 @@ export class MobileProjectsComponent implements OnInit {
     this.searchTerm.set(event.target.value || '');
   }
 
-  irAVersionEscritorio(): void {
-    this.router.navigate(['/projects']);
+  abrirProyecto(p: Project): void {
+    if (!p.id) return;
+    this.router.navigate(['/mobile/projects', p.id]);
   }
 
-  eliminarProyecto(p: Project, event: Event): void {
+  editarProyecto(p: Project, event: Event): void {
     event.stopPropagation();
     if (!p.id) return;
-    if (confirm(`¿Eliminar proyecto "${p.name}"?`)) {
-      this.projectService.delete(p.id).subscribe({
-        next: async () => {
-          this.projects.update(ps => ps.filter(proj => proj.id !== p.id));
-          await this.storage.saveProjects(this.projects());
+    this.router.navigate(['/mobile/project-form', p.id]);
+  }
+
+  // [CLASE 10] Confirmación con AlertController nativo de Ionic
+  async eliminarProyecto(p: Project, event: Event): Promise<void> {
+    event.stopPropagation();
+    if (!p.id) return;
+
+    const alert = await this.alertCtrl.create({
+      header: '¿Eliminar proyecto?',
+      message: `¿Querés eliminar el proyecto "${p.name}"?`,
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        {
+          text: 'Eliminar',
+          role: 'destructive',
+          handler: () => {
+            this.projectService.delete(p.id!).subscribe({
+              next: async () => {
+                this.projects.update(ps => ps.filter(proj => proj.id !== p.id));
+                await this.storage.saveProjects(this.projects());
+              },
+              error: async (err: Error) => {
+                const errAlert = await this.alertCtrl.create({
+                  header: 'No se puede eliminar',
+                  message: err.message || 'El proyecto tiene tareas asociadas. Eliminá primero sus tareas.',
+                  buttons: ['Entendido']
+                });
+                await errAlert.present();
+              }
+            });
+          }
         }
-      });
-    }
+      ]
+    });
+    await alert.present();
   }
 }

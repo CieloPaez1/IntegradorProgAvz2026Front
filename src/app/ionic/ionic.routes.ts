@@ -3,15 +3,9 @@ import { authGuard } from '../guards/auth.guard';
 
 // =============================================================================
 // [IONIC 9 - CLASE 3: LAZY LOADING CON loadComponent Y RUTAS HIJAS]
-// Marco Teórico de Cátedra:
-// - En Angular Standalone, las rutas se definen con `loadComponent: () => import(...)`
-//   en lugar del viejo `loadChildren` + NgModule. El import() dinámico le indica
-//   al empaquetador que separe cada pantalla en un chunk independiente que se
-//   descarga recién cuando el usuario navega hacia esa pestaña.
-// - Rutas padre e hijas: La ruta padre ('mobile') carga el "cascarón"
-//   (MobileTabsComponent con el menú lateral e ion-tabs) y cada ruta hija
-//   carga el contenido de su pestaña correspondiente.
-// - pathMatch: 'full' en la redirección vacía evita redirecciones infinitas.
+// Todas las pantallas móviles (Dashboard, Proyectos, Detalle de Proyecto,
+// Crear/Editar Proyecto, Tareas, Crear/Editar Tarea y Perfil) se cargan
+// perezosamente dentro del contenedor Ionic.
 // =============================================================================
 export const ionicRoutes: Routes = [
   {
@@ -31,12 +25,32 @@ export const ionicRoutes: Routes = [
           import('./pages/mobile-projects/mobile-projects.component').then(m => m.MobileProjectsComponent)
       },
       {
+        path: 'projects/:id',
+        loadComponent: () =>
+          import('./pages/mobile-project-detail/mobile-project-detail.component').then(m => m.MobileProjectDetailComponent)
+      },
+      {
+        path: 'project-form',
+        loadComponent: () =>
+          import('./pages/mobile-project-form/mobile-project-form.component').then(m => m.MobileProjectFormComponent)
+      },
+      {
+        path: 'project-form/:id',
+        loadComponent: () =>
+          import('./pages/mobile-project-form/mobile-project-form.component').then(m => m.MobileProjectFormComponent)
+      },
+      {
         path: 'tasks',
         loadComponent: () =>
           import('./pages/mobile-tasks/mobile-tasks.component').then(m => m.MobileTasksComponent)
       },
       {
         path: 'task-form',
+        loadComponent: () =>
+          import('./pages/mobile-task-form/mobile-task-form.component').then(m => m.MobileTaskFormComponent)
+      },
+      {
+        path: 'task-form/:projectId/:taskId',
         loadComponent: () =>
           import('./pages/mobile-task-form/mobile-task-form.component').then(m => m.MobileTaskFormComponent)
       },
